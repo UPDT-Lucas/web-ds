@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'shared-button',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './button.component.html',
   styleUrl: './button.component.css'
 })
@@ -13,5 +14,11 @@ export class ButtonComponent {
   text: string = "";
 
   @Input()
+  link: string = "";
+
+  @Input()
   bordered: boolean = false;
+
+  
+  constructor(router: RouterModule){}
 }

@@ -34,9 +34,9 @@ h2{
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 50%;
+  width: 80%;
+  max-width: 500px;
   height: 100%;
-  padding: 0 2rem;
   gap: 2rem;
 }
 

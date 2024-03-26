@@ -1,9 +1,11 @@
 @if (bordered) {
-  <button class="bordered clickable">
+  <button class="bordered clickable"
+    [routerLink]="link">
     {{text}}
   </button>
 }@else {
-  <button class="clickable">
+  <button class="clickable"
+    [routerLink]="link">
     {{text}}
   </button>
 }
