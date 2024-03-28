@@ -1,0 +1,36 @@
+<div class="table-container">
+    <table>
+        <tr>
+            @for (header of headers; track $index) {
+                <th>{{header[0]}}</th>
+            }
+        </tr>
+        <tr>
+        </tr>
+        @for (eachData of data; track $index) {
+            <tr>
+                @for (info of eachData; track $index) {
+                    @if (headers[$index][1] == "text") {
+                        <td> {{info}} </td>
+                    }
+                    @if (headers[$index][1] == "span") {
+                        <td>
+                            <span>
+                                {{info}}
+                            </span>
+                        </td>
+                    }
+                    @if (headers[$index][1] == "icon") {
+                        <td>
+                        @for (item of info; track $index) {
+                                <i class="material-icons">
+                                    {{ item }}
+                                </i>
+                        }
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </table>
+</div>

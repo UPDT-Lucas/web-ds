@@ -1,0 +1,133 @@
+<div class="flex-container">
+    <shared-header></shared-header>
+    <div class="container">
+        <div class="content-fixer">
+            <div class="top-table">
+                <h2>Miembros del equipo</h2>
+                <shared-button text="Filtros" [bordered]="true">
+                </shared-button>
+            </div>
+            <app-table
+                [headers]
+                    ="[['Rol', 'text'],
+                    ['Nombre', 'text'], 
+                    ['Correo', 'text'], 
+                    ['Código', 'span'], 
+                    ['Acciones', 'icon']]"
+                [data]
+                    ="[[['Profesor'], 
+                    ['Ericka Solano'],
+                    ['ericka@gmail.com'],
+                    ['CA-00'],
+                    ['delete', 'edit', 'exit_to_app']],
+                    [['Profesor'],
+                    ['Mauricio Avilés'],
+                    ['mauricio@gmail.com'],
+                    ['SJ-00'],
+                    ['delete','edit','exit_to_app']]]">
+            </app-table>
+            <!-- <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Rol</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Código</th>
+                        <th>Acciones</th>
+                    </tr>
+                    <tr>
+                        <td>Profesor</td>
+                        <td>Ericka Solano</td>
+                        <td>ericka_gmail.com</td>
+                        <td>
+                            <span>
+                                CA-00
+                            </span>
+                        </td>
+                        <td class="actions">
+                            <i class="material-icons delete clickable">delete</i>
+                            <i class="material-icons edit clickable">edit</i>
+                            <i class="material-icons exit clickable">exit_to_app</i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Profesor</td>
+                        <td>Ericka Solano</td>
+                        <td>ericka_gmail.com</td>
+                        <td>
+                            <span>
+                                CA-00
+                            </span>
+                        </td>
+                        <td class="actions">
+                            <i class="material-icons delete clickable">delete</i>
+                            <i class="material-icons edit clickable">edit</i>
+                            <i class="material-icons exit clickable">exit_to_app</i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Profesor</td>
+                        <td>Ericka Solano</td>
+                        <td>ericka_gmail.com</td>
+                        <td>
+                            <span>
+                                CA-00
+                            </span>
+                        </td>
+                        <td class="actions">
+                            <i class="material-icons delete clickable">delete</i>
+                            <i class="material-icons edit clickable">edit</i>
+                            <i class="material-icons exit clickable">exit_to_app</i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Profesor</td>
+                        <td>Ericka Solano</td>
+                        <td>ericka_gmail.com</td>
+                        <td>
+                            <span>
+                                CA-00
+                            </span>
+                        </td>
+                        <td class="actions">
+                            <i class="material-icons delete clickable">delete</i>
+                            <i class="material-icons edit clickable">edit</i>
+                            <i class="material-icons exit clickable">exit_to_app</i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Profesor</td>
+                        <td>Ericka Solano</td>
+                        <td>ericka_gmail.com</td>
+                        <td>
+                            <span>
+                                CA-00
+                            </span>
+                        </td>
+                        <td class="actions">
+                            <i class="material-icons delete clickable">delete</i>
+                            <i class="material-icons edit clickable">edit</i>
+                            <i class="material-icons exit clickable">exit_to_app</i>
+                        </td>
+                    </tr>
+                </table>
+            </div> -->
+            <div class="pagination clickable">
+                <i class="material-icons">arrow_back_ios</i>
+                <i class="material-icons">arrow_forward_ios</i>
+            </div>
+            <div class="bottom-table">
+                <shared-button 
+                    text="Ver estudiantes" 
+                    link="">
+                </shared-button>
+                <shared-button 
+                    text="Agregar profesor" 
+                    link="">
+                </shared-button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
