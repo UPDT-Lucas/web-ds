@@ -15,9 +15,10 @@
                     }
                     @if (headers[$index][1] == "span") {
                         <td>
-                            <span>
-                                {{info}}
-                            </span>
+                            <shared-badge
+                                [text]="info[0]"
+                                [color]="info[1]">
+                            </shared-badge>
                         </td>
                     }
                     @if (headers[$index][1] == "icon") {

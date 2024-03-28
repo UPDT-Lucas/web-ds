@@ -70,13 +70,6 @@ td {
     font-weight: 400;
 }
 
-span {
-    color: #3372d6;
-    background-color: #93b3e8;
-    padding: 0.4rem;
-    border-radius: 15px;
-}
-
 .actions {
     display: flex;
     gap: 1rem;
