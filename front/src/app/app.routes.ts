@@ -3,6 +3,7 @@ import { LoginPageComponent } from './access/pages/login-page/login-page.compone
 import { ChangePasswordPageComponent } from './access/pages/change-password-page/change-password-page.component';
 import { LandingPageComponent } from './work-team/pages/landing-page/landing-page.component';
 import { TeamViewComponent } from './work-team/pages/team-view/team-view.component';
+import { ViewProfilePageComponent } from './user-profile/pages/view-profile-page/view-profile-page.component';
 
 export const routes: Routes = [
   {
@@ -20,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'changePassword',
     component: ChangePasswordPageComponent
+  },
+  {
+    path: 'viewProfile',
+    component: ViewProfilePageComponent
   }
 ];
