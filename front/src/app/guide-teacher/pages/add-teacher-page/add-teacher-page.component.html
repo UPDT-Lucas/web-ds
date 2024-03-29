@@ -1,0 +1,89 @@
+<div class="flex-container">
+    <shared-header></shared-header>
+
+    <div class="container">
+        <div class="info-container">
+            <div class="name-info">
+                <h2>Nombre Completo</h2>
+                <div class="row">
+                    <div class="input">
+                        <h5>
+                            Nombre
+                        </h5>
+                        <shared-input placeholder="Nombre">
+                        </shared-input>
+                    </div>
+                    <div class="input">
+                        <h5>
+                            Primer Apellido
+                        </h5>
+                        <shared-input placeholder="Primer Apellido">
+                        </shared-input>
+                    </div>
+                    <div class="input">
+                        <h5>
+                            Primer Apellido
+                        </h5>
+                        <shared-input placeholder="Segundo Apellido">
+                        </shared-input>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-info">
+                <h2>Información de Contacto</h2>
+                <div class="row">
+                    <div class="input">
+                        <h5>
+                            Correo
+                        </h5>
+                        <shared-input placeholder="Correo">
+                        </shared-input>
+                    </div>
+                    <div class="input">
+                        <h5>
+                            Teléfono Oficina
+                        </h5>
+                        <shared-input placeholder="Teléfono Oficina">
+                        </shared-input>
+                    </div>
+                    <div class="input">
+                        <h5>
+                            Teléfono Celular
+                        </h5>
+                        <shared-input placeholder="Teléfono Celular">
+                        </shared-input>
+                    </div>
+                </div>
+            </div>
+            <div class="extra-info">
+                <h2>Información Extra</h2>
+                <div class="row">
+                    <div class="input">
+                        <h5>Foto</h5>
+                        <div class="file-input-container">
+                            <shared-file-input
+                                [acceptedExtensions]="['.jpg', '.png', '.jpeg']"
+                                placeholder="Subir foto">
+                            </shared-file-input>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <h5>
+                            Coordinador
+                        </h5>
+                        <div class="checkbox-container">
+                            <shared-checkbox-input>
+                            </shared-checkbox-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="options">
+                <shared-button
+                    text="Agregar profesor"
+                    link="/teamView">
+                </shared-button>
+            </div>
+        </div>
+    </div>
+</div>

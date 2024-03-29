@@ -9,22 +9,31 @@
             </div>
             <app-table
                 [headers]
-                    ="[['Rol', 'text'],
+                    ="[
+                    ['Rol', 'text'],
                     ['Nombre', 'text'], 
                     ['Correo', 'text'], 
                     ['Código', 'span'], 
                     ['Acciones', 'icon']]"
                 [data]
-                    ="[[['Profesor'], 
+                    ="[[
+                    ['Profesor'], 
                     ['Ericka Solano'],
                     ['ericka@gmail.com'],
                     ['CA-00', '#3372d6'],
-                    ['delete', 'edit', 'exit_to_app']],
-                    [['Profesor'],
+                    [['delete', ''],
+                    ['edit', '/editTeacher'],
+                    ['exit_to_app', ''] 
+                    ]],
+                    
+                    [
+                    ['Profesor'],
                     ['Mauricio Avilés'],
                     ['mauricio@gmail.com'],
                     ['SJ-00', '#d68d33'],
-                    ['delete','edit','exit_to_app']]]">
+                    [['delete', ''],
+                    ['edit', ''],
+                    ['exit_to_app', '']]]]">
             </app-table>
             <div class="pagination clickable">
                 <i class="material-icons">arrow_back_ios</i>
@@ -37,7 +46,7 @@
                 </shared-button>
                 <shared-button 
                     text="Agregar profesor" 
-                    link="">
+                    link="/addTeacher">
                 </shared-button>
             </div>
         </div>

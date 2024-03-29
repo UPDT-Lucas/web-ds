@@ -70,32 +70,6 @@ td {
     font-weight: 400;
 }
 
-.actions {
-    display: flex;
-    gap: 1rem;
-}
-
-.delete {
-    color: #7e7e7e;
-    &:hover{
-        color: rgb(177, 5, 5);
-    }
-}
-
-.exit {
-    color: #7e7e7e;
-    &:hover{
-        color: rgb(5, 36, 177);
-    }
-}
-
-.edit {
-    color: #7e7e7e;
-    &:hover{
-        color: rgb(5, 177, 85);
-    }
-}
-
 /* top-left border-radius */
 table tr:first-child th:first-child {
     border-top-left-radius: 15px;
