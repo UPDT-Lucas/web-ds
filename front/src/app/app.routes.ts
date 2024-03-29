@@ -3,11 +3,16 @@ import { LoginPageComponent } from './access/pages/login-page/login-page.compone
 import { ChangePasswordPageComponent } from './access/pages/change-password-page/change-password-page.component';
 import { LandingPageComponent } from './work-team/pages/landing-page/landing-page.component';
 import { ViewProfilePageComponent } from './user-profile/pages/view-profile-page/view-profile-page.component';
+import { TeamViewComponent } from './work-team/pages/team-view/team-view.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: LandingPageComponent
+  },
+  {
+    path: 'teamView',
+    component: TeamViewComponent
   },
   {
     path: 'login',
