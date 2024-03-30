@@ -6,6 +6,8 @@ import { TeamViewComponent } from './work-team/pages/team-view/team-view.compone
 import { ViewProfilePageComponent } from './user-profile/pages/view-profile-page/view-profile-page.component';
 import { AddTeacherPageComponent } from './guide-teacher/pages/add-teacher-page/add-teacher-page.component';
 import { EditTeacherPageComponent } from './guide-teacher/pages/edit-teacher-page/edit-teacher-page.component';
+import { ViewCalendarPageComponent } from './planification/pages/view-calendar-page/view-calendar-page.component';
+import { ViewActivityPageComponent } from './planification/pages/view-activity-page/view-activity-page.component';
 
 export const routes: Routes = [
   {
@@ -35,5 +37,13 @@ export const routes: Routes = [
   {
     path: 'editTeacher',
     component: EditTeacherPageComponent
+  },
+  {
+    path: 'viewCalendar',
+    component: ViewCalendarPageComponent
+  },
+  {
+    path: 'viewActivity',
+    component: ViewActivityPageComponent
   }
 ];
