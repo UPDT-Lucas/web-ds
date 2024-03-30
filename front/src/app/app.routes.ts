@@ -6,6 +6,7 @@ import { TeamViewComponent } from './work-team/pages/team-view/team-view.compone
 import { ViewProfilePageComponent } from './user-profile/pages/view-profile-page/view-profile-page.component';
 import { AddTeacherPageComponent } from './guide-teacher/pages/add-teacher-page/add-teacher-page.component';
 import { EditTeacherPageComponent } from './guide-teacher/pages/edit-teacher-page/edit-teacher-page.component';
+import { ViewStudentsPageComponent } from './students/pages/view-students-page/view-students-page.component';
 
 export const routes: Routes = [
   {
@@ -35,5 +36,9 @@ export const routes: Routes = [
   {
     path: 'editTeacher',
     component: EditTeacherPageComponent
+  },
+  {
+    path: 'viewStudents',
+    component: ViewStudentsPageComponent
   }
 ];
