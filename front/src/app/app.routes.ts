@@ -8,6 +8,7 @@ import { AddTeacherPageComponent } from './guide-teacher/pages/add-teacher-page/
 import { EditTeacherPageComponent } from './guide-teacher/pages/edit-teacher-page/edit-teacher-page.component';
 import { ViewStudentsPageComponent } from './students/pages/view-students-page/view-students-page.component';
 import { AddStudentPageComponent } from './students/pages/add-student-page/add-student-page.component';
+import { EditStudentPageComponent } from './students/pages/edit-student-page/edit-student-page.component';
 
 export const routes: Routes = [
   {
@@ -45,5 +46,9 @@ export const routes: Routes = [
   {
     path: 'addStudent',
     component: AddStudentPageComponent
+  },
+  {
+    path: 'editStudent',
+    component: EditStudentPageComponent
   }
 ];
