@@ -1,0 +1,30 @@
+
+.checkbox-input {
+    display: none;
+ }
+ 
+ .custom-checkbox-label {
+     width: 28px;
+     height: 28px;
+     display: flex;
+     justify-self: center;
+     align-items: center;
+     border: 1px solid gray;
+     border-radius: 10px;
+     box-sizing: border-box;
+     > i {
+         color: green;
+         display: none;
+         width: 100%;
+         height: 100%;
+     }
+ }
+ 
+ .checkbox-input:checked + .custom-checkbox-label {
+     ::selection {
+         display: none;
+     }
+     > i {
+         display: block;
+     }
+ }

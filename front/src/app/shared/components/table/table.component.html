@@ -15,17 +15,32 @@
                     }
                     @if (headers[$index][1] == "span") {
                         <td>
-                            <span>
-                                {{info}}
-                            </span>
+                            <shared-badge
+                                [text]="info[0]"
+                                [color]="info[1]">
+                            </shared-badge>
                         </td>
                     }
                     @if (headers[$index][1] == "icon") {
-                        <td>
+                        <td class="actions">
                         @for (item of info; track $index) {
-                                <i class="material-icons">
-                                    {{ item }}
+                            @if (item[0] == "edit") {
+                                <i class="material-icons edit clickable" [routerLink]="item[1]">
+                                    {{ item[0] }}
                                 </i>
+                            } @else if (item[0] == "exit_to_app") {
+                                <i class="material-icons exit clickable" [routerLink]="item[1]">
+                                    {{ item[0] }}
+                                </i>
+                            } @else if (item[0] == "delete") {
+                                <i class="material-icons delete clickable" [routerLink]="item[1]">
+                                    {{ item[0] }}
+                                </i>
+                            } @else {
+                                <i class="material-icons clickable" [routerLink]="item[1]">
+                                    {{ item[0] }}
+                                </i>
+                            }
                         }
                         </td>
                     }

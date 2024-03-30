@@ -9,6 +9,11 @@
 }
 
 h2 {
-  font-weight: 400;
+  font-weight: 600;
   font-size: calc(10px + 0.390625vw);
+}
+
+h5 {
+  font-weight: 400;
+  font-size: calc(8px + 0.390625vw);
 }
