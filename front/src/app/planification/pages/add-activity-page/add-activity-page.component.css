@@ -1,0 +1,33 @@
+.info-container {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+    gap: 0.4rem;
+    width: 50%;
+    max-width: calc(50% - 1rem);
+    > img {
+        width: 100px;
+        border-radius: 10px;
+    }
+}
+
+.options {
+    padding: 0 1rem;
+    width: fit-content;
+    display: flex;
+}

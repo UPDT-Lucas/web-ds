@@ -1,15 +1,3 @@
-h2 {
-    font-weight: 600;
-    font-size: 18px;
-    padding-bottom: 0.2em;
-}
-
-p {
-    font-size: 16px;
-    padding-bottom: 1.5em;
-    color: gray;
-}
-
 .flex-container {
     display: flex;
     flex-direction: column;
@@ -42,8 +30,7 @@ p {
     align-items: start;
   
     > img {
-      width: 250px;
-      height: 250px;
+      width: 150px;
       border-radius: 50%;
       object-fit: cover;
     }
@@ -56,6 +43,7 @@ p {
     flex-direction: column;
     align-items: start;
     justify-content: center;
+    gap: 1rem;
 }
 
 .edit-button{

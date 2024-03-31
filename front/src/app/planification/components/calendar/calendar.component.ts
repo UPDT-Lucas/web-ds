@@ -23,7 +23,7 @@ export class CalendarComponent {
       addActivity: {
         text: 'Crear Actividad',
         click: () => {
-          alert("XD")
+          this.router.navigate(['/addActivity'])
         }
       }
     },

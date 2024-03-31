@@ -14,7 +14,7 @@
                         <td> {{info}} </td>
                     }
                     @if (headers[$index][1] == "span") {
-                        <td>
+                        <td class="data-container">
                             <shared-badge
                                 [text]="info[0]"
                                 [color]="info[1]">
@@ -22,7 +22,7 @@
                         </td>
                     }
                     @if (headers[$index][1] == "icon") {
-                        <td class="actions">
+                        <td class="data-container">
                         @for (item of info; track $index) {
                             @if (item[0] == "edit") {
                                 <i class="material-icons edit clickable" [routerLink]="item[1]">

@@ -8,6 +8,8 @@ import { AddTeacherPageComponent } from './guide-teacher/pages/add-teacher-page/
 import { EditTeacherPageComponent } from './guide-teacher/pages/edit-teacher-page/edit-teacher-page.component';
 import { ViewCalendarPageComponent } from './planification/pages/view-calendar-page/view-calendar-page.component';
 import { ViewActivityPageComponent } from './planification/pages/view-activity-page/view-activity-page.component';
+import { AddActivityPageComponent } from './planification/pages/add-activity-page/add-activity-page.component';
+import { EditActivityPageComponent } from './planification/pages/edit-activity-page/edit-activity-page.component';
 
 export const routes: Routes = [
   {
@@ -45,5 +47,13 @@ export const routes: Routes = [
   {
     path: 'viewActivity',
     component: ViewActivityPageComponent
+  },
+  {
+    path: 'addActivity',
+    component: AddActivityPageComponent
+  },
+  {
+    path: 'editActivity',
+    component: EditActivityPageComponent
   }
 ];
