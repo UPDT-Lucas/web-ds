@@ -21,7 +21,7 @@ export class CalendarComponent {
   calendarOptions: CalendarOptions = {
     customButtons: {
       addActivity: {
-        text: 'Crear Actividad',
+        text: 'Agregar Actividad',
         click: () => {
           this.router.navigate(['/addActivity'])
         }
