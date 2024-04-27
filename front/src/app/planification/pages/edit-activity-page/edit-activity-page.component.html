@@ -1,0 +1,81 @@
+<div class="flex-container">
+    <shared-header></shared-header>
+    <div class="container">
+        <div class="info-container">
+            <h2 class="header">
+                Editar Actividad
+            </h2>
+            <div class="row">
+                <div class="input">
+                    <h5>
+                        Tipo
+                    </h5>
+                    <shared-input placeholder="Orientadora">
+                    </shared-input>
+                </div>
+                <div class="input">
+                    <h5>
+                        Nombre
+                    </h5>
+                    <shared-input placeholder="Charla Salud Mental">
+                    </shared-input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input">
+                    <h5>Responsable</h5>
+                    <shared-input
+                        placeholder="Ericka">
+                    </shared-input>
+                </div>
+                <div class="input">
+                    <h5>Fecha</h5>
+                    <shared-input
+                        placeholder="15/04/2024">
+                    </shared-input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input">
+                    <h5>Días para anuncio</h5>
+                    <shared-input
+                        placeholder="14">
+                    </shared-input>
+                </div>
+                <div class="input">
+                    <h5>Días para recordatorio</h5>
+                    <shared-input
+                        placeholder="3">
+                    </shared-input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input">
+                    <h5>Foto Actual</h5>
+                    <img src="assets/images/saludMental.jpg" alt="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input">
+                    <h5>Foto</h5>
+                    <div class="file-input-container">
+                        <shared-file-input
+                            [acceptedExtensions]="['.jpg', '.png', '.jpeg']"
+                            placeholder="Subir foto">
+                        </shared-file-input>
+                    </div>
+                </div>
+                <div class="input">
+                    <h5>Presencial</h5>
+                    <shared-checkbox-input>
+                    </shared-checkbox-input>
+                </div>
+            </div>
+        </div>
+        <div class="options">
+            <shared-button
+                text="Editar actividad"
+                link="/viewCalendar">
+            </shared-button>
+        </div>
+</div>

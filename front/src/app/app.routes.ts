@@ -9,6 +9,10 @@ import { EditTeacherPageComponent } from './guide-teacher/pages/edit-teacher-pag
 import { ViewStudentsPageComponent } from './students/pages/view-students-page/view-students-page.component';
 import { AddStudentPageComponent } from './students/pages/add-student-page/add-student-page.component';
 import { EditStudentPageComponent } from './students/pages/edit-student-page/edit-student-page.component';
+import { ViewCalendarPageComponent } from './planification/pages/view-calendar-page/view-calendar-page.component';
+import { ViewActivityPageComponent } from './planification/pages/view-activity-page/view-activity-page.component';
+import { AddActivityPageComponent } from './planification/pages/add-activity-page/add-activity-page.component';
+import { EditActivityPageComponent } from './planification/pages/edit-activity-page/edit-activity-page.component';
 
 export const routes: Routes = [
   {
@@ -49,6 +53,22 @@ export const routes: Routes = [
   },
   {
     path: 'editStudent',
-    component: EditStudentPageComponent
+    component: EditStudentPageComponent,
+  },
+  {	
+    path: 'viewCalendar',
+    component: ViewCalendarPageComponent
+  },
+  {
+    path: 'viewActivity',
+    component: ViewActivityPageComponent
+  },
+  {
+    path: 'addActivity',
+    component: AddActivityPageComponent
+  },
+  {
+    path: 'editActivity',
+    component: EditActivityPageComponent
   }
 ];
