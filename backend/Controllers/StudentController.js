@@ -161,6 +161,8 @@ const deleteStudent = async (req, res) => {
     }
 }
 
+// Obtener estudiantes de un campus en específico por medio 
+// del id del campus.
 
 const getStudentsByCampus = async (req, res) => {
     try {

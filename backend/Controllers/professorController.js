@@ -284,6 +284,28 @@ const deleteProfessor = async (req, res) => {
 }
 
 
+// Obtener profesores de un campus en específico por medio 
+// del id del campus.
+
+const getProfessorByCampus = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Buscar todos los profesores que tienen el ID del campus en su campo 'campus'
+        const professor = await Professor.find({ campus: id });
+
+        if (!professor || professor.length === 0) {
+            return res.status(404).json({ error: 'No professor found in this campus' });
+        }
+
+        return res.status(200).json({ professor });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 
-module.exports = {registerProfessor, getAllProfessor, getProfessor, editAccount, login, deleteProfessor}
+
+module.exports = {registerProfessor, getAllProfessor, getProfessor, 
+    editAccount, login, deleteProfessor, getProfessorByCampus}

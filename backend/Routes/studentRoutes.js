@@ -6,7 +6,7 @@ const router = express.Router();
 router.post('/register-student',  registerStudent);
 router.get('/all-student', getAllStudent);
 router.get('/getStudent/:id', getStudent);
-router.get('/getStudentByCampus/:id', getStudentsByCampus)
+router.get('/getStudentByCampus/:id', getStudentsByCampus);
 router.delete('/delete-student/:id', deleteStudent);
 
 

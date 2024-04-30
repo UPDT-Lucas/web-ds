@@ -11,7 +11,10 @@ const ProfessorScheme = new Schema({
     firstSurname: String,
     secondSurname: String,
     email: String, 
-    campus: String,
+    campus: {
+        type: Schema.Types.ObjectId,
+        ref: 'Campus'
+    },
     password: String,
     cellPhone: String,
     officePhone: String,

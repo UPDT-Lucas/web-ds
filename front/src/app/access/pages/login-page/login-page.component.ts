@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../services/AuthService';
+
 
 @Component({
   selector: 'app-login-page',
@@ -9,11 +11,20 @@ import { RouterModule } from '@angular/router';
   imports: [
     InputComponent,
     ButtonComponent,
-    RouterModule
+    RouterModule, 
+    //AuthService
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
 })
 export class LoginPageComponent {
-  constructor(router: RouterModule) {}
+  constructor(router: RouterModule, private mongo: AuthService) {}
+
+  addProfessor(){
+    this.mongo.registerProfessor()
+    
+  }
 }
+
+
+
