@@ -8,7 +8,7 @@ async function connectDb ({ host, port, dbName }){
   const uri = "mongodb+srv://proyecto_diseno:MLdmnzq3DcLU7Jqw@cluster0.cj7hwee.mongodb.net/proyecto_diseno";
 
     
-    await mongoose.connect(uri, { useNewUrlParser: true })
+    await mongoose.connect(uri, { useNewUrlParser: true})
 }
 
 module.exports = connectDb

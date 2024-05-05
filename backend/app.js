@@ -1,6 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const cors = require('cors');
+
+// Permitir conexión a la base de datos
+app.use(cors());
 
 // Middleware para parsear el cuerpo de las solicitudes como JSON
 app.use(express.json());
