@@ -26,7 +26,7 @@ export class AuthService {
       "carnet": "2019089068"}
       
     const url = `${this.apiUrl}/register-student`; 
-    const formData = new FormData();
+    //const formData = new FormData();
 
     const httpOption = {
        headers: new HttpHeaders({

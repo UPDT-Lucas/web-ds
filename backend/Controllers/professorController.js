@@ -2,7 +2,9 @@ const Professor = require('../Models/Professor');
 const {validateProfessor} = require('../Utils/professorValidator');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-const { hashPassword, comparePassword } = require('../Utils/authUtils');
+const JWT = require('jsonwebtoken');
+const { hashPassword, comparePassword, generateOTP, checkToken } = require('../Utils/authUtils');
+const {sendEmail, forgotPasswordTemplate, verificationLinkTemplate} = require('../Utils/emailUtils')
 
 
 /*
@@ -49,6 +51,7 @@ const registerProfessor = async (req, res) => {
         }
 
         const hashed = await hashPassword(result.data.password);
+        const verificationToken = crypto.randomBytes(20).toString('hex');
 
         const newProfessor = Professor({
             username: result.data.username,
@@ -59,6 +62,10 @@ const registerProfessor = async (req, res) => {
             email: result.data.email,
             campus: result.data.campus,
             password: hashed,
+            security:{
+                resetPasswordOTP: undefined,
+                emailVerificationToken: verificationToken,
+            },
             cellPhone: result.data.cellPhone,
             officePhone: result.data.officePhone,
             isCordinator: result.data.isCordinator,  
@@ -72,6 +79,8 @@ const registerProfessor = async (req, res) => {
         }
 
         await Professor.create(newProfessor);
+
+        sendVerificationEmail(result.data.email, verificationToken, verificationLinkTemplate);
 
         return res.status(201).json({ message: 'Professor created' }); //code 201: created
     } catch (error) {
@@ -259,7 +268,7 @@ const deleteProfessor = async (req, res) => {
         const professor = await Professor.findById(id);
 
         if (!professor) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: 'Professor not found' });
         }
 
         // Verificar si la contraseña proporcionada coincide con la contraseña almacenada para el profesor
@@ -272,7 +281,7 @@ const deleteProfessor = async (req, res) => {
 
         // Eliminar la foto del profesor si existe
         if (professor.photo) {
-            const photoAddress = './storage/users/' + professor.photo.substring(28);
+            const photoAddress = './storage/professor/' + professor.photo.substring(28);
             deletePhoto(photoAddress);
         }
 
@@ -305,7 +314,147 @@ const getProfessorByCampus = async (req, res) => {
     }
 };
 
+/* 
+Permite enviar un correo electronico a un usuario para que pueda recuperar su contraseña
+toma 2 parametros, req y res (request y response respectivamente). res sirve tanto como 
+parametro de entrada como valor de retorno
+*/
+
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        // check data here. can't trust the FE
+        // validate all REQUIRED fields are present
+        if (!email) {
+            return res.status(400).json({ error: 'Se requiere de un correo electrónico' }); //code 400: bad request
+        }
+        // check if the professor exists
+        const professor = await Professor.findOne({ email: email })
+        if (!professor) {
+            return res.status(404).json({ error: 'No se encontró la dirección de correo electrónico' });
+        }
+        // generate an otp here
+        const otp = generateOTP();
+
+        // update the professor's otp
+        //const result = await Professor.updateOne({ _id: id }, { 'security.resetPasswordOtp': otp });
+        professor.security.resetPasswordOtp = otp;
+        await professor.save();
+
+
+        // generate a token
+        const token = JWT.sign({
+            id: professor._id
+        },
+            process.env.ACCESS_TOKEN_SEQUENCE,
+            { expiresIn: '15m' }
+        );
+
+        const subject = 'Reset password';
+        const template = forgotPasswordTemplate(otp);
+        sendEmail(email, subject, " ", template);
+
+        res.cookie("resetToken", token, {
+            httpOnly: true,
+            sameSite: 'lax',
+            maxAge: 1000 * 60 * 15
+        }  
+        );
+        return res.status(200).json({ message: `Código enviado a: ${professor.email}`, otp: otp }); //code 200: OK
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+/*
+Verifica que el OTP (One-time password) enviado por el usuario sea el correcto
+toma 2 parametros, req y res (request y response respectivamente). res sirve tanto como parametro de entrada como valor de retorno
+*/
+
+const verifyOtp = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const { otp } = req.body;
+        const { confirmation } = req.body;
+
+        if (!otp) {
+            return res.status(400).json({ error: 'Se requiere del código' }); //code 400: bad request
+        }
+
+        const professor = await Professor.findOne({ email: email });
+        if (!professor) {
+            return res.status(404).json({ error: 'No se encontró al profesor' });
+        }
+
+        if (otp.toString() !== confirmation.toString()) {
+            return res.status(401).json({ error: 'Código equivocado' });
+        }
+        professor.security.resetPasswordOtp = undefined;
+        professor.save();
+        return res.status(200).json({ message: 'Código verificado con éxito' }); //code 200: OK
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+/*  
+Permite reiniciar la contraseña de un usuario
+toma 2 parametros, req y res (request y response respectivamente). res sirve tanto como parametro de entrada como valor de retorno
+*/
+
+const resetPassword = async (req, res) => {
+    try {
+        const { newPassword, confirmPassword } = req.body;
+        const { email } = req.body;
+
+        if (!newPassword || !confirmPassword) {
+            return res.status(400).json({ error: 'Por favor, llene todos los campos.' }); //code 400: bad request
+        }
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({ error: 'Las contraseñas no coinciden.' }); //code 400: bad request
+        }
+
+
+        const professor = await Professor.findOne({ email: email });
+        if (!professor) {
+            return res.status(404).json({ error: 'No se encontró el usuario.' }); //code 404: not found
+        }
+
+        const hashed = await hashPassword(newPassword);
+        await Professor.findOneAndUpdate({ email: email }, { password: hashed });
+        return res.status(200).json({ message: 'Su contraseña ha sido actualizada correctamente' }); //code 200: OK
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+/*
+Utilidad que crea un metodo de abstracion para enviar correos electronicos
+Funciona como una plantilla
+*/
+const sendVerificationEmail = (email, verificationToken, verificationLinkTemplate) => {
+    try {
+        const verificationLink = `http://localhost:3000/verify-email?token=${verificationToken}`;
+        const subject = 'Verify your Project email';
+        const text = `Click on this link to verify your email: ${verificationLink}`;
+        const template = verificationLinkTemplate(verificationLink);
+        sendEmail(email, subject, text, template);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 module.exports = {registerProfessor, getAllProfessor, getProfessor, 
-    editAccount, login, deleteProfessor, getProfessorByCampus}
+    editAccount, login, deleteProfessor, getProfessorByCampus, 
+    forgotPassword, verifyOtp, resetPassword, sendVerificationEmail}

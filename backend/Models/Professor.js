@@ -16,6 +16,10 @@ const ProfessorScheme = new Schema({
         ref: 'Campus'
     },
     password: String,
+    security:{
+        resetPasswordOtp: String,
+        emailVerificationToken: String,
+    },
     cellPhone: String,
     officePhone: String,
     photo: String, 
@@ -28,6 +32,10 @@ const ProfessorScheme = new Schema({
 ProfessorScheme.methods.setPhoto = function setPhoto (photo){
     const { host, port } = appConfig
     this.photo = `${host}:${port}/public/${photo}`
+}
+
+ProfessorScheme.methods.setPasswordOtp = function setPasswordOtp(otp){
+    this.security.resetPasswordOTP = otp;
 }
 
 const Professor = mongoose.model('Professor', ProfessorScheme);
