@@ -10,6 +10,8 @@ import { ViewCalendarPageComponent } from './planification/pages/view-calendar-p
 import { ViewActivityPageComponent } from './planification/pages/view-activity-page/view-activity-page.component';
 import { AddActivityPageComponent } from './planification/pages/add-activity-page/add-activity-page.component';
 import { EditActivityPageComponent } from './planification/pages/edit-activity-page/edit-activity-page.component';
+import { MailPageComponent } from './access/pages/mail-page/mail-page.component';
+import { OptPageComponent } from './access/pages/otp-page/otp-page.component';
 
 export const routes: Routes = [
   {
@@ -26,7 +28,20 @@ export const routes: Routes = [
   },
   {
     path: 'changePassword',
-    component: ChangePasswordPageComponent
+    children: [
+      {
+        path: 'addMail',
+        component: MailPageComponent
+      },
+      {
+        path: 'addOtp',
+        component: OptPageComponent
+      },
+      {
+        path: 'confirmation',
+        component: ChangePasswordPageComponent
+      }
+    ]
   },
   {
     path: 'viewProfile',
