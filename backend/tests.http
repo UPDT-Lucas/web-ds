@@ -1,0 +1,147 @@
+
+### register a professor
+POST http://localhost:3000/register-professor HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "joseph12345",
+  "firstName": "Ariana",
+  "secondName": "Vanessa",
+  "firstSurname": "Alvarado",
+  "secondSurname": "Molina",
+  "email": "joseph330330@gmail.com",
+  "campus": "663057863ee524ad51bd5b0f",
+  "password": "123456",
+  "cellPhone": "85987067",
+  "officePhone": "22487411",
+  "photo": null,
+  "isCordinator": "true"
+}
+
+
+### forgot password
+POST http://localhost:3000/forgot-password HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "joseph330330@gmail.com"
+}
+
+
+### verifyOTP
+POST http://localhost:3000/verify-otp HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "joseph330330@gmail.com",
+  "otp": "1680",
+  "confirmation": "1680"
+}
+
+### reset password
+POST http://localhost:3000/reset-password HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "arianaam335@gmail.com",
+  "newPassword": "holahola",
+  "confirmPassword": "holahola"
+}
+
+
+### professor by campus
+GET http://localhost:3000/getProfessorByCampus/663057863ee524ad51bd5b0f HTTP/1.1
+Content-Type: application/json
+
+### valid user
+POST http://localhost:3000/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "alexander335@gmail.com",
+  "password": "123456"
+}
+
+
+
+
+### get all professor
+GET http://localhost:3000/all-professor HTTP/1.1
+Content-Type: application/json
+
+
+### get professor with id
+GET http://localhost:3000/getProfessor/662de689b6364c7363b899fa HTTP/1.1
+Content-Type: application/json
+
+
+### edit professor with id
+PUT http://localhost:3000/editAccount/662de689b6364c7363b899fa HTTP/1.1
+Content-Type: application/json
+
+{
+  "isCordinator": "true"
+}
+
+
+### delete professor 
+DELETE  http://localhost:3000/delete-professor/662dcb5c0219e75c9e0e5b68 HTTP/1.1
+Content-Type: application/json
+
+
+### register a student
+POST http://localhost:3000/register-student HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName": "Emmna",
+  "secondName": "Doe",
+  "firstSurname": "Smith",
+  "secondSurname": "Johnson",
+  "email": "emman@example.com",
+  "campus": "6630576f3ee524ad51bd5b09",
+  "cellPhone": "22478963",
+  "carnet": "2019089068"
+}
+
+
+### get all student
+GET http://localhost:3000/all-student HTTP/1.1
+Content-Type: application/json
+
+
+### get student with id
+GET http://localhost:3000/getStudent/66304a457505efd0b4f45482 HTTP/1.1
+Content-Type: application/json
+
+
+### delete student 
+DELETE  http://localhost:3000/delete-student/663049ff7505efd0b4f4547f HTTP/1.1
+Content-Type: application/json
+
+
+
+
+### register campus
+POST http://localhost:3000/register-campus HTTP/1.1
+Content-Type: application/json
+
+{
+  "campusName": "Limón"
+}
+
+
+### get all campus
+GET http://localhost:3000/all-campus HTTP/1.1
+Content-Type: application/json
+
+
+### get campus with id
+GET http://localhost:3000/getCampus/6630576f3ee524ad51bd5b09 HTTP/1.1
+Content-Type: application/json
+
+
+### get students by campus id
+GET http://localhost:3000/getStudentByCampus/6630576f3ee524ad51bd5b09 HTTP/1.1
+Content-Type: application/json
+
