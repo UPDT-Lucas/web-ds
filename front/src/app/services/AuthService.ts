@@ -3,8 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Student } from '../interfaces/student.interface'
 import { S } from '@fullcalendar/core/internal-common';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +26,7 @@ export class AuthService {
       "carnet": "2019089068"}
       
     const url = `${this.apiUrl}/register-student`; 
-    //const formData = new FormData();
+    const formData = new FormData();
 
     const httpOption = {
        headers: new HttpHeaders({
@@ -36,17 +34,6 @@ export class AuthService {
        }) 
     }
     console.log(student)
-    this.http.post<Student>(url, student, httpOption)
-    .pipe(
-      catchError((error) => {
-        console.error('POST request failed:', error);
-        return throwError(error);
-      })
-    )
-    .subscribe((response) => {
-      console.log('POST request successful:', response);
-      // Handle success
-    });
     return this.http.post<Student>(url, student, httpOption);
   }
  
