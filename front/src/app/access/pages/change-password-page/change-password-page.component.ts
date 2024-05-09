@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-password-page',
@@ -15,5 +15,15 @@ import { RouterModule } from '@angular/router';
 })
 export class ChangePasswordPageComponent {
 
-  constructor(router: RouterModule) {}
+  password: string = ""
+  confirmPassword: string = ""
+
+  constructor(private router: Router) {}
+
+
+  getInput(){
+    console.log(this.password)
+    console.log(this.confirmPassword)
+    this.router.navigate(["login"])
+  }
 }

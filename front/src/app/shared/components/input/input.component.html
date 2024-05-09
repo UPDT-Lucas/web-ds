@@ -1,1 +1,6 @@
-<input type="text" [placeholder]="placeholder" class="custom-input">
+<input 
+    type="text" 
+    [placeholder]="placeholder"
+    [ngModel]="entry"
+    (ngModelChange)="onInputChange($event)" 
+    class="custom-input">

@@ -12,13 +12,16 @@
           <h2>
             Correo electrónico
           </h2>
-          <shared-input placeholder="Ingresar correo">
+          <shared-input 
+            placeholder="Ingresar correo"
+            [(entry)]="mail">
           </shared-input>
         </div>
       </div>
   
       <shared-button 
         text="Enviar código"
+        (click)="getInput()"
         link="/changePassword/addOtp">
       </shared-button>
   
