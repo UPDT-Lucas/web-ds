@@ -1,8 +1,7 @@
-require('dotenv').config(); // Importa y carga las variables de entorno desde el archivo .env
-
+require('dotenv').config(); 
 const { appConfig, dbConfig } = require('./config');
 const app = require('./app');
-const MongoConnection = require('./db/class_db'); // Importa la clase MongoConnection
+const MongoConnection = require('./db/class_db'); 
 
 async function initApp(appConfig, dbConfig) {
     try {
