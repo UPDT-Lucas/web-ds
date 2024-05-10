@@ -1,10 +1,10 @@
 require('dotenv').config()
+const express = require('express');
 const {appConfig, dbConfig} = require('./config');
 const connectDb = require('./db/mongodb')
 
 
 const app = require('./app')
-
 
 async function initApp (appConfig, dbConfig) {
     try{

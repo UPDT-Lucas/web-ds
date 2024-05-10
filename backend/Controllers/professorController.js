@@ -373,34 +373,41 @@ const forgotPassword = async (req, res) => {
 Verifica que el OTP (One-time password) enviado por el usuario sea el correcto
 toma 2 parametros, req y res (request y response respectivamente). res sirve tanto como parametro de entrada como valor de retorno
 */
-
 const verifyOtp = async (req, res) => {
     try {
-        const { email } = req.body;
-        const { otp } = req.body;
-        const { confirmation } = req.body;
+        const { id } = req.params; // Obtén el ID del profesor de los parámetros de la URL
+        const { otp, confirmation } = req.body;
 
+        // Verifica si se proporcionó el código OTP
         if (!otp) {
-            return res.status(400).json({ error: 'Se requiere del código' }); //code 400: bad request
+            return res.status(400).json({ error: 'Se requiere del código' }); // Código 400: Solicitud incorrecta
         }
 
-        const professor = await Professor.findOne({ email: email });
+        // Busca al profesor por su ID
+        const professor = await Professor.findById(id);
         if (!professor) {
-            return res.status(404).json({ error: 'No se encontró al profesor' });
+            return res.status(404).json({ error: 'No se encontró al profesor' }); // Código 404: No encontrado
         }
 
+        // Verifica si el código OTP coincide con la confirmación
         if (otp.toString() !== confirmation.toString()) {
-            return res.status(401).json({ error: 'Código equivocado' });
+            return res.status(401).json({ error: 'Código equivocado' }); // Código 401: No autorizado
         }
+
+        // Elimina el código OTP una vez que se ha verificado correctamente
         professor.security.resetPasswordOtp = undefined;
-        professor.save();
-        return res.status(200).json({ message: 'Código verificado con éxito' }); //code 200: OK
+        await professor.save();
+
+        // Responde con un mensaje de éxito
+        return res.status(200).json({ message: 'Código verificado con éxito' }); // Código 200: OK
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error' }); // Código 500: Error interno del servidor
     }
 }
+
+
 
 
 /*  
@@ -411,31 +418,40 @@ toma 2 parametros, req y res (request y response respectivamente). res sirve tan
 const resetPassword = async (req, res) => {
     try {
         const { newPassword, confirmPassword } = req.body;
-        const { email } = req.body;
+        const { id } = req.params; // Obtén el ID del profesor de los parámetros de la URL
 
+        // Verifica que se proporcionen tanto la nueva contraseña como la confirmación
         if (!newPassword || !confirmPassword) {
-            return res.status(400).json({ error: 'Por favor, llene todos los campos.' }); //code 400: bad request
+            return res.status(400).json({ error: 'Por favor, llene todos los campos.' }); // Código 400: Solicitud incorrecta
         }
 
+        // Verifica que las contraseñas coincidan
         if (newPassword !== confirmPassword) {
-            return res.status(400).json({ error: 'Las contraseñas no coinciden.' }); //code 400: bad request
+            return res.status(400).json({ error: 'Las contraseñas no coinciden.' }); // Código 400: Solicitud incorrecta
         }
 
-
-        const professor = await Professor.findOne({ email: email });
+        // Busca al profesor por su ID
+        const professor = await Professor.findById(id);
         if (!professor) {
-            return res.status(404).json({ error: 'No se encontró el usuario.' }); //code 404: not found
+            return res.status(404).json({ error: 'No se encontró el usuario.' }); // Código 404: No encontrado
         }
 
-        const hashed = await hashPassword(newPassword);
-        await Professor.findOneAndUpdate({ email: email }, { password: hashed });
-        return res.status(200).json({ message: 'Su contraseña ha sido actualizada correctamente' }); //code 200: OK
+        // Hashea la nueva contraseña
+        const hashedPassword = await hashPassword(newPassword);
+
+        // Actualiza la contraseña del profesor
+        professor.password = hashedPassword;
+        await professor.save();
+
+        // Responde con un mensaje de éxito
+        return res.status(200).json({ message: 'Su contraseña ha sido actualizada correctamente' }); // Código 200: OK
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error' }); // Código 500: Error interno del servidor
     }
 }
+
 
 /*
 Utilidad que crea un metodo de abstracion para enviar correos electronicos

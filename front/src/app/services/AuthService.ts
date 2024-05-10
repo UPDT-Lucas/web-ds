@@ -36,5 +36,9 @@ export class AuthService {
     console.log(student)
     return this.http.post<Student>(url, student, httpOption);
   }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`/api/forgot-password`, {"email": email});
+  } 
  
 }
