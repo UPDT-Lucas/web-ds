@@ -52,7 +52,7 @@
             <div class="row">
                 <div class="input">
                     <h5>Foto Actual</h5>
-                    <img src="assets/images/saludMental.jpg" alt="">
+                    <img [src]="filename" alt="">
                 </div>
             </div>
             <div class="row">
@@ -60,6 +60,7 @@
                     <h5>Foto</h5>
                     <div class="file-input-container">
                         <shared-file-input
+                            (fileSelected)="getFile($event)"
                             [acceptedExtensions]="['.jpg', '.png', '.jpeg']"
                             placeholder="Subir foto">
                         </shared-file-input>
@@ -75,7 +76,7 @@
         <div class="options">
             <shared-button
                 text="Editar actividad"
-                link="/viewCalendar">
+                (click)="getData()">
             </shared-button>
         </div>
 </div>
