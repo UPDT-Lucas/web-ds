@@ -12,21 +12,25 @@
           <h2>
             Código seguridad
           </h2>
-          <shared-input placeholder="Código">
+          <shared-input 
+            placeholder="Código"
+            [(entry)]="code">
           </shared-input>
         </div>
         <div class="each-input">
           <h2>
             Confirmar código seguridad
           </h2>
-          <shared-input placeholder="Confirmar código">
+          <shared-input 
+            placeholder="Confirmar código"
+            [(entry)]="confirmationCode">
           </shared-input>
         </div>
       </div>
   
       <shared-button 
         text="Modificar contraseña"
-        link="/changePassword/confirmation">
+        (click)="getInput()">
       </shared-button>
   
     </div>

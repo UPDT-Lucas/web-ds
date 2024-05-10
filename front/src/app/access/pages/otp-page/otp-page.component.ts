@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-otp-page',
@@ -14,7 +14,15 @@ import { RouterModule } from '@angular/router';
   styleUrl: './otp-page.component.css'
 })
 export class OptPageComponent {
-  
-  constructor(router: RouterModule) {}
 
+  code: string = ""
+  confirmationCode: string = ""
+  
+  constructor(private router: Router) {}
+
+  getInput(){
+    console.log(this.code)
+    console.log(this.confirmationCode)
+    this.router.navigate(["changePassword/confirmation"])
+  }
 }

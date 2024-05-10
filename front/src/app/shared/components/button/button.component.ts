@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'shared-button',
@@ -18,7 +18,12 @@ export class ButtonComponent {
 
   @Input()
   bordered: boolean = false;
-
   
-  constructor(router: RouterModule){}
+  constructor(private router: Router){}
+
+  redirect(){
+    if(this.link){
+      this.router.navigate([this.link])
+    }
+  }
 }

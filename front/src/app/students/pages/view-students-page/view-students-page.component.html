@@ -3,7 +3,7 @@
     <div class="container">
         <div class="content-fixer">
             <div class="top-table">
-                <h2>Miembros del equipo</h2>
+                <h2>Lista de estudiantes</h2>
                 <shared-button text="Filtros" [bordered]="true">
                 </shared-button>
             </div>
@@ -13,27 +13,31 @@
                     ['Rol', 'text'],
                     ['Nombre', 'text'], 
                     ['Correo', 'text'], 
-                    ['Código', 'span'], 
+                    ['Carné', 'text'],
+                    ['Sede', 'span'], 
                     ['Acciones', 'icon']]"
                 [data]
-                    ="[[
-                    ['Profesor'], 
-                    ['Ericka Solano'],
-                    ['ericka@gmail.com'],
+                    ="[
+                    [
+                    ['Estudiante'], 
+                    ['Joseph Gómez'],
+                    ['joseph@gmail.com'],
+                    ['2022086764'],
                     ['CA-00', '#3372d6'],
                     [['delete', ''],
-                    ['edit', '/editTeacher'],
-                    ['exit_to_app', ''] 
-                    ]],
+                    ['edit', '/editStudent']] 
+                    ],
                     
                     [
-                    ['Profesor'],
-                    ['Mauricio Avilés'],
-                    ['mauricio@gmail.com'],
+                    ['Estudiante'],
+                    ['Juan Perez'],
+                    ['juan@gmail.com'],
+                    ['2012421442'],
                     ['SJ-00', '#d68d33'],
                     [['delete', ''],
-                    ['edit', '/editTeacher'],
-                    ['exit_to_app', '']]]]">
+                    ['edit', '/editStudent']] 
+                    ]
+                    ]">
             </app-table>
             <div class="pagination clickable">
                 <i class="material-icons">arrow_back_ios</i>
@@ -41,12 +45,12 @@
             </div>
             <div class="bottom-table">
                 <shared-button 
-                    text="Ver estudiantes" 
-                    link="/viewStudents">
+                    text="Descargar estudiantes" 
+                    link="''">
                 </shared-button>
                 <shared-button 
-                    text="Agregar profesor" 
-                    link="/addTeacher">
+                    text="Agregar estudiante" 
+                    link="/addStudent">
                 </shared-button>
             </div>
         </div>

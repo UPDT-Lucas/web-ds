@@ -4,6 +4,8 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { RouterModule } from '@angular/router';
 import { CommunicationService } from '../../../services/communication.service';
 import {Router} from "@angular/router";
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-mail-page',
@@ -11,6 +13,7 @@ import {Router} from "@angular/router";
   imports: [
     ButtonComponent,
     InputComponent,
+    FormsModule
   ],
   templateUrl: './mail-page.component.html',
   styleUrl: './mail-page.component.css', 
@@ -52,4 +55,14 @@ export class MailPageComponent {
 
   ngOnInit(): void {
   }
+  mail: string = ""
+
+  constructor(private router: Router) {}
+
+  getInput(){
+    console.log(this.mail)
+    this.router.navigate(["changePassword/addOtp"])
+  }
+
+
 }

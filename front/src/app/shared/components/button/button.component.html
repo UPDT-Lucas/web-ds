@@ -1,11 +1,13 @@
 @if (bordered) {
-  <button class="bordered clickable"
-    [routerLink]="link">
+  <button 
+    class="bordered clickable"
+    (click)="redirect()">
     {{text}}
   </button>
 }@else {
-  <button class="clickable"
-    [routerLink]="link">
+  <button 
+    class="clickable"
+    (click)="redirect()">
     {{text}}
   </button>
 }
