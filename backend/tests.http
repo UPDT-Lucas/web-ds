@@ -4,12 +4,12 @@ POST http://localhost:3000/register-professor HTTP/1.1
 Content-Type: application/json
 
 {
-  "username": "joseph12345",
+  "username": "ariana335",
   "firstName": "Ariana",
   "secondName": "Vanessa",
   "firstSurname": "Alvarado",
   "secondSurname": "Molina",
-  "email": "joseph330330@gmail.com",
+  "email": "arianaam335@gmail.com",
   "campus": "663057863ee524ad51bd5b0f",
   "password": "123456",
   "cellPhone": "85987067",
@@ -24,30 +24,28 @@ POST http://localhost:3000/forgot-password HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "joseph330330@gmail.com"
+  "email": "arianaam335@gmail.com"
 }
 
 
 ### verifyOTP
-POST http://localhost:3000/verify-otp HTTP/1.1
+POST http://localhost:3000/verify-otp/6639ba315572d1ede237d907 HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "joseph330330@gmail.com",
-  "otp": "1680",
-  "confirmation": "1680"
+  
+  "otp": "3725",
+  "confirmation": "3725"
 }
 
 ### reset password
-POST http://localhost:3000/reset-password HTTP/1.1
+POST http://localhost:3000/reset-password/6639ba315572d1ede237d907 HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "arianaam335@gmail.com",
-  "newPassword": "holahola",
-  "confirmPassword": "holahola"
+  "newPassword": "123456",
+  "confirmPassword": "123456"
 }
-
 
 ### professor by campus
 GET http://localhost:3000/getProfessorByCampus/663057863ee524ad51bd5b0f HTTP/1.1
