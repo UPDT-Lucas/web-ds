@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const JWT = require('jsonwebtoken');
 const { hashPassword, comparePassword, generateOTP, checkToken } = require('../Utils/authUtils');
-const {sendEmail, forgotPasswordTemplate, verificationLinkTemplate} = require('../Utils/emailUtils')
+const {sendEmail, forgotPasswordTemplate} = require('../Utils/emailUtils')
 
 
 /*
@@ -80,7 +80,7 @@ const registerProfessor = async (req, res) => {
 
         await Professor.create(newProfessor);
 
-        sendVerificationEmail(result.data.email, verificationToken, verificationLinkTemplate);
+        sendVerificationEmail(result.data.email, verificationToken);
 
         return res.status(201).json({ message: 'Professor created' }); //code 201: created
     } catch (error) {
@@ -247,8 +247,14 @@ const login = async (req, res) => {
             return res.status(401).json({ error: 'Incorrect password' });
         }
 
-        // Devuelve un mensaje de éxito y los datos del usuario
-        return res.status(200).json({ message: 'Login successful', professor });
+        // Devuelve el nombre del usuario
+        return res.status(200).json({ 
+            message: 'Login successful', 
+            _id: professor._id,
+            firstName: professor.firstName,
+            firstSurname: professor.firstSurname,
+            secondSurname: professor.secondSurname
+        });
 
     } catch (error) {
         console.log(error);
@@ -360,7 +366,7 @@ const forgotPassword = async (req, res) => {
             maxAge: 1000 * 60 * 15
         }  
         );
-        return res.status(200).json({ message: `Código enviado a: ${professor.email}`, otp: otp }); //code 200: OK
+        return res.status(200).json({ message: `Código enviado a: ${professor.email}`, otp: otp, _id: professor._id,}); //code 200: OK
 
     } catch (error) {
         console.log(error);
@@ -375,37 +381,46 @@ toma 2 parametros, req y res (request y response respectivamente). res sirve tan
 */
 const verifyOtp = async (req, res) => {
     try {
-        const { id } = req.params; // Obtén el ID del profesor de los parámetros de la URL
+        const { id } = req.params;
         const { otp, confirmation } = req.body;
 
-        // Verifica si se proporcionó el código OTP
-        if (!otp) {
-            return res.status(400).json({ error: 'Se requiere del código' }); // Código 400: Solicitud incorrecta
+        // Verifica si se proporcionó el código OTP y la confirmación
+        if (!otp || !confirmation) {
+            return res.status(400).json({ error: 'Se requieren el código OTP y la confirmación' });
         }
 
         // Busca al profesor por su ID
         const professor = await Professor.findById(id);
         if (!professor) {
-            return res.status(404).json({ error: 'No se encontró al profesor' }); // Código 404: No encontrado
+            return res.status(404).json({ error: 'Profesor no encontrado' });
         }
 
-        // Verifica si el código OTP coincide con la confirmación
-        if (otp.toString() !== confirmation.toString()) {
-            return res.status(401).json({ error: 'Código equivocado' }); // Código 401: No autorizado
+        // Verifica si el código OTP coincide con la confirmación proporcionada por el usuario
+        if (otp !== confirmation) {
+            return res.status(401).json({ error: 'El código OTP y la confirmación no coinciden' });
         }
+
+        // Verifica si el código OTP coincide con el generado y enviado al correo electrónico del usuario
+        if (otp !== professor.security.resetPasswordOtp) {
+            return res.status(401).json({ error: 'Código OTP incorrecto' });
+        }
+
+        // Aquí puedes verificar si el OTP ha expirado según tus requisitos
 
         // Elimina el código OTP una vez que se ha verificado correctamente
         professor.security.resetPasswordOtp = undefined;
         await professor.save();
 
         // Responde con un mensaje de éxito
-        return res.status(200).json({ message: 'Código verificado con éxito' }); // Código 200: OK
+        return res.status(200).json({ message: 'Código OTP y confirmación verificados con éxito' });
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Internal server error' }); // Código 500: Error interno del servidor
+        return res.status(500).json({ error: 'Error interno del servidor' });
     }
 }
+
+
 
 
 
@@ -457,12 +472,12 @@ const resetPassword = async (req, res) => {
 Utilidad que crea un metodo de abstracion para enviar correos electronicos
 Funciona como una plantilla
 */
-const sendVerificationEmail = (email, verificationToken, verificationLinkTemplate) => {
+const sendVerificationEmail = (email, verificationToken) => {
     try {
         const verificationLink = `http://localhost:3000/verify-email?token=${verificationToken}`;
         const subject = 'Verify your Project email';
         const text = `Click on this link to verify your email: ${verificationLink}`;
-        const template = verificationLinkTemplate(verificationLink);
+        //const template = verificationLinkTemplate(verificationLink);
         sendEmail(email, subject, text, template);
     } catch (error) {
         console.log(error);

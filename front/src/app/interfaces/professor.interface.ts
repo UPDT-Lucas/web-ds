@@ -1,18 +1,19 @@
 export interface Professor {
-    username: String;
-    firstName: String;
-    secondName?: String;
-    firstSurname: String;
-    secondSurname: String;
-    email: String;
-    campus: String;
-    password: String;
-    security: {
-        resetPasswordOtp: String;
-        emailVerificationToken: String;
-    };
-    cellPhone: String;
-    officePhone?: String;
-    photo?: String;
-    isCordinator: Boolean;
+    account: Account;
+}
+
+export interface Account {
+    name:        Name;
+    username:    string;
+    email:       string;
+    campus:      string;
+    cellPhone:   string;
+    officePhone: string;
+}
+
+export interface Name {
+    firstName:     string;
+    secondName:    string;
+    firstSurname:  string;
+    secondSurname: string;
 }

@@ -33,16 +33,12 @@ export class MailPageComponent {
     if (this.email !== '') {
       this.CS.forgotPassword(this.email).subscribe(
         (res) => {
-  
-          if (res.message) {
-            //alert(res.message);
-            window.location.href = '/changePassword/addOtp'; 
-          } else if (res.error) {
-            //alert(res.error);
+          localStorage.setItem('-id', res._id);
+          console.log('id: ', res._id);
+          console.log(res);
+          if(!res.error){
+            this.routers.navigate(["changePassword/addOtp"])
           }
-        },
-        (error) => {
-          //alert(error.error.error);
         }
       );
     } else {
@@ -52,13 +48,10 @@ export class MailPageComponent {
   }
   
 
-  ngOnInit(): void {
-  }
-  mail: string = ""
 
   getInput(){
-    console.log(this.mail)
-    this.router.navigate(["changePassword/addOtp"])
+    console.log(this.email)
+    this.routers.navigate(["changePassword/addOtp"])
   }
 
 
