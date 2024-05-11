@@ -28,7 +28,7 @@ export class AddTeacherPageComponent {
   file!: any;
   selectedValue: string = "1";
 
-  id: string = "";
+  //id: string = "";
   firstName: string = '';
   secondName: string = '';
   firstSurname: string = '';
@@ -86,7 +86,7 @@ export class AddTeacherPageComponent {
 
 
   addProfessor() {
-    
+    const password = "tec-" + this.firstSurname + this.firstName
     const professorData = {
       //id: this.id,
       firstName: this.firstName,
@@ -94,10 +94,12 @@ export class AddTeacherPageComponent {
       firstSurname: this.firstSurname,
       secondSurname: this.secondSurname,
       email: this.email,
+      password,
       campus: this.campus,
       cellPhone: this.cellPhone,
       officePhone: this.officePhone,
       isCordinator: this.isCordinator
+      
     };
 
     console.log(professorData);
