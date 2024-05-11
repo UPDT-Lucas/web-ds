@@ -47,14 +47,14 @@ const registerProfessor = async (req, res) => {
         const exists = await Professor.findOne({ email: result.data.email });
     
         if (exists) {
-            return res.status(400).json({ error: 'An account with this username or email already exists!' }); //code 400: bad request
+            return res.status(400).json({ error: 'An account with email already exists!' }); //code 400: bad request
         }
 
         const hashed = await hashPassword(result.data.password);
         const verificationToken = crypto.randomBytes(20).toString('hex');
 
         const newProfessor = Professor({
-            username: result.data.username,
+            //username: result.data.username,
             firstName: result.data.firstName,
             secondName: result.data.secondName,
             firstSurname: result.data.firstSurname,
@@ -144,14 +144,14 @@ const getProfessor = async (req, res) => {
         }
 
         // Extraer propiedades del objeto professor
-        const { firstName, secondName, firstSurname, secondSurname, username, email, campus, cellPhone, officePhone, photo, isCordinator } = professor;
+        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, officePhone, photo, isCordinator } = professor;
 
         //const campusName = campus ? campus.campusName : null;
         
         // Construir el objeto de cuenta
         const account = {
             name: { firstName, secondName, firstSurname, secondSurname },
-            username,
+            //username,
             email,
             campus,
             cellPhone,

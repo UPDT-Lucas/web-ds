@@ -24,6 +24,14 @@ export class LoginPageComponent {
 
   email: string = '';
   password: string = '';
+  
+  //maskedPassword: string = '';
+  /*
+  handlePasswordInput(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.maskedPassword = target.value.replace(/./g, '*'); // Reemplazar cada carácter con un asterisco
+    this.password = target.value; // Almacenar el valor de la contraseña real
+  }*/
 
   getInputs(){
     this.CS.login(this.email, this.password).subscribe(

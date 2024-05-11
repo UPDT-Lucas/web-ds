@@ -13,7 +13,7 @@ export class CommunicationService {
   constructor(private http: HttpClient) {}
   private apiUrl = 'http://localhost:3000';
 
-
+  //----------------------------------------- PROFESSOR -----------------------------------------//
   login(email: string, pass: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, {"email": email, "password": pass});
   }
@@ -41,9 +41,17 @@ export class CommunicationService {
     const url = `${this.apiUrl}/editAccount/${id}`;
     return this.http.put<Professor>(url, professorData);
   }
+
+
+  registerProfessor(professorData: any): Observable<Professor> {
+    const url = `${this.apiUrl}/register-professor`; 
+    return this.http.post<Professor>(url, professorData); 
+  }
   
 
+  //----------------------------------------- STUDENT -----------------------------------------//
 
 
 }
 
+// router.post('/register-professor', registerProfessor);

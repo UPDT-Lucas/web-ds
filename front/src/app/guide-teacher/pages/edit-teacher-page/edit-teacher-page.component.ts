@@ -29,7 +29,7 @@ export class EditTeacherPageComponent {
   firstSurname: string = '';
   secondSurname: string = '';
   email: string = '';
-  campus: string = '663057863ee524ad51bd5b0f';
+  campus: string | null = null;
   cellPhone: string = '';
   officePhone: string = '';
   //isCordinator: string = '';
@@ -40,6 +40,7 @@ export class EditTeacherPageComponent {
 
   filename: string = "assets/images/teacher.png"
   file!: any;
+
   selectedValue: string = "1";
 
   getFile(file: any) {
