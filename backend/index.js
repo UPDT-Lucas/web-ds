@@ -2,6 +2,7 @@ require('dotenv').config();
 const { appConfig, dbConfig } = require('./config');
 const app = require('./app');
 const MongoConnection = require('./db/class_db'); 
+const Student = require('./Models/Student');
 
 async function initApp(appConfig, dbConfig) {
     try {
@@ -14,7 +15,9 @@ async function initApp(appConfig, dbConfig) {
         });
         
 
-        await mongoConnection.connect(); // Conecta a la base de datos
+        await mongoConnection.connect();
+
+      
 
         app.listen(appConfig.port, () => console.log(`Listening on http://localhost:${appConfig.port}`));
     } catch (error) {
