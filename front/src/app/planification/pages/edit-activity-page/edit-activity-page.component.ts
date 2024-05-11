@@ -23,6 +23,7 @@ export class EditActivityPageComponent {
   constructor(private s3ApiService: S3ApiService) {}
   filename: string = "assets/images/saludMental.jpg"
 
+  isPresential: boolean = true;
   file!: any;
 
   getFile(file: any) {
@@ -32,6 +33,7 @@ export class EditActivityPageComponent {
   getData(){
     const formData = new FormData();
     formData.append('file', this.file);
+
     this.s3ApiService.uploadFile(formData).subscribe(
      (res) => {
         this.updateImage(this.file.name)
@@ -44,7 +46,6 @@ export class EditActivityPageComponent {
     this.s3ApiService.getFileByName(filename).subscribe(
       res => {
         this.filename = res!.result
-        console.log(this.filename)
       }
     )
   }

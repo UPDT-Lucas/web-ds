@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'shared-checkbox-input',
@@ -9,4 +9,12 @@ import { Component } from '@angular/core';
 })
 export class CheckboxInputComponent {
 
+  @Input() isChecked: boolean = false;
+  @Output() isCheckedChange: 
+  EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  toggleCheckbox() {
+    this.isChecked = !this.isChecked;
+    this.isCheckedChange.emit(this.isChecked);
+  }
 }

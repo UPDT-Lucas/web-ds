@@ -60,17 +60,38 @@
                     <h5>Foto</h5>
                     <div class="file-input-container">
                         <shared-file-input
+                            (fileSelected)="getFile($event)"
                             [acceptedExtensions]="['.jpg', '.png', '.jpeg']"
-                            placeholder="Subir foto"
-                            (fileSelected)="getFile($event)">
+                            placeholder="Subir foto">
                         </shared-file-input>
                     </div>
                 </div>
                 <div class="input">
-                    <h5>Presencial</h5>
-                    <shared-checkbox-input>
+                    <h5>Afiche</h5>
+                    <div class="file-input-container">
+                        <shared-file-input
+                            (fileSelected)="getFile($event)"
+                            [acceptedExtensions]="['.jpg', '.png', '.jpeg', '.pdf']"
+                            placeholder="Subir afiche">
+                        </shared-file-input>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input">
+                    <h5>Remota</h5>
+                    <shared-checkbox-input
+                        [(isChecked)]="isPresential">
                     </shared-checkbox-input>
                 </div>
+                @if(!isPresential){
+                    <div class="input">
+                        <h5>Enlace</h5>
+                        <shared-input
+                            placeholder="linkreunion.com">
+                        </shared-input>
+                    </div>
+                }
             </div>
         </div>
         <div class="options">

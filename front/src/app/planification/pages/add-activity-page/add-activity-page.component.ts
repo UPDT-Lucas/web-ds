@@ -22,7 +22,7 @@ import { S3ApiService } from '../../../s3-api.service';
 export class AddActivityPageComponent {
   constructor(private s3ApiService: S3ApiService) {}
   filename: string = "assets/images/activityHolder.jpg"
-
+  isPresential: boolean = true;
   file!: any;
 
   getFile(file: any) {

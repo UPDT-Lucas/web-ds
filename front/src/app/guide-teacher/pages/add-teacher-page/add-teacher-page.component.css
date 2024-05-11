@@ -13,6 +13,15 @@
     box-sizing: border-box;
 }
 
+.custom-select {
+    border-radius: 10px;
+    height: 30px;
+    width: 100%;
+    padding-left: 0.5rem;
+    border: 1px solid gray;
+    box-sizing: border-box;
+  }
+
 .name-info,
 .contact-info,
 .extra-info {

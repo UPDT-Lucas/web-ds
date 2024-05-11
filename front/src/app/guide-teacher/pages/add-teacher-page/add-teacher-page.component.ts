@@ -24,6 +24,7 @@ export class AddTeacherPageComponent {
   filename: string = "assets/images/profileHolder.png"
   
   file!: any;
+  selectedValue: string = "1";
 
   getFile(file: any) {
     this.file = file;
@@ -47,5 +48,12 @@ export class AddTeacherPageComponent {
         console.log(this.filename)
       }
     )
+  }
+
+  OnSelectChange(event: any) {
+    if(event !== null){
+      this.selectedValue = event.target.value
+      console.log(this.selectedValue)
+    }
   }
 }

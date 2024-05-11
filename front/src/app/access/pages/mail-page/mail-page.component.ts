@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class MailPageComponent {
 
-  constructor(private router: RouterModule, private CS:CommunicationService,  private routers:Router) {}
+  constructor(private router: Router, private CS:CommunicationService,  private routers:Router) {}
 
   updateEmail(event: any) {
     const value = (event.target as HTMLInputElement).value;
