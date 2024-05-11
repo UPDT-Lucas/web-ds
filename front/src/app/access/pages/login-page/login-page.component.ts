@@ -3,7 +3,7 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { Router, RouterModule } from '@angular/router';
 import { S3ApiService } from '../../../s3-api.service';
-import { AuthService } from '../../../services/AuthService';
+import { CommunicationService } from '../../../services/communication.service';
 
 
 @Component({
@@ -19,45 +19,40 @@ import { AuthService } from '../../../services/AuthService';
 })
 export class LoginPageComponent {
 
-  mail: string = ""
-  password: string = ""
 
-  constructor(private router: Router, private fileService: S3ApiService, private mongo: AuthService,) {}
+  constructor(private router: Router, private fileService: S3ApiService, private CS: CommunicationService,) {}
 
-  // getFiles(){
-  //   this.fileService.getFiles().subscribe(
-  //     files => {
-  //       console.log(files)
-  //     }
-  //   )
-  // }
-
-  // getFileByName(){
-  //   this.fileService.getFileByName("openheimer.jpg").subscribe(
-  //     file => {
-  //       console.log(file)
-  //     }
-  //   )
-  // }
-
-  // uploadFile(){
-  //   this.fileService.uploadFile("D:\\Minuta001").subscribe(
-  //     file => {
-  //       console.log(file)
-  //     })
-  // }
+  email: string = '';
+  password: string = '';
 
   getInputs(){
-    console.log(this.mail)
-    console.log(this.password)
-    this.router.navigate([""])
+    this.CS.login(this.email, this.password).subscribe(
+      (res) => {
+        if(res.message === 'Login successful'){
+
+        localStorage.setItem('-id', res._id);
+        localStorage.setItem('firstName', res.firstName);
+        localStorage.setItem('firstSurname', res.firstSurname);
+        localStorage.setItem('secondSurname', res.secondSurname);
+
+        console.log('id: ', res._id);
+        console.log('Nombre:', res.firstName);
+        console.log('Primer Apellido:', res.firstSurname);
+        console.log('Segundo Apellido:', res.secondSurname);
+
+         window.location.href = '/';
+        }else{
+          console.log('Error: ', res.error);
+        }
+      },
+      (error) => {
+        console.error('Error: ', error);
+      }
+    )
   }
     
 
-  addProfessor(){
-    this.mongo.registerProfessor()
-    
-  }
+
 }
 
 

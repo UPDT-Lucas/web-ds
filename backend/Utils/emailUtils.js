@@ -3,13 +3,14 @@ const nodemailer = require('nodemailer');
 // plantilla para dar formato al correo
 // IN : link de verificacion
 // OUT: plantilla de correo con el link de verificacion
+/*
 const verificationLinkTemplate = (link) => {
     return `
         <h1>Verify your email</h1>
         <p>Click the link below to verify your email</p>
         <a href="${link}">Verify Email</a>
     `
-}
+}*/
 
 
 
@@ -62,4 +63,4 @@ const sendEmail = async (email, subject, text, template='') => {
     }
 }
 
-module.exports = {sendEmail, forgotPasswordTemplate, verificationLinkTemplate};
+module.exports = {sendEmail, forgotPasswordTemplate};
