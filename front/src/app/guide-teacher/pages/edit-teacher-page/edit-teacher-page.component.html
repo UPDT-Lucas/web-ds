@@ -67,6 +67,20 @@
                         <shared-input placeholder="86866868">
                         </shared-input>
                     </div>
+                    <div class="input">
+                        <h5>
+                            Campus 
+                        </h5>
+                        <select id="campus"
+                        (change)="OnSelectChange($event)"
+                        class="custom-select">
+                        <option value="1"> SJ </option>
+                          <option value="2"> CA </option>
+                          <option value="3"> AL </option>
+                          <option value="4"> LI </option>
+                          <option value="5"> SC </option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="extra-info">
@@ -98,7 +112,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+
             <div class="options">
                 <shared-button
                     text="Confirmar profesor"

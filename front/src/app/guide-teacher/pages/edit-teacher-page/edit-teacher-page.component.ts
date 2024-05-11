@@ -24,6 +24,7 @@ export class EditTeacherPageComponent {
 
   filename: string = "assets/images/teacher.png"
   file!: any;
+  selectedValue: string = "1";
 
   getFile(file: any) {
     this.file = file;
@@ -47,4 +48,12 @@ export class EditTeacherPageComponent {
       }
     )
   }
+
+  OnSelectChange(event: any) {
+    if(event !== null){
+      this.selectedValue = event.target.value
+      console.log(this.selectedValue)
+    }
+  }
+
 }
