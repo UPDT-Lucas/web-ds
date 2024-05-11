@@ -73,7 +73,7 @@
                 <div class="row">
                     <div class="input">
                         <h5>Foto Actual</h5>
-                        <img src="assets/images/profileHolder.png" alt="">
+                        <img [src]="filename" alt="">
                     </div>
                 </div>
                 <div class="row">
@@ -82,6 +82,7 @@
                         <div class="file-input-container">
                             <shared-file-input
                                 [acceptedExtensions]="['.jpg', '.png', '.jpeg']"
+                                (fileSelected)="getFile($event)"
                                 placeholder="Subir foto">
                             </shared-file-input>
                         </div>
@@ -100,7 +101,7 @@
             <div class="options">
                 <shared-button
                     text="Agregar profesor"
-                    link="/teamView">
+                    (click)="getData()">
                 </shared-button>
             </div>
         </div>
