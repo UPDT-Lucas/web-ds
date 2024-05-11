@@ -6,6 +6,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { CheckboxInputComponent } from '../../../shared/components/checkbox-input/checkbox-input.component';
 import { S3ApiService } from '../../../s3-api.service';
 import { CommunicationService } from '../../../services/communication.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-edit-teacher-page',
@@ -33,7 +34,7 @@ export class EditTeacherPageComponent {
   officePhone: string = '';
   //isCordinator: string = '';
 
-  constructor(private s3ApiService: S3ApiService, private CS: CommunicationService) {
+  constructor(private s3ApiService: S3ApiService, private CS: CommunicationService, private routers: Router) {
     this.id = localStorage.getItem('-id') || '';
   }
 
@@ -106,6 +107,7 @@ export class EditTeacherPageComponent {
     this.CS.editAccount(this.id, professorData).subscribe(
       response => {
         console.log('La información del profesor se ha actualizado con éxito:', response);
+        this.routers.navigate(["/viewProfile"])
         
       },
       error => {
