@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const JWT = require('jsonwebtoken');
 const { hashPassword, comparePassword, generateOTP, checkToken } = require('../Utils/authUtils');
 const {sendEmail, forgotPasswordTemplate} = require('../Utils/emailUtils')
+const Campus = require('./models/Campus');
 
 
 /*
@@ -146,12 +147,14 @@ const getProfessor = async (req, res) => {
         // Extraer propiedades del objeto professor
         const { firstName, secondName, firstSurname, secondSurname, username, email, campus, cellPhone, officePhone, photo } = professor;
 
+        const campusName = campus ? campus.campusName : null;
+
         // Construir el objeto de cuenta
         const account = {
             name: { firstName, secondName, firstSurname, secondSurname },
             username,
             email,
-            campus,
+            campus: campusName,
             cellPhone,
             officePhone,
             photo
