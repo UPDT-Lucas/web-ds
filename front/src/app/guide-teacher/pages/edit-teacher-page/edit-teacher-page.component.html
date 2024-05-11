@@ -13,14 +13,14 @@
                         <h5>
                             Primer Nombre
                         </h5>
-                        <shared-input placeholder="Ericka">
+                        <shared-input placeholder="Primer Nombre"[(entry)]="firstName">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Segundo Nombre
                         </h5>
-                        <shared-input placeholder="Ericka2">
+                        <shared-input placeholder="Segundo Nombre"[(entry)]="secondName">
                         </shared-input>
                     </div>
                 </div>
@@ -29,14 +29,14 @@
                         <h5>
                             Primer Apellido
                         </h5>
-                        <shared-input placeholder="Solano">
+                        <shared-input placeholder="Primer Apellido"[(entry)]="firstSurname">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Segundo Apellido
                         </h5>
-                        <shared-input placeholder="Fernández">
+                        <shared-input placeholder="Segundo Apellido"[(entry)]="secondSurname">
                         </shared-input>
                     </div>
                 </div>
@@ -48,14 +48,14 @@
                         <h5>
                             Correo
                         </h5>
-                        <shared-input placeholder="ersolano@itcr.ac.cr">
+                        <shared-input placeholder="Correo"[(entry)]="email">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Teléfono Oficina
                         </h5>
-                        <shared-input placeholder="22223333">
+                        <shared-input placeholder="Teléfono Oficina"[(entry)]="officePhone">
                         </shared-input>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                         <h5>
                             Teléfono Celular
                         </h5>
-                        <shared-input placeholder="86866868">
+                        <shared-input placeholder="Teléfono Celular"[(entry)]="cellPhone">
                         </shared-input>
                     </div>
                     <div class="input">
@@ -72,13 +72,13 @@
                             Campus 
                         </h5>
                         <select id="campus"
-                        (change)="OnSelectChange($event)"
+                        (change)="onCampusChange($event)"
                         class="custom-select">
-                        <option value="1"> SJ </option>
-                          <option value="2"> CA </option>
-                          <option value="3"> AL </option>
-                          <option value="4"> LI </option>
-                          <option value="5"> SC </option>
+                        <option value="663057863ee524ad51bd5b0f">San José</option>
+                            <option value="663057633ee524ad51bd5b05">Cartago</option>
+                            <option value="6630576f3ee524ad51bd5b09">Alajuela</option>
+                            <option value="6630578f3ee524ad51bd5b12">Limón</option>
+                            <option value="663057763ee524ad51bd5b0c">San Carlos</option>
                         </select>
                     </div>
                 </div>
@@ -107,7 +107,8 @@
                             Coordinador
                         </h5>
                         <div class="checkbox-container">
-                            <shared-checkbox-input>
+                            <shared-checkbox-input (change)="toggleIsCoordinator($event)">
+
                             </shared-checkbox-input>
                         </div>
                     </div>
@@ -116,7 +117,7 @@
             <div class="options">
                 <shared-button
                     text="Confirmar profesor"
-                    (click)="getData()">
+                    (click)="editTeacher()">
                 </shared-button>
             </div>
         </div>

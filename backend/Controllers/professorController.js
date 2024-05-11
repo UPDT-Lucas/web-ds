@@ -5,7 +5,6 @@ const crypto = require('crypto');
 const JWT = require('jsonwebtoken');
 const { hashPassword, comparePassword, generateOTP, checkToken } = require('../Utils/authUtils');
 const {sendEmail, forgotPasswordTemplate} = require('../Utils/emailUtils')
-const Campus = require('./models/Campus');
 
 
 /*
@@ -145,19 +144,19 @@ const getProfessor = async (req, res) => {
         }
 
         // Extraer propiedades del objeto professor
-        const { firstName, secondName, firstSurname, secondSurname, username, email, campus, cellPhone, officePhone, photo } = professor;
+        const { firstName, secondName, firstSurname, secondSurname, username, email, campus, cellPhone, officePhone, photo, isCordinator } = professor;
 
-        const campusName = campus ? campus.campusName : null;
-
+        //const campusName = campus ? campus.campusName : null;
+        
         // Construir el objeto de cuenta
         const account = {
             name: { firstName, secondName, firstSurname, secondSurname },
             username,
             email,
-            campus: campusName,
+            campus,
             cellPhone,
             officePhone,
-            photo
+            isCordinator
         };
 
         return res.status(200).json({ account });
@@ -171,11 +170,11 @@ const getProfessor = async (req, res) => {
 // function to edit the account of a professor, comes from a PUT request
 const editAccount = async (req, res) => {
     try{
-        const { id } = req.professor;
-        const { file } = req;
+        const { id } = req.params;
+        //const { file } = req;
 
         let updates = {
-            username: req.body.username,
+            //username: req.body.username,
             firstName: req.body.firstName,
             secondName: req.body.secondName,
             firstSurname: req.body.firstSurname,
@@ -184,12 +183,14 @@ const editAccount = async (req, res) => {
             campus: req.body.campus,
             //password: hashed,
             cellPhone: req.body.cellPhone,
-            officePhone: req.body.officePhone
+            officePhone: req.body.officePhone,
+            isCordinator: req.body.isCordinator
+            
         }
 
-        if (file){
+        /*if (file){
             updates.photo = `http://localhost:3000/public/${file.filename}`;
-        }
+        }*/
 
         //check if the user exists
         const professor = await Professor.findOneAndUpdate({_id: id}, updates, {new: true})

@@ -5,6 +5,7 @@ import { FileInputComponent } from '../../../shared/components/file-input/file-i
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { CheckboxInputComponent } from '../../../shared/components/checkbox-input/checkbox-input.component';
 import { S3ApiService } from '../../../s3-api.service';
+import { CommunicationService } from '../../../services/communication.service';
 
 @Component({
   selector: 'app-edit-teacher-page',
@@ -20,7 +21,21 @@ import { S3ApiService } from '../../../s3-api.service';
   styleUrl: './edit-teacher-page.component.css'
 })
 export class EditTeacherPageComponent {
-  constructor(private s3ApiService: S3ApiService) {}
+
+  id: string = "";
+  firstName: string = '';
+  secondName: string = '';
+  firstSurname: string = '';
+  secondSurname: string = '';
+  email: string = '';
+  campus: string = '663057863ee524ad51bd5b0f';
+  cellPhone: string = '';
+  officePhone: string = '';
+  //isCordinator: string = '';
+
+  constructor(private s3ApiService: S3ApiService, private CS: CommunicationService) {
+    this.id = localStorage.getItem('-id') || '';
+  }
 
   filename: string = "assets/images/teacher.png"
   file!: any;
@@ -56,4 +71,47 @@ export class EditTeacherPageComponent {
     }
   }
 
+  isCordinator: boolean = false;
+
+  toggleIsCoordinator(event: any) {
+    this.isCordinator = event.target.checked;
+  }
+
+
+  onCampusChange(event: any) {
+    const selectedValue = event?.target?.value;
+    if (selectedValue) {
+      this.campus = selectedValue;
+    }
+  }  
+  
+
+  editTeacher() {
+    
+    const professorData = {
+      //id: this.id,
+      firstName: this.firstName,
+      secondName: this.secondName,
+      firstSurname: this.firstSurname,
+      secondSurname: this.secondSurname,
+      email: this.email,
+      campus: this.campus,
+      cellPhone: this.cellPhone,
+      officePhone: this.officePhone,
+      isCordinator: this.isCordinator
+    };
+
+    console.log(professorData);
+
+    this.CS.editAccount(this.id, professorData).subscribe(
+      response => {
+        console.log('La información del profesor se ha actualizado con éxito:', response);
+        
+      },
+      error => {
+        console.error('Error al actualizar la información del profesor:', error);
+      }
+    );
+  }
 }
+

@@ -1,6 +1,6 @@
 
-### register a professor
-POST http://localhost:3000/register-professor HTTP/1.1
+### edit a professor
+PUT http://localhost:3000/editAccount/663ed781e5e3c80cb5b29b9a HTTP/1.1
 Content-Type: application/json
 
 {
@@ -15,9 +15,18 @@ Content-Type: application/json
   "cellPhone": "62166331",
   "officePhone": "22487411",
   "photo": null,
-  "isCordinator": "true"
+  "isCordinator": false
 }
 
+
+
+###edit account
+PUT http://localhost:3000/editAccount/663ed781e5e3c80cb5b29b9a
+Content-Type: application/json
+
+{
+  "secondName": "José"
+}
 
 
 ### forgot password
@@ -71,6 +80,7 @@ Content-Type: application/json
 ### get professor with id
 GET http://localhost:3000/getProfessor/6639ba315572d1ede237d907 HTTP/1.1
 Content-Type: application/json
+
 
 
 ### edit professor with id

@@ -37,5 +37,13 @@ export class CommunicationService {
     return this.http.get<Professor>(url);
   }
 
+  editAccount(id: string, professorData: any): Observable<Professor> {
+    const url = `${this.apiUrl}/editAccount/${id}`;
+    return this.http.put<Professor>(url, professorData);
+  }
+  
+
+
+
 }
 
