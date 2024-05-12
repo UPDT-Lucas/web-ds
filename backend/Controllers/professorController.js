@@ -47,14 +47,14 @@ const registerProfessor = async (req, res) => {
         const exists = await Professor.findOne({ email: result.data.email });
     
         if (exists) {
-            return res.status(400).json({ error: 'An account with this username or email already exists!' }); //code 400: bad request
+            return res.status(400).json({ error: 'An account with email already exists!' }); //code 400: bad request
         }
 
         const hashed = await hashPassword(result.data.password);
         const verificationToken = crypto.randomBytes(20).toString('hex');
 
         const newProfessor = Professor({
-            username: result.data.username,
+            //username: result.data.username,
             firstName: result.data.firstName,
             secondName: result.data.secondName,
             firstSurname: result.data.firstSurname,
@@ -144,17 +144,19 @@ const getProfessor = async (req, res) => {
         }
 
         // Extraer propiedades del objeto professor
-        const { firstName, secondName, firstSurname, secondSurname, username, email, campus, cellPhone, officePhone, photo } = professor;
+        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, officePhone, photo, isCordinator } = professor;
 
+        //const campusName = campus ? campus.campusName : null;
+        
         // Construir el objeto de cuenta
         const account = {
             name: { firstName, secondName, firstSurname, secondSurname },
-            username,
+            //username,
             email,
             campus,
             cellPhone,
             officePhone,
-            photo
+            isCordinator
         };
 
         return res.status(200).json({ account });
@@ -168,11 +170,11 @@ const getProfessor = async (req, res) => {
 // function to edit the account of a professor, comes from a PUT request
 const editAccount = async (req, res) => {
     try{
-        const { id } = req.professor;
-        const { file } = req;
+        const { id } = req.params;
+        //const { file } = req;
 
         let updates = {
-            username: req.body.username,
+            //username: req.body.username,
             firstName: req.body.firstName,
             secondName: req.body.secondName,
             firstSurname: req.body.firstSurname,
@@ -181,12 +183,14 @@ const editAccount = async (req, res) => {
             campus: req.body.campus,
             //password: hashed,
             cellPhone: req.body.cellPhone,
-            officePhone: req.body.officePhone
+            officePhone: req.body.officePhone,
+            isCordinator: req.body.isCordinator
+            
         }
 
-        if (file){
+        /*if (file){
             updates.photo = `http://localhost:3000/public/${file.filename}`;
-        }
+        }*/
 
         //check if the user exists
         const professor = await Professor.findOneAndUpdate({_id: id}, updates, {new: true})

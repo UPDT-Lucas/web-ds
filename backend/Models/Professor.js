@@ -5,7 +5,7 @@ const ObjectId = Schema.Types.ObjectId
 const { appConfig } = require('../config')
 
 const ProfessorScheme = new Schema({
-    username: String, 
+    //username: String, 
     firstName: String,
     secondName: String,
     firstSurname: String,

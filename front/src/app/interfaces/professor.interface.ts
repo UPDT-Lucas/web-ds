@@ -9,6 +9,7 @@ export interface Account {
     campus:      string;
     cellPhone:   string;
     officePhone: string;
+    isCordinator: boolean;
 }
 
 export interface Name {

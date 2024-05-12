@@ -1,7 +1,6 @@
 const z = require('zod');
 
 const ProfessorScheme = z.object({
-    username: z.string().min(3),
     firstName: z.string().min(3),
     secondName: z.string().optional(),
     firstSurname: z.string(),

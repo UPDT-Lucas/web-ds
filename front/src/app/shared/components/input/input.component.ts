@@ -23,4 +23,6 @@ export class InputComponent {
   onInputChange(value: string) {
     this.entryChange.emit(value)
   }
+
+  @Input() inputType: string = '';
 }
