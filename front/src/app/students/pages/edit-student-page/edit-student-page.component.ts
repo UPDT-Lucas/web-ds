@@ -17,5 +17,20 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
   styleUrl: './edit-student-page.component.css'
 })
 export class EditStudentPageComponent {
+  selectedValue: string = ""
+  email: string = ""
+  phone: string = ""
+  idCard: string = ""
+  firstName: string = ""
+  secondName: string = ""
+  firstSurname: string = ""
+  secondSurname: string = ""
 
+
+  OnSelectChange(event: any) {
+    if(event !== null){
+      this.selectedValue = event.target.value
+      console.log(this.selectedValue)
+    }
+  }
 }
