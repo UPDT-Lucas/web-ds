@@ -8,36 +8,8 @@
                 </shared-button>
             </div>
             <app-table
-                [headers]
-                    ="[
-                    ['Rol', 'text'],
-                    ['Nombre', 'text'], 
-                    ['Correo', 'text'], 
-                    ['Carné', 'text'],
-                    ['Sede', 'span'], 
-                    ['Acciones', 'icon']]"
-                [data]
-                    ="[
-                    [
-                    ['Estudiante'], 
-                    ['Joseph Gómez'],
-                    ['joseph@gmail.com'],
-                    ['2022086764'],
-                    ['CA-00', '#3372d6'],
-                    [['delete', ''],
-                    ['edit', '/editStudent']] 
-                    ],
-                    
-                    [
-                    ['Estudiante'],
-                    ['Juan Perez'],
-                    ['juan@gmail.com'],
-                    ['2012421442'],
-                    ['SJ-00', '#d68d33'],
-                    [['delete', ''],
-                    ['edit', '/editStudent']] 
-                    ]
-                    ]">
+            [headers]="headers"
+            [data]="data">
             </app-table>
             <div class="pagination clickable">
                 <i class="material-icons">arrow_back_ios</i>
