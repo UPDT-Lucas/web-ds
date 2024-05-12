@@ -44,12 +44,24 @@ export class ViewStudentsPageComponent {
   downloadExcel(): void {
     const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const EXCEL_EXTENSION = '.xlsx';
-    const data = [
-      { name: 'John Doe', age: 25 },
-      { name: 'Jane Doe', age: 24 },
-      { name: 'Jim Doe', age: 23 }
-    ];
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const columns = ['Rol', 'Nombre', 'Correo', 'Carné', 'Campus'];
+    const data = this.data;
+    const jsonData = data.map(row => {
+    return columns.reduce((obj: { [key: string]: any }, column, index) => {
+      if(column == "Campus"){
+        obj[column] = row[index][0];
+      } else {
+      obj[column] = row[index];
+      }
+    return obj;
+      }, {});
+    });
+    console.log(jsonData)
+    const formattedData = [];
+    for (let index in jsonData){
+      formattedData.push(jsonData[index])
+    }
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
     const workbook: XLSX.WorkBook = { 
       Sheets: { 
         'Students': worksheet 
