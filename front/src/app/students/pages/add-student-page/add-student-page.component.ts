@@ -18,4 +18,38 @@ import { FileInputComponent } from '../../../shared/components/file-input/file-i
 })
 export class AddStudentPageComponent {
 
+  
+/*
+  addProfessor() {
+    const password = "tec-" + this.firstSurname + this.firstName
+    const professorData = {
+      //id: this.id,
+      firstName: this.firstName,
+      secondName: this.secondName,
+      firstSurname: this.firstSurname,
+      secondSurname: this.secondSurname,
+      email: this.email,
+      password,
+      campus: this.campus,
+      cellPhone: this.cellPhone,
+      officePhone: this.officePhone,
+      isCordinator: this.isCordinator
+      
+    };
+
+    console.log(professorData);
+
+    this.CS.registerProfessor(professorData).subscribe(
+      response => {
+        console.log('La información del profesor se ha agregado con éxito:', response);
+        this.routers.navigate(["/teamView"])
+        
+      },
+      error => {
+        console.error('Error al agregar la información del profesor:', error);
+      }
+    );
+  }
+
+*/
 }
