@@ -7,8 +7,8 @@ import { File } from './interfaces/file.interface';
   providedIn: 'root'
 })
 export class S3ApiService {
-  // private baseURL = 'https://ds-backend.up.railway.app';
   private baseURL = 'https://ds-backend.up.railway.app';
+  
 
   constructor(private httpClient: HttpClient) {}
 
@@ -29,4 +29,6 @@ export class S3ApiService {
   uploadFile(formData: FormData): Observable<any | undefined> {
     return this.httpClient.post<File>(`${this.baseURL}/files`, formData)
   }
+
+  
 }

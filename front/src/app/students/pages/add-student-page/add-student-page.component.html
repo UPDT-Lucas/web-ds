@@ -8,31 +8,63 @@
                 <div class="row">
                     <div class="input">
                         <h5>
-                            Nombre
+                            Primer Nombre
                         </h5>
-                        <shared-input placeholder="Nombre">
+                        <shared-input
+                            [(entry)]="firstName"
+                            placeholder="Primer Nombre">
+                        </shared-input>
+                    </div>
+                    <div class="input">
+                        <h5>
+                            Segundo Nombre
+                        </h5>
+                        <shared-input 
+                            [(entry)]="secondName"
+                            placeholder="Segundo Nombre">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Primer Apellido
                         </h5>
-                        <shared-input placeholder="Primer Apellido">
+                        <shared-input
+                            [(entry)]="firstSurname" 
+                            placeholder="Primer Apellido">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
-                            Primer Apellido
+                            Segundo Apellido
                         </h5>
-                        <shared-input placeholder="Segundo Apellido">
+                        <shared-input 
+                            [(entry)]="secondSurname"
+                            placeholder="Segundo Apellido">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Carné
                         </h5>
-                        <shared-input placeholder="Número de Carné">
+                        <shared-input
+                            [(entry)]="carnet" 
+                            placeholder="Número de Carné">
                         </shared-input>
+                    </div>
+                    <div class="input">
+                        <h5>
+                            Campus 
+                        </h5>
+                        <select 
+                            id="campus"
+                            (change)="onCampusChange($event)"
+                            class="custom-select">
+                            <option value="663057863ee524ad51bd5b0f">San José</option>
+                            <option value="663057633ee524ad51bd5b05">Cartago</option>
+                            <option value="6630576f3ee524ad51bd5b09">Alajuela</option>
+                            <option value="6630578f3ee524ad51bd5b12">Limón</option>
+                            <option value="663057763ee524ad51bd5b0c">San Carlos</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -43,14 +75,18 @@
                         <h5>
                             Correo
                         </h5>
-                        <shared-input placeholder="Correo">
+                        <shared-input
+                            [(entry)]="email" 
+                            placeholder="Correo">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Teléfono Celular
                         </h5>
-                        <shared-input placeholder="Teléfono Celular">
+                        <shared-input
+                            [(entry)]="cellPhone" 
+                            placeholder="Teléfono Celular">
                         </shared-input>
                     </div>
                 </div>
@@ -58,7 +94,7 @@
             <div class="options">
                 <shared-button
                     text="Agregar estudiante"
-                    link="/viewStudents">
+                    (click)="addStudent()">
                 </shared-button>
             </div>
         </div>

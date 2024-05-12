@@ -1,10 +1,10 @@
 export interface Student{
-    firstName: String,
-    secondName: String,
-    firstSurname: String,
-    secondSurname: String,
-    email: String, 
-    campus: String,
-    cellPhone: String,
-    carnet: String }
+    firstName: string,
+    secondName: string,
+    firstSurname: string,
+    secondSurname: string,
+    email: string, 
+    campus: string,
+    cellPhone: string,
+    carnet: string }
 

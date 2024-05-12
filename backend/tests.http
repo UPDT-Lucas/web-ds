@@ -4,17 +4,17 @@ POST http://localhost:3000/register-professor HTTP/1.1
 Content-Type: application/json
 
 {
-  "firstName": "Ariana",
-  "secondName": "Vanessa",
-  "firstSurname": "Alvarado",
-  "secondSurname": "Molina",
-  "email": "arianaam335@gmail.com",
+  "firstName": "Joseph",
+  "secondName": "Josué",
+  "firstSurname": "Gómez",
+  "secondSurname": "González",
+  "email": "joseph@gmail.com",
   "campus": "663057863ee524ad51bd5b0f",
   "password": "123456",
-  "cellPhone": "85987067",
+  "cellPhone": "86319415",
   "officePhone": "22487411",
   "photo": null,
-  "isCordinator": true
+  "isCordinator": false
 }
 
 
