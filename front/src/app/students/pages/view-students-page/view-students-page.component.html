@@ -1,60 +1,66 @@
 <div class="flex-container">
-    <shared-header></shared-header>
-    <div class="container">
-        <div class="content-fixer">
-            <div class="top-table">
-                <h2>Lista de estudiantes</h2>
-                <shared-button text="Filtros" [bordered]="true">
-                </shared-button>
-            </div>
-            <app-table
-                [headers]
-                    ="[
-                    ['Rol', 'text'],
-                    ['Nombre', 'text'], 
-                    ['Correo', 'text'], 
-                    ['Carné', 'text'],
-                    ['Sede', 'span'], 
-                    ['Acciones', 'icon']]"
-                [data]
-                    ="[
-                    [
-                    ['Estudiante'], 
-                    ['Joseph Gómez'],
-                    ['joseph@gmail.com'],
-                    ['2022086764'],
-                    ['CA-00', '#3372d6'],
-                    [['delete', ''],
-                    ['edit', '/editStudent']] 
-                    ],
-                    
-                    [
-                    ['Estudiante'],
-                    ['Juan Perez'],
-                    ['juan@gmail.com'],
-                    ['2012421442'],
-                    ['SJ-00', '#d68d33'],
-                    [['delete', ''],
-                    ['edit', '/editStudent']] 
-                    ]
-                    ]">
-            </app-table>
-            <div class="pagination clickable">
-                <i class="material-icons">arrow_back_ios</i>
-                <i class="material-icons">arrow_forward_ios</i>
-            </div>
-            <div class="bottom-table">
-                <shared-button 
-                    text="Descargar estudiantes" 
-                    link="''">
-                </shared-button>
-                <shared-button 
-                    text="Agregar estudiante" 
-                    link="/addStudent">
-                </shared-button>
-            </div>
+  <shared-header></shared-header>
+  <div class="container">
+    <div class="content-fixer">
+      <div class="top-table">
+        <h2>Lista de estudiantes</h2>
+        <shared-button text="Filtros" [bordered]="true"> </shared-button>
+      </div>
+      <app-table
+        [headers]="[
+          ['Rol', 'text'],
+          ['Nombre', 'text'],
+          ['Correo', 'text'],
+          ['Carné', 'text'],
+          ['Sede', 'span'],
+          ['Acciones', 'icon']
+        ]"
+        [data]="[
+          [
+            ['Estudiante'],
+            ['Joseph Gómez'],
+            ['joseph@gmail.com'],
+            ['2022086764'],
+            ['CA-00', '#3372d6'],
+            [
+              ['delete', ''],
+              ['edit', '/editStudent']
+            ]
+          ],
+
+          [
+            ['Estudiante'],
+            ['Juan Perez'],
+            ['juan@gmail.com'],
+            ['2012421442'],
+            ['SJ-00', '#d68d33'],
+            [
+              ['delete', ''],
+              ['edit', '/editStudent']
+            ]
+          ]
+        ]"
+      >
+      </app-table>
+      <div class="pagination clickable">
+        <i class="material-icons">arrow_back_ios</i>
+        <i class="material-icons">arrow_forward_ios</i>
+      </div>
+      <div class="bottom-table">
+        <shared-button text="Descargar estudiantes" link="''" (click)="downloadExcel()"> </shared-button>
+        <shared-button text="Agregar estudiante" link="/addStudent">
+        </shared-button>
+        <div class="excel-upload">
+          <div class="file-input-container">
+            <shared-file-input
+              [acceptedExtensions]="['.xlsx', 'xls']"
+              placeholder="Cargar Excel de estudiantes"
+              (change)="uploadExcel($event)"
+            >
+            </shared-file-input>
+          </div>
         </div>
+      </div>
     </div>
-
-
+  </div>
 </div>
