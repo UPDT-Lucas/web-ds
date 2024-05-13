@@ -29,7 +29,7 @@ export class EditTeacherPageComponent {
   firstSurname: string = '';
   secondSurname: string = '';
   email: string = '';
-  campus: string | null = null;
+  campus: string = '663057863ee524ad51bd5b0f';
   cellPhone: string = '';
   officePhone: string = '';
   //isCordinator: string = '';
@@ -89,7 +89,7 @@ export class EditTeacherPageComponent {
   
 
   editTeacher() {
-    
+    this.getData();
     const professorData = {
       //id: this.id,
       firstName: this.firstName,

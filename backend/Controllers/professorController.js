@@ -62,6 +62,7 @@ const registerProfessor = async (req, res) => {
             email: result.data.email,
             campus: result.data.campus,
             password: hashed,
+            photo: result.data.photo,
             security:{
                 resetPasswordOTP: undefined,
                 emailVerificationToken: verificationToken,
@@ -73,10 +74,6 @@ const registerProfessor = async (req, res) => {
 
         //const fs = require('fs');
         // ...
-        if (file) {
-            const photo = file["filename"];
-            newProfessor.setPhoto(photo);
-        }
 
         await Professor.create(newProfessor);
 
@@ -181,6 +178,7 @@ const editAccount = async (req, res) => {
             secondSurname: req.body.secondSurname,
             email: req.body.email,
             campus: req.body.campus,
+            photo: req.body.photo,
             //password: hashed,
             cellPhone: req.body.cellPhone,
             officePhone: req.body.officePhone,

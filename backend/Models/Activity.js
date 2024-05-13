@@ -13,11 +13,24 @@ const ActivityScheme = new Schema({
     executionWeek: Number,      //Numero de semana de realización
     announcementDate: Date,    //Fecha de anuncio a la comunidad estudiantil
     reminderDates: [Date],    //Fechas de recordatorios
+    comments: [{                //Commentarios de los profesores
+        text: String,
+        author: {
+            type: Schema.Types.ObjectId,
+            ref: 'Professor'
+        },
+        replies: [{
+            text: String,
+            author: {
+                type: Schema.Types.ObjectId,
+                ref: 'Professor'
+            }
+        }]
+    }],
     isRemote: Boolean,
     virtualActivityLink: String,  
     activityPoster: String,   //Afiche jpg o pdf
     currentState: String,   //Planeada, notificada, realizada, cancelada
-
 },
 {collection: 'activities', timestamps: true});
 
