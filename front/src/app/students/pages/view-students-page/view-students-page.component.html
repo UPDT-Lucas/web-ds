@@ -1,32 +1,29 @@
 <div class="flex-container">
-    <shared-header></shared-header>
-    <div class="container">
-        <div class="content-fixer">
-            <div class="top-table">
-                <h2>Lista de estudiantes</h2>
-                <shared-button text="Filtros" [bordered]="true">
-                </shared-button>
-            </div>
-            <app-table
-            [headers]="headers"
-            [data]="data">
-            </app-table>
-            <div class="pagination clickable">
-                <i class="material-icons">arrow_back_ios</i>
-                <i class="material-icons">arrow_forward_ios</i>
-            </div>
-            <div class="bottom-table">
-                <shared-button 
-                    text="Descargar estudiantes" 
-                    link="''">
-                </shared-button>
-                <shared-button 
-                    text="Agregar estudiante" 
-                    link="/addStudent">
-                </shared-button>
-            </div>
-        </div>
+  <shared-header></shared-header>
+  <div class="container">
+    <div class="content-fixer">
+      <div class="top-table">
+        <h2>Lista de estudiantes</h2>
+        <shared-button text="Filtros" [bordered]="true"> </shared-button>
+      </div>
+      <app-table [headers]="headers" [data]="data"> </app-table>
+      <div class="pagination clickable">
+        <i class="material-icons">arrow_back_ios</i>
+        <i class="material-icons">arrow_forward_ios</i>
+      </div>
+      <div class="bottom-table">
+        <shared-button text="Descargar estudiantes" (click)="downloadExcel()"> </shared-button>
+        <shared-button text="Agregar estudiante" link="/addStudent">
+        </shared-button>
+        <div class="file-input-container">
+          <shared-file-input
+              [acceptedExtensions]="['.xls', '.xlsx']"
+              placeholder="Subir estudiantes"
+              (change)="uploadExcel($event)">
+          </shared-file-input>
+      </div>
+      </div>
     </div>
-
-
+  </div>
 </div>
+
