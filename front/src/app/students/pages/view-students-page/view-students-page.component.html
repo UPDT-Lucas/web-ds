@@ -15,6 +15,13 @@
         <shared-button text="Descargar estudiantes" (click)="downloadExcel()"> </shared-button>
         <shared-button text="Agregar estudiante" link="/addStudent">
         </shared-button>
+        <div class="file-input-container">
+          <shared-file-input
+              [acceptedExtensions]="['.xls', '.xlsx']"
+              placeholder="Subir estudiantes"
+              (change)="uploadExcel($event)">
+          </shared-file-input>
+      </div>
       </div>
     </div>
   </div>
