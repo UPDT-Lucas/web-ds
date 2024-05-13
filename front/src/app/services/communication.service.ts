@@ -5,6 +5,7 @@ import { Observable, throwError  } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Professor } from '../interfaces/professor.interface';
 import { Student } from '../interfaces/student.interface';
+import { Activity } from '../interfaces/activity.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +80,18 @@ export class CommunicationService {
   getAllStudent(): Observable<Student[]> {
     const url = `${this.apiUrl}/all-student`; 
     return this.http.get<Student[]>(url); 
+  }
+
+
+  //----------------------------------------- ACTIVITY -----------------------------------------//
+  getAllActivities(): Observable<Activity[]> {
+    const url = `${this.apiUrl}/all-activities`; 
+    return this.http.get<Activity[]>(url); 
+  }
+
+  getActivity(id: string): Observable<Activity> {
+    const url = `${this.apiUrl}/getActivity/${id}`; 
+    return this.http.get<Activity>(url); 
   }
 
 }

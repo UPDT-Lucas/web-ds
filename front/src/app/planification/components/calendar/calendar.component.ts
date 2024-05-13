@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid'
 import esLocale from '@fullcalendar/core/locales/es'
 import { Router } from '@angular/router';
+import { Activity } from '../../../interfaces/activity.interface';
+import { CommunicationService } from '../../../services/communication.service';
 
 @Component({
   selector: 'app-calendar',
@@ -15,8 +17,15 @@ import { Router } from '@angular/router';
   styleUrl: './calendar.component.css'
 })
 export class CalendarComponent {
+  
+  @Input() activities: any[] = [{ title: 'Meeting', start: new Date(2024,2,26,10,30), end: new Date(2024,2,28,10,30), id: '1' }];
+  calendarActivities: any = [];
 
-  constructor(private router: Router){}
+  constructor(private router: Router, private CS: CommunicationService){}
+
+  ngOnInit() {
+    console.log(this.activities)
+  }
 
   calendarOptions: CalendarOptions = {
     customButtons: {
@@ -35,10 +44,7 @@ export class CalendarComponent {
     plugins: [dayGridPlugin],
     initialView: 'dayGridWeek',
     hiddenDays: [0],
-    events: [
-      { title: 'Meeting', start: new Date(2024,2,26,10,30), end: new Date(2024,2,28,10,30), id: '1' },
-      { title: 'Meeting', start: new Date(2024,2,27,12,0), end: new Date(2024,2,27,14,0), id: '2' }
-    ],
+    events: this.activities,
     headerToolbar: {
       start: 'title',
       center: '',
@@ -50,7 +56,16 @@ export class CalendarComponent {
     }
   };
 
+  getCalendarActivities() {
+    let x = [{ title: 'Meeting', start: new Date(2024,2,26,10,30), end: new Date(2024,2,28,10,30), id: '1' },
+    { title: 'Meeting', start: new Date(2024,2,27,12,0), end: new Date(2024,2,27,14,0), id: '2' }]
+    console.log(x);
+    console.log(new Date(2024,2,27,12,0))
+    return this.calendarActivities;
+  }
+
+
   getEventDetails(eventId: string) {
-    this.router.navigate(['/viewActivity']);
+    this.router.navigate(['/viewActivity/'+eventId]);
   }
 }

@@ -8,10 +8,18 @@
             <div class="text-container">
                 <div class="text">
                     <h2>
+                        Estado de la Actividad
+                    </h2>
+                    <p>
+                        {{activity.currentState}}
+                    </p>
+                </div>
+                <div class="text">
+                    <h2>
                         Nombre de Actividad
                     </h2>
                     <p>
-                        Charla Salud Mental
+                        {{activity.activityName}}
                     </p>
                 </div>
                 <div class="text">
@@ -19,23 +27,70 @@
                         Tipo
                     </h2>
                     <p>
-                        Orientadora
+                        {{activity.typeOfActivity}}
                     </p>
                 </div>
                 <div class="text">
                     <h2>
-                        Días para Anuncio
+                        Fecha de anuncio
                     </h2>
                     <p>
-                        14
+                        {{prettyPrintDate(activity.announcementDate)}}
                     </p>
                 </div>
                 <div class="text">
                     <h2>
-                        Días para Recordatorio
+                        Fechas de recordatorio
                     </h2>
                     <p>
-                        3
+
+                        @for (reminder of activity.reminderDates; track $index) {
+                            {{prettyPrintDate(reminder)}} <br>
+                        }
+                    </p>
+                </div>
+                <div class="text">
+                    <h2>
+                        Responsables
+                    </h2>
+                    <p>
+                        @for (item of activity.responsibles; track $index) {
+                            {{item}} 
+                        }
+                    </p>
+                </div>
+                <div class="text">
+                    <h2>
+                        Fecha de realización
+                    </h2>
+                    <p>
+                        {{prettyPrintDate(activity.executionDate)}}
+                    </p>
+                </div>
+                <div class="text">
+                    <h2>
+                        @if (activity.isRemote === true) {
+                            Actividad remota
+                            <p><a [href]="activity.virtualActivityLink">Enlace a la reunión</a></p>
+                        } @else {
+                            Actividad presencial
+                        }
+                    </h2>
+                </div>
+                <div class="text">
+                    <h2>
+                        Afiche de la actividad
+                    </h2>
+                    <p>
+                        <a [href]="activity.activityPoster">Enlace al afiche</a>
+                    </p>
+                </div>
+                <div class="text">
+                    <h2>
+                        Semana en la que se realizará
+                    </h2>
+                    <p>
+                        {{activity.executionWeek}}
                     </p>
                 </div>
             </div>

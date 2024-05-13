@@ -23,13 +23,96 @@ const registerActivity = async (req, res) => {
         isRemote: req.body.isRemote,
         virtualActivityLink: req.body.virtualActivityLink,
         activityPoster: req.body.activityPoster,
-        currentState: req.body.currentState,
+        currentState: req.body.currentState
     });
 
     await newActivity.save();
-
-  } catch {
+    return res.status(200).json({ message: "Activity created" });
+  } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+const getAllActivities = async (req, res) => {
+  try {
+    const activities = await Activity.find();
+    return res.status(200).json({ activities });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const getActivity = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const activity = await Activity.findById(id);
+
+    if (!activity) {
+      return res.status(404).json({ error: "Activity not found" });
+    }
+
+    return res.status(200).json({ activity });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+const editActivity = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const activity = await Activity.findById(id);
+
+    if (!activity) {
+      return res.status(404).json({ error: "Activity not found" });
+    }
+
+    let updates = {
+        typeOfActivity: req.body.typeOfActivity,
+        activityName: req.body.activityName,
+        responsibles: req.body.responsibles,
+        executionDate: req.body.executionDate,
+        executionWeek: req.body.executionWeek,
+        announcementDate: req.body.announcementDate,
+        reminderDates: req.body.reminderDates,
+        comments: req.body.comments,
+        isRemote: req.body.isRemote,
+        virtualActivityLink: req.body.virtualActivityLink,
+        activityPoster: req.body.activityPoster,
+        currentState: req.body.currentState,
+    }
+
+    const updatedActivity = await Activity.findOneAndUpdate({_id: id}, updates, {new: true})
+
+    if(!updatedActivity){
+        return res.status(500).json({error: "Activity does not exist"})
+    }
+
+    return res.status(200).json({ message: "Activity updated" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+const deleteActivity = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const activity = await Activity.findById(id);
+
+    if (!activity) {
+      return res.status(404).json({ error: "Activity not found" });
+    }
+
+    await Activity.findByIdAndDelete(id);
+
+    return res.status(200).json({ message: "Activity deleted" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+module.exports = { registerActivity, getAllActivities, getActivity, editActivity, deleteActivity };

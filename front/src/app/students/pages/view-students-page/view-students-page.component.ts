@@ -90,6 +90,105 @@ export class ViewStudentsPageComponent {
     this.fileSaver.save(blobData, `students${EXCEL_EXTENSION}`); //FileName
   }
 
+  uploadExcel(event: any): void {
+    const file: File = event.target.files[0];
+    const fileReader = new FileReader();
+
+    fileReader.readAsBinaryString(file);
+    fileReader.onload = (e: any) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, { type: "binary" });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+      for (let index in jsonData) {
+        let student: Student = {
+          firstName: (jsonData[index] as any).firstName,
+          secondName: (jsonData[index] as any).secondName,
+          firstSurname: (jsonData[index] as any).firstSurname,
+          secondSurname: (jsonData[index] as any).secondSurname,
+          email: (jsonData[index] as any).email,
+          campus: this.getCampusId((jsonData[index] as any).campus) ?? "",
+          cellPhone: (jsonData[index] as any).cellPhone,
+          carnet: (jsonData[index] as any).carnet,
+        };
+
+        this.CS.registerStudent(student).subscribe(
+          (response) => {
+            console.log(
+              "La información del estudiante se ha agregado con éxito:",
+              response
+            );
+          },
+          (error) => {
+            console.error(
+              "Error al agregar la información del estudiante:",
+              error
+            );
+          }
+        );
+
+        if (!file) {
+          console.log("No file selected");
+        }
+      }
+    };
+  }
+
+  getExcelData(studentList: any) {
+    for (const index in studentList.students) {
+      const firstName = studentList.students[index].firstName;
+      const secondName = studentList.students[index].secondName;
+      const firstSurname = studentList.students[index].firstSurname;
+      const secondSurname = studentList.students[index].secondSurname;
+      const email = studentList.students[index].email;
+      const campus = this.CS.getCampusById(studentList.students[index].campus);
+      const cellPhone = studentList.students[index].cellPhone;
+      const carnet = studentList.students[index].carnet;
+      const studentData = [
+        firstName,
+        secondName,
+        firstSurname,
+        secondSurname,
+        email,
+        campus,
+        cellPhone,
+        carnet,
+      ];
+      this.excelData.push(studentData);
+    }
+  }
+  
+  getCampusId(campusName: string) {
+    const campusData = [
+      {
+        _id: { $oid: "663057633ee524ad51bd5b05" },
+        campusName: "Cartago",
+      },
+      {
+        _id: { $oid: "6630576f3ee524ad51bd5b09" },
+        campusName: "Alajuela",
+      },
+      {
+        _id: { $oid: "663057763ee524ad51bd5b0c" },
+        campusName: "San Carlos",
+      },
+      {
+        _id: { $oid: "663057863ee524ad51bd5b0f" },
+        campusName: "San José",
+      },
+      {
+        _id: { $oid: "6630578f3ee524ad51bd5b12" },
+        campusName: "Limón",
+      },
+    ];
+    const campus = campusData.find(
+      (campus) => campus.campusName === campusName
+    );
+    return campus ? campus._id.$oid : null;
+  }
+  
   getBadge(campus: string){
     if(campus == "San José"){
       return ["SJ", "#d68d33"]

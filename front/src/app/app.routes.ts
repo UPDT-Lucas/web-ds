@@ -75,7 +75,7 @@ export const routes: Routes = [
     component: ViewCalendarPageComponent
   },
   {
-    path: 'viewActivity',
+    path: 'viewActivity/:id',
     component: ViewActivityPageComponent
   },
   {
