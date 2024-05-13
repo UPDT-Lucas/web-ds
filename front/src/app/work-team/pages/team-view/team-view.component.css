@@ -96,4 +96,10 @@ table tr:last-child td:last-child {
     td, th {
         min-width: 200px;
     }
+
+    td a {
+        color: blue; 
+        text-decoration: underline; 
+        cursor: pointer; 
+    }
 }

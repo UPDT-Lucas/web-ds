@@ -46,7 +46,7 @@ export class ViewStudentsPageComponent {
     }else if(campus == "San Carlos"){
       return ["SC", "#ab60c2"]
     }else{
-      return ["LI", "43cb59"]
+      return ["LI", "#43cb59"]
     }
   }
 
