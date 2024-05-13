@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 // Rutas para el registro y consulta de profesores
-router.post('/register-professor', uploadPhoto('professor'), registerProfessor);
+router.post('/register-professor', registerProfessor);
 router.get('/all-professor', getAllProfessor);
 router.get('/getProfessor/:id', getProfessor);
 router.put('/editAccount/:id', editAccount);

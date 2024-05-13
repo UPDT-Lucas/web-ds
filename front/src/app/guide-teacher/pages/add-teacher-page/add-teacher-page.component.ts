@@ -6,7 +6,9 @@ import { CheckboxInputComponent } from '../../../shared/components/checkbox-inpu
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { S3ApiService } from '../../../s3-api.service';
 import { CommunicationService } from '../../../services/communication.service';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
+import { Professor } from '../../../interfaces/professor.interface';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-add-teacher-page',
@@ -22,49 +24,48 @@ import {Router} from "@angular/router";
   styleUrl: './add-teacher-page.component.css'
 })
 export class AddTeacherPageComponent {
-  constructor(private s3ApiService: S3ApiService, private CS: CommunicationService, private routers: Router) {}
-  filename: string = "assets/images/profileHolder.png"
-  
+  constructor(private s3ApiService: S3ApiService, private CS: CommunicationService, private router: Router) { }
+  // filename: string = "assets/images/profileHolder.png"
+  filename: string = ""
   file!: any;
   selectedValue: string = "1";
 
-  //id: string = "";
-  firstName: string = '';
-  secondName: string = '';
-  firstSurname: string = '';
-  secondSurname: string = '';
-  email: string = '';
-  campus: string | null = null;
-  cellPhone: string = '';
-  officePhone: string = '';
-  //isCordinator: string = '';
+  firstNameOnInput: string = '';
+  secondNameOnInput: string = '';
+  firstSurnameOnInput: string = '';
+  secondSurnameOnInput: string = '';
+  emailOnInput: string = '';
+  campusOnInput: string = '663057863ee524ad51bd5b0f';
+  cellPhoneOnInput: string = '';
+  officePhoneOnInput: string = '';
 
   getFile(file: any) {
     this.file = file;
   }
 
-  getData(){
-    const formData = new FormData();
-    formData.append('file', this.file);
-    this.s3ApiService.uploadFile(formData).subscribe(
-     (res) => {
-        this.updateImage(this.file.name)
-      }
-    )
-  }
+  // getData(){
+  //   if(this.file){
+  //     const formData = new FormData();
+  //     formData.append('file', this.file);
+  //     this.s3ApiService.uploadFile(formData).subscribe(
+  //      (res) => {
+  //         this.updateImage(this.file.name)
+  //       }
+  //     )
+  //   }
+  // }
 
-  
-  updateImage(filename: string){
-    this.s3ApiService.getFileByName(filename).subscribe(
-      res => {
-        this.filename = res!.result
-        console.log(this.filename)
-      }
-    )
-  }
+
+  // updateImage(filename: string){
+  //   this.s3ApiService.getFileByName(filename).subscribe(
+  //     res => {
+  //       this.filename = res!.result
+  //     }
+  //   )
+  // }
 
   OnSelectChange(event: any) {
-    if(event !== null){
+    if (event !== null) {
       this.selectedValue = event.target.value
       console.log(this.selectedValue)
     }
@@ -80,41 +81,104 @@ export class AddTeacherPageComponent {
   onCampusChange(event: any) {
     const selectedValue = event?.target?.value;
     if (selectedValue) {
-      this.campus = selectedValue;
+      this.campusOnInput = selectedValue;
     }
   }
 
 
   addProfessor() {
-    const password = "tec-" + this.firstSurname + this.firstName
+    const password = "tec-" + this.firstNameOnInput + this.secondNameOnInput;
+    this.getData(password);
+  }
+
+  getData(password: string) {
+    if (this.file) {
+      const formData = new FormData();
+      formData.append('file', this.file);
+      this.s3ApiService.uploadFile(formData).subscribe(
+        (res) => {
+          this.updateImage(this.file.name).subscribe(() => {
+            this.addProfessorAfterUpdate(password);
+          });
+        }
+      );
+    }
+  }
+
+  updateImage(filename: string) {
+    return this.s3ApiService.getFileByName(filename).pipe(
+      map(res => {
+        this.filename = res!.result;
+      })
+    );
+  }
+
+  addProfessorAfterUpdate(password: string) {
     const professorData = {
-      //id: this.id,
-      firstName: this.firstName,
-      secondName: this.secondName,
-      firstSurname: this.firstSurname,
-      secondSurname: this.secondSurname,
-      email: this.email,
+      firstName: this.firstNameOnInput,
+      secondName: this.secondNameOnInput,
+      firstSurname: this.firstSurnameOnInput,
+      secondSurname: this.secondSurnameOnInput,
+      email: this.emailOnInput,
+      cellPhone: this.cellPhoneOnInput,
+      officePhone: this.officePhoneOnInput,
+      campus: this.campusOnInput,
+      isCordinator: this.isCordinator,
+      photo: this.filename,
       password,
-      campus: this.campus,
-      cellPhone: this.cellPhone,
-      officePhone: this.officePhone,
-      isCordinator: this.isCordinator
-      
     };
 
-    console.log(professorData);
+    console.log(professorData)
 
     this.CS.registerProfessor(professorData).subscribe(
       response => {
         console.log('La información del profesor se ha agregado con éxito:', response);
-        this.routers.navigate(["/teamView"])
-        
+        this.router.navigate(["/teamView"])
+
       },
       error => {
         console.error('Error al agregar la información del profesor:', error);
       }
     );
+
+    // Call your service to add the professor here
   }
 
 
+  // addProfessor() {
+  //   const password = "tec-" + this.firstNameOnInput + this.secondNameOnInput
+  //   this.getData()
+  //   const professorData = {
+  //     firstName: this.firstNameOnInput,
+  //     secondName: this.secondNameOnInput,
+  //     firstSurname: this.firstSurnameOnInput,
+  //     secondSurname: this.secondSurnameOnInput,
+  //     email: this.emailOnInput,
+  //     cellPhone: this.cellPhoneOnInput,
+  //     officePhone: this.officePhoneOnInput,
+  //     campus: this.campusOnInput,
+  //     isCordinator: this.isCordinator, 
+  //     photo: this.filename,
+  //     password,      
+  //   };
+  //   console.log(professorData)
+
+  //   console.log("nombre es: ")
+  //   console.log(this.filename)
+  //   // this.CS.registerProfessor(professorData).subscribe(
+  //   //   response => {
+  //   //     console.log('La información del profesor se ha agregado con éxito:', response);
+  //   //     this.router.navigate(["/teamView"])
+
+  //   //   },
+  //   //   error => {
+  //   //     console.error('Error al agregar la información del profesor:', error);
+  //   //   }
+  //   // );
+  // }
+
+
 }
+
+
+

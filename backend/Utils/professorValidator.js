@@ -11,6 +11,7 @@ const ProfessorScheme = z.object({
     cellPhone: z.string().min(8),
     officePhone: z.string().min(8),
     isCordinator: z.boolean(),
+    photo: z.string()
 })
 
 function validateProfessor(professor){

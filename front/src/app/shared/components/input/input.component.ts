@@ -13,6 +13,9 @@ import { FormsModule } from '@angular/forms';
 export class InputComponent {
   @Input()
   placeholder: string = ""  
+  
+  @Input()
+  value: string = ""
 
   @Input()
   entry!: string

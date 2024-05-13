@@ -12,14 +12,14 @@
                         <h5>
                             Primer Nombre
                         </h5>
-                        <shared-input placeholder="Primer Nombre"[(entry)]="firstName">
+                        <shared-input placeholder="Primer Nombre"[(entry)]="firstNameOnInput">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Segundo Nombre
                         </h5>
-                        <shared-input placeholder="Segundo Nombre"[(entry)]="secondName">
+                        <shared-input placeholder="Segundo Nombre"[(entry)]="secondNameOnInput">
                         </shared-input>
                     </div>
                 </div>
@@ -28,14 +28,14 @@
                         <h5>
                             Primer Apellido
                         </h5>
-                        <shared-input placeholder="Primer Apellido"[(entry)]="firstSurname">
+                        <shared-input placeholder="Primer Apellido"[(entry)]="firstSurnameOnInput">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Segundo Apellido
                         </h5>
-                        <shared-input placeholder="Segundo Apellido"[(entry)]="secondSurname">
+                        <shared-input placeholder="Segundo Apellido"[(entry)]="secondSurnameOnInput">
                         </shared-input>
                     </div>
                 </div>
@@ -47,14 +47,14 @@
                         <h5>
                             Correo
                         </h5>
-                        <shared-input placeholder="Correo Institucional"[(entry)]="email">
+                        <shared-input placeholder="Correo Institucional"[(entry)]="emailOnInput">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Teléfono Oficina
                         </h5>
-                        <shared-input placeholder="Teléfono Oficina"[(entry)]="officePhone">
+                        <shared-input placeholder="Teléfono Oficina"[(entry)]="officePhoneOnInput">
                         </shared-input>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         <h5>
                             Teléfono Celular
                         </h5>
-                        <shared-input placeholder="Teléfono Celular"[(entry)]="cellPhone">
+                        <shared-input placeholder="Teléfono Celular"[(entry)]="cellPhoneOnInput">
                         </shared-input>
                     </div>
                     <div class="input">
@@ -86,17 +86,13 @@
                 <h2>Información Extra</h2>
                 <div class="row">
                     <div class="input">
-                        <h5>Foto Actual</h5>
-                        <img src="assets/images/profileHolder.png" alt="">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input">
                         <h5>Foto</h5>
                         <div class="file-input-container">
                             <shared-file-input
                                 [acceptedExtensions]="['.jpg', '.png', '.jpeg']"
-                                placeholder="Subir foto">
+                                (fileSelected)="getFile($event)"
+                                placeholder="Subir foto"
+                                placeholderPreviewImage="assets/images/teacher.png">
                             </shared-file-input>
                         </div>
                     </div>
@@ -114,7 +110,7 @@
             <div class="options">
                 <shared-button
                     text="Agregar profesor"
-                    (click)="getData()">
+                    (click)="addProfessor()">
                 </shared-button>
             </div>
         </div>

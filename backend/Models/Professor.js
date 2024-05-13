@@ -29,10 +29,6 @@ const ProfessorScheme = new Schema({
 },
 { collection: 'professor', timestamps: true });
 
-ProfessorScheme.methods.setPhoto = function setPhoto (photo){
-    const { host, port } = appConfig
-    this.photo = `${host}:${port}/public/${photo}`
-}
 
 ProfessorScheme.methods.setPasswordOtp = function setPasswordOtp(otp){
     this.security.resetPasswordOTP = otp;

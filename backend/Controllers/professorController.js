@@ -61,6 +61,7 @@ const registerProfessor = async (req, res) => {
             secondSurname: result.data.secondSurname,
             email: result.data.email,
             campus: result.data.campus,
+            photo: result.data.photo,
             password: hashed,
             security:{
                 resetPasswordOTP: undefined,
@@ -70,13 +71,6 @@ const registerProfessor = async (req, res) => {
             officePhone: result.data.officePhone,
             isCordinator: result.data.isCordinator,  
         });
-
-        //const fs = require('fs');
-        // ...
-        if (file) {
-            const photo = file["filename"];
-            newProfessor.setPhoto(photo);
-        }
 
         await Professor.create(newProfessor);
 
@@ -156,7 +150,8 @@ const getProfessor = async (req, res) => {
             campus,
             cellPhone,
             officePhone,
-            isCordinator
+            isCordinator,
+            photo
         };
 
         return res.status(200).json({ account });
@@ -181,6 +176,7 @@ const editAccount = async (req, res) => {
             secondSurname: req.body.secondSurname,
             email: req.body.email,
             campus: req.body.campus,
+            photo: req.body.photo,
             //password: hashed,
             cellPhone: req.body.cellPhone,
             officePhone: req.body.officePhone,

@@ -6,15 +6,12 @@ import { InputComponent } from '../app/shared/components/input/input.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    InputComponent
-   
   ],
   imports: [
     BrowserModule,
     FormsModule, 
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
 export class AppModule { }

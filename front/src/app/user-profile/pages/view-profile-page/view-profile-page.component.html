@@ -3,7 +3,7 @@
   <div class="container">
     <div class="info-container">
       <div class="left-side">
-        <img src="assets/images/teacher.png" alt="" />
+        <img [src]="photo" alt="abc" />
       </div>
 
       <div class="right-side">
@@ -39,7 +39,9 @@
       </div>
     </div>
     <div class="edit-button">
-      <shared-button text="Editar perfil" link="/editTeacher"> </shared-button>
+      <shared-button 
+        text="Editar perfil"
+        (click)="editProfile()"> </shared-button>
     </div>
   </div>
 </div>

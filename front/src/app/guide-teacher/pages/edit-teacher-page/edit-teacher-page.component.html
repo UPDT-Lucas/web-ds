@@ -13,14 +13,19 @@
                         <h5>
                             Primer Nombre
                         </h5>
-                        <shared-input placeholder="Primer Nombre"[(entry)]="firstName">
+                        <shared-input 
+                            placeholder="Primer Nombre"
+                            [(entry)]="firstNameOnInput"
+                            [value]="actualFirstName">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Segundo Nombre
                         </h5>
-                        <shared-input placeholder="Segundo Nombre"[(entry)]="secondName">
+                        <shared-input placeholder="Segundo Nombre"
+                            [(entry)]="secondNameOnInput"
+                            [value]="actualSecondName">
                         </shared-input>
                     </div>
                 </div>
@@ -29,14 +34,19 @@
                         <h5>
                             Primer Apellido
                         </h5>
-                        <shared-input placeholder="Primer Apellido"[(entry)]="firstSurname">
+                        <shared-input placeholder="Primer Apellido"
+                            [(entry)]="firstSurnameOnInput"
+                            [value]="actualFirstSurname">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Segundo Apellido
                         </h5>
-                        <shared-input placeholder="Segundo Apellido"[(entry)]="secondSurname">
+                        <shared-input placeholder="Segundo Apellido"
+                            [(entry)]="secondSurnameOnInput"
+                            [value]="actualSecondSurname"
+                            >
                         </shared-input>
                     </div>
                 </div>
@@ -48,14 +58,18 @@
                         <h5>
                             Correo
                         </h5>
-                        <shared-input placeholder="Correo"[(entry)]="email">
+                        <shared-input placeholder="Correo"
+                            [(entry)]="emailOnInput"
+                            [value]="actualEmail">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Teléfono Oficina
                         </h5>
-                        <shared-input placeholder="Teléfono Oficina"[(entry)]="officePhone">
+                        <shared-input placeholder="Teléfono Oficina"
+                        [(entry)]="officePhoneOnInput"
+                        [value]="actualOfficePhone">
                         </shared-input>
                     </div>
                 </div>
@@ -64,7 +78,9 @@
                         <h5>
                             Teléfono Celular
                         </h5>
-                        <shared-input placeholder="Teléfono Celular"[(entry)]="cellPhone">
+                        <shared-input placeholder="Teléfono Celular"
+                        [(entry)]="cellPhoneOnInput"
+                        [value]="actualCellPhone">
                         </shared-input>
                     </div>
                     <div class="input">
@@ -87,18 +103,13 @@
                 <h2>Información Extra</h2>
                 <div class="row">
                     <div class="input">
-                        <h5>Foto Actual</h5>
-                        <img [src]="filename" alt="">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input">
                         <h5>Foto</h5>
                         <div class="file-input-container">
                             <shared-file-input
                                 [acceptedExtensions]="['.jpg', '.png', '.jpeg']"
                                 (fileSelected)="getFile($event)"
-                                placeholder="Subir foto">
+                                placeholder="Subir foto"
+                                placeholderPreviewImage="assets/images/teacher.png">
                             </shared-file-input>
                         </div>
                     </div>

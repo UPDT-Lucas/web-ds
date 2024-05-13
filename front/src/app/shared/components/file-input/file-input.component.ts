@@ -15,6 +15,11 @@ import { S3ApiService } from '../../../s3-api.service';
 export class FileInputComponent {
   constructor(private s3Service: S3ApiService) {}
 
+  preview: string = ""
+  
+  @Input()
+  placeholderPreviewImage: string = ""
+
   @Input()
   acceptedExtensions: string [] = [];
 
@@ -25,12 +30,15 @@ export class FileInputComponent {
   files!: any
   
   @Output()
-  fileSelected = new EventEmitter<File>()
+  fileSelected = new EventEmitter<any>()
 
   onFileChange(event: any) {
-    const file: File = event.target.files[0];
+    const file = event.target.files[0];
+    
     if (file) {
-      this.fileSelected.emit(file);
+      this.preview = URL.createObjectURL(file)
+      this.fileSelected.emit(file)
     }
   }
 }
+

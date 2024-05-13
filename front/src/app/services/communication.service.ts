@@ -44,6 +44,8 @@ export class CommunicationService {
 
 
   registerProfessor(professorData: any): Observable<Professor> {
+    console.log("la data")
+    console.log(professorData)
     const url = `${this.apiUrl}/register-professor`; 
     return this.http.post<Professor>(url, professorData); 
   }
