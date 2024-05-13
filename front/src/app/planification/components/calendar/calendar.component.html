@@ -1,3 +1,6 @@
-<full-calendar class="custom-calendar" [options]="calendarOptions">
-
+@defer {
+<full-calendar class="custom-calendar" [options]="calendarOptions" >
 </full-calendar>
+} @placeholder (minimum 1000ms) {
+    <p>Cargando</p>
+}

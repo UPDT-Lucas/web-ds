@@ -90,6 +90,10 @@ table tr:last-child td:last-child {
     border-bottom-right-radius: 15px;
 }
 
+.excel-upload{
+    max-width: 40rem;
+}
+
 @media(min-width: 768px){
     td, th {
         min-width: 200px;

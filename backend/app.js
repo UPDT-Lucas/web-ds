@@ -18,6 +18,9 @@ app.use('/', studentRoutes);
 const campusRoutes = require('./Routes/campusRoutes');
 app.use('/', campusRoutes);
 
+const activityRoutes = require('./Routes/activityRoutes');
+app.use('/', activityRoutes);
+
 
 /*const PORT = 3000;
 app.listen(PORT, () => {

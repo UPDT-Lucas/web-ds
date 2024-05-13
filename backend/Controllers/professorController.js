@@ -63,6 +63,7 @@ const registerProfessor = async (req, res) => {
             campus: result.data.campus,
             photo: result.data.photo,
             password: hashed,
+            photo: result.data.photo,
             security:{
                 resetPasswordOTP: undefined,
                 emailVerificationToken: verificationToken,

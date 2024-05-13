@@ -4,6 +4,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { TableComponent } from '../../../shared/components/table/table.component';
 import { CommunicationService } from '../../../services/communication.service';
 import { Professor } from '../../../interfaces/professor.interface';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-team-view',
@@ -33,8 +34,16 @@ export class TeamViewComponent {
 
   data: any [] = []
 
-  constructor(private CS: CommunicationService) {}
+  constructor(private CS: CommunicationService, private router: Router) {}
 
+  /*handleEdit(email: string) {
+    console.log('Correo del profesor:', email);
+
+  }*/
+
+  viewMemberDetails(email: string) {
+    this.router.navigate(['/member-details', email]);
+  }
 
     getBadge(campus: string){
       if(campus == "San José"){
@@ -46,7 +55,7 @@ export class TeamViewComponent {
       }else if(campus == "San Carlos"){
         return ["SC", "#ab60c2"]
       }else{
-        return ["LI", "43cb59"]
+        return ["LI", "#43cb59"]
       }
     }
 
@@ -71,7 +80,7 @@ export class TeamViewComponent {
   ngOnInit(){
     this.CS.getAllProfessor().subscribe(
       res => {
-        //this.professorList = res
+        this.professorList = res
        // console.log(this.professorList);
        this.getData(res) 
       }
