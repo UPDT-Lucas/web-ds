@@ -1,5 +1,10 @@
-<input type="checkbox" id="checkbox" class="checkbox-input"
+@if(isChecked){
+    <input type="checkbox" id="checkbox" class="checkbox-input"
+    (change)="toggleCheckbox()" checked>
+}@else{
+    <input type="checkbox" id="checkbox" class="checkbox-input"
         (change)="toggleCheckbox()">
+}
 <label for="checkbox" class="custom-checkbox-label">
     <i class="material-icons">check</i>
 </label>

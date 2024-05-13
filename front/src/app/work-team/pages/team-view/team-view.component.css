@@ -97,6 +97,11 @@ table tr:last-child td:last-child {
         min-width: 200px;
     }
 
+    .filter-input {
+        width: 300px;
+    }
+    
+
     td a {
         color: blue; 
         text-decoration: underline; 

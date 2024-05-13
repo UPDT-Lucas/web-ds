@@ -39,6 +39,8 @@ export class AddTeacherPageComponent {
   cellPhoneOnInput: string = '';
   officePhoneOnInput: string = '';
 
+  isCordinator: boolean = false;
+
   getFile(file: any) {
     this.file = file;
   }
@@ -71,7 +73,6 @@ export class AddTeacherPageComponent {
     }
   }
 
-  isCordinator: boolean = false;
 
   toggleIsCoordinator(event: any) {
     this.isCordinator = event.target.checked;
@@ -141,42 +142,7 @@ export class AddTeacherPageComponent {
       }
     );
 
-    // Call your service to add the professor here
   }
-
-
-  // addProfessor() {
-  //   const password = "tec-" + this.firstNameOnInput + this.secondNameOnInput
-  //   this.getData()
-  //   const professorData = {
-  //     firstName: this.firstNameOnInput,
-  //     secondName: this.secondNameOnInput,
-  //     firstSurname: this.firstSurnameOnInput,
-  //     secondSurname: this.secondSurnameOnInput,
-  //     email: this.emailOnInput,
-  //     cellPhone: this.cellPhoneOnInput,
-  //     officePhone: this.officePhoneOnInput,
-  //     campus: this.campusOnInput,
-  //     isCordinator: this.isCordinator, 
-  //     photo: this.filename,
-  //     password,      
-  //   };
-  //   console.log(professorData)
-
-  //   console.log("nombre es: ")
-  //   console.log(this.filename)
-  //   // this.CS.registerProfessor(professorData).subscribe(
-  //   //   response => {
-  //   //     console.log('La información del profesor se ha agregado con éxito:', response);
-  //   //     this.router.navigate(["/teamView"])
-
-  //   //   },
-  //   //   error => {
-  //   //     console.error('Error al agregar la información del profesor:', error);
-  //   //   }
-  //   // );
-  // }
-
 
 }
 

@@ -23,7 +23,7 @@ export class ViewProfilePageComponent {
   officePhone: string = '';
   phone: string = '';
   campus: string = '';
-  photo: string = '';
+  photo: string = '/assets/images/profileHolder.png';
   
   //isCordinator: string = '';
 
@@ -44,12 +44,8 @@ export class ViewProfilePageComponent {
         this.officePhone = res.account.officePhone
         this.phone = res.account.cellPhone
         this.photo = res.account.photo
-        console.log("photo is")
-        console.log(res)
-        console.log(res.account)
-        //this.isCordinator = res.account.isCordinator
-        //console.log(this.isCordinator)
 
+        console.log(res.account)
 
         if (res.account.campus === "663057633ee524ad51bd5b05") {
           this.campus = "Cartago";

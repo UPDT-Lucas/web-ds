@@ -11,7 +11,7 @@ import { Activity } from '../interfaces/activity.interface';
   providedIn: 'root'
 })
 export class CommunicationService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}  
   private apiUrl = 'http://localhost:3000';
 
   //----------------------------------------- PROFESSOR -----------------------------------------//
@@ -51,9 +51,15 @@ export class CommunicationService {
     return this.http.post<Professor>(url, professorData); 
   }
 
-  getAllProfessor(): Observable<Professor[]> {
-    const url = `${this.apiUrl}/all-professor`; 
+  getAllProfessor(limit: number, skip: number): Observable<Professor[] | any> {
+    const url = `${this.apiUrl}/all-professor?limit=${limit}&skip=${skip}`;
+
     return this.http.get<Professor[]>(url); 
+  }
+
+  getProfessorByName(name: string, limit: number, skip: number): Observable<Professor | any> {
+    const url = `${this.apiUrl}/getProfessorByName?name=${name}&limit=${limit}&skip=${skip}`
+    return this.http.get<Professor>(url)
   }
   
   getCampusById(id: string): string {
@@ -80,7 +86,7 @@ export class CommunicationService {
   }
 
   getAllStudent(): Observable<Student[]> {
-    const url = `${this.apiUrl}/all-student`; 
+    const url = `${this.apiUrl}/all-student.`; 
     return this.http.get<Student[]>(url); 
   }
 

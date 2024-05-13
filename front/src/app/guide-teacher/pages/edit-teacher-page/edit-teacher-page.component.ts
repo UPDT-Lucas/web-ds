@@ -7,6 +7,7 @@ import { CheckboxInputComponent } from '../../../shared/components/checkbox-inpu
 import { S3ApiService } from '../../../s3-api.service';
 import { CommunicationService } from '../../../services/communication.service';
 import {ActivatedRoute, Router} from "@angular/router";
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-edit-teacher-page',
@@ -42,7 +43,8 @@ export class EditTeacherPageComponent {
   actualCampus: string | null = null;
   actualCellPhone: string = '';
   actualOfficePhone: string = '';
-
+  actualPhoto: string = ''
+  actualIsCoordinator: boolean = false;
   
   //isCordinator: string = '';
 
@@ -58,6 +60,9 @@ export class EditTeacherPageComponent {
   filename: string = "assets/images/teacher.png"
   file!: any;
   selectedValue: string = "1";
+
+  isCordinator: boolean = false;
+
 
   ngOnInit(){
     this.route.params.subscribe(
@@ -78,34 +83,50 @@ export class EditTeacherPageComponent {
         this.actualEmail = prof.account.email
         this.actualCellPhone = prof.account.cellPhone
         this.actualOfficePhone = prof.account.officePhone
+        this.actualPhoto = prof.account.photo
+        this.actualIsCoordinator = prof.account.isCordinator
+        this.actualPhoto = prof.account.photo
+        this.actualCampus = prof.account.campus
+        console.log("prof is")
+        console.log(this.actualIsCoordinator)
       }
     )
   }
 
   getFile(file: any) {
-    
     this.file = file;
   }
 
   getData(){
+    console.log(this.file)
+
+    // this.updateImage(this.file).subscribe(
+    //   link => {
+    //     console.log(link)
+    //   }
+    // )
+
     if(this.file){
       const formData = new FormData();
       formData.append('file', this.file);
       this.s3ApiService.uploadFile(formData).subscribe(
-        res => {
-          this.updateImage(this.file.name)
+        (res) => {
+          this.updateImage(this.file.name).subscribe((link) => {
+          this.editTeacherAfterUpdate()
+          })
         }
       )
+    }else{
+      this.editTeacherAfterUpdate()
     }
   }
 
   updateImage(filename: string){
-    this.s3ApiService.getFileByName(filename).subscribe(
-      res => {
-        this.filename = res!.result
-        console.log(this.filename)
-      }
-    )
+    return this.s3ApiService.getFileByName(filename).pipe(
+      map(res => {
+        this.filename = res!.result;
+      })
+    );
   }
 
   OnSelectChange(event: any) {
@@ -114,8 +135,6 @@ export class EditTeacherPageComponent {
       console.log(this.selectedValue)
     }
   }
-
-  isCordinator: boolean = false;
 
   toggleIsCoordinator(event: any) {
     this.isCordinator = event.target.checked;
@@ -128,23 +147,30 @@ export class EditTeacherPageComponent {
       this.campusOnInput = selectedValue;
     }
   }  
+
+  editTeacher(){
+    this.getData()
+  }
   
 
-  editTeacher() {
-    this.getData()
+  editTeacherAfterUpdate() {
+    // console.log(this.isCordinator)
+    console.log("a")
+    console.log(this.filename)
     const professorData = {
-      firstName: this.firstNameOnInput,
-      secondName: this.secondNameOnInput,
-      firstSurname: this.firstSurnameOnInput,
-      secondSurname: this.secondSurnameOnInput,
-      email: this.emailOnInput,
-      campus: this.campusOnInput,
-      cellPhone: this.cellPhoneOnInput,
-      officePhone: this.officePhoneOnInput,
-      isCordinator: this.isCordinator
+      firstName: this.firstNameOnInput ? this.firstNameOnInput : this.actualFirstName ,
+      secondName: this.secondNameOnInput ? this.secondNameOnInput : this.actualSecondName,
+      firstSurname: this.firstSurnameOnInput ? this.firstSurnameOnInput : this.actualFirstSurname,
+      secondSurname: this.secondSurnameOnInput ? this.secondSurnameOnInput : this.actualSecondSurname,
+      email: this.emailOnInput ? this.emailOnInput : this.actualEmail,
+      campus: this.campusOnInput ? this.campusOnInput : this.actualCampus,
+      cellPhone: this.cellPhoneOnInput ? this.cellPhoneOnInput : this.actualCellPhone,
+      officePhone: this.officePhoneOnInput ? this.officePhoneOnInput : this.actualOfficePhone,
+      photo: this.filename !== "assets/images/teacher.png" ? this.filename : this.actualPhoto,
+      isCordinator: this.isCordinator !== this.actualIsCoordinator ? this.isCordinator : this.actualIsCoordinator
     };
 
-    console.log(professorData);
+    console.log(professorData)
 
     this.CS.editAccount(this.id, professorData).subscribe(
       response => {

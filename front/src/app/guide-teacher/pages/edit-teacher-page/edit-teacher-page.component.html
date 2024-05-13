@@ -90,11 +90,36 @@
                         <select id="campus"
                         (change)="onCampusChange($event)"
                         class="custom-select">
-                        <option value="663057863ee524ad51bd5b0f">San José</option>
+
+                        @if (actualCampus == "663057863ee524ad51bd5b0f") {
+                            <option value="663057863ee524ad51bd5b0f" selected>San José</option>
+                        }@else {
+                            <option value="663057863ee524ad51bd5b0f">San José</option>
+                        }
+
+                        @if (actualCampus == "663057633ee524ad51bd5b05") {
+                            <option value="663057633ee524ad51bd5b05" selected>Cartago</option>
+                        }@else {
                             <option value="663057633ee524ad51bd5b05">Cartago</option>
+                        }
+
+                        @if (actualCampus == "6630576f3ee524ad51bd5b09"){
+                            <option value="6630576f3ee524ad51bd5b09" selected>Alajuela</option>
+                        }@else {
                             <option value="6630576f3ee524ad51bd5b09">Alajuela</option>
+                        }
+
+                        @if (actualCampus == "6630578f3ee524ad51bd5b12") {
+                            <option value="6630578f3ee524ad51bd5b12" selected>Limón</option>
+                        }@else {
                             <option value="6630578f3ee524ad51bd5b12">Limón</option>
+                        }
+
+                        @if (actualCampus == "663057763ee524ad51bd5b0c") {
+                            <option value="663057763ee524ad51bd5b0c" selected>San Carlos</option>
+                        }@else {
                             <option value="663057763ee524ad51bd5b0c">San Carlos</option>
+                        }
                         </select>
                     </div>
                 </div>
@@ -109,7 +134,7 @@
                                 [acceptedExtensions]="['.jpg', '.png', '.jpeg']"
                                 (fileSelected)="getFile($event)"
                                 placeholder="Subir foto"
-                                placeholderPreviewImage="assets/images/teacher.png">
+                                [placeholderPreviewImage]="actualPhoto">
                             </shared-file-input>
                         </div>
                     </div>
@@ -118,8 +143,9 @@
                             Coordinador
                         </h5>
                         <div class="checkbox-container">
-                            <shared-checkbox-input (change)="toggleIsCoordinator($event)">
-
+                            <shared-checkbox-input 
+                                (change)="toggleIsCoordinator($event)"
+                                [isChecked]="actualIsCoordinator">
                             </shared-checkbox-input>
                         </div>
                     </div>

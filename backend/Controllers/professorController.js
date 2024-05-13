@@ -104,7 +104,7 @@ OUT:
 
 const getAllProfessor = async(req, res) => {
     try{
-        const professors = await Professor.find();
+        const professors = await Professor.find().limit(req.query.limit).skip(req.query.skip);
         return res.status(200).json({professors});
     }catch(error){
         console.log(error);
@@ -201,8 +201,23 @@ const editAccount = async (req, res) => {
         return res.status(500).json({error: 'Internal server error'});
 
     }
+
 }
 
+
+const getProfessorsByName = async (req, res) => {
+    try {
+        const professors = await Professor.find({ 
+            $or: [
+                { firstName: { $regex: new RegExp(req.query.name, 'i') } }, // Busca por coincidencia de nombre
+            ]
+        }).skip(req.query.skip).limit(req.query.limit)
+        return res.status(200).json({ professors });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 /*
 Permite loguear a un profesor en la base de datos
@@ -488,5 +503,5 @@ const sendVerificationEmail = (email, verificationToken) => {
 
 
 module.exports = {registerProfessor, getAllProfessor, getProfessor, 
-    editAccount, login, deleteProfessor, getProfessorByCampus, 
+    editAccount, login, deleteProfessor, getProfessorByCampus, getProfessorsByName,
     forgotPassword, verifyOtp, resetPassword, sendVerificationEmail}
