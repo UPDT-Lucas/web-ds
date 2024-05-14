@@ -1,10 +1,6 @@
 <div class="flex-container">
-    <shared-header></shared-header>
-    <div class="container">
-            @defer{
-            <app-calendar [activities]="calendarActivities"></app-calendar>
-            } @placeholder (minimum 1000ms) {
-                <p>Cargando</p>
-            }
-    </div>
+  <shared-header></shared-header>
+  <div class="container">
+    <app-calendar [activities]="calendarActivities"></app-calendar>
+  </div>
 </div>

@@ -12,7 +12,7 @@ const ActivityScheme = new Schema({
     executionDate: Date,        //Fecha exacta de realización
     executionWeek: Number,      //Numero de semana de realización
     announcementDate: Date,    //Fecha de anuncio a la comunidad estudiantil ISO FORMAT
-    reminderDates: [Date],    //Fechas de recordatorios
+    reminderDates: Number,    //Fechas de recordatorios
     comments: [{                //Commentarios de los profesores
         text: String,
         author: {

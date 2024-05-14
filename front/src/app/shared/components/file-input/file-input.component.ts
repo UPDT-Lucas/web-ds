@@ -16,6 +16,9 @@ export class FileInputComponent {
   constructor(private s3Service: S3ApiService) {}
 
   preview: string = ""
+
+  @Input()
+  isPDF: boolean = false
   
   @Input()
   placeholderPreviewImage: string = ""
@@ -36,7 +39,9 @@ export class FileInputComponent {
     const file = event.target.files[0];
     
     if (file) {
-      this.preview = URL.createObjectURL(file)
+      if(!this.isPDF){
+        this.preview = URL.createObjectURL(file)
+      }
       this.fileSelected.emit(file)
     }
   }

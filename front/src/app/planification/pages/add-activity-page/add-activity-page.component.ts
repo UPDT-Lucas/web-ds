@@ -5,6 +5,9 @@ import { CheckboxInputComponent } from '../../../shared/components/checkbox-inpu
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { FileInputComponent } from '../../../shared/components/file-input/file-input.component';
 import { S3ApiService } from '../../../s3-api.service';
+import { Activity } from '../../../interfaces/activity.interface';
+import { DatePickerComponent } from '../../../shared/components/date-picker/date-picker.component';
+import { CommunicationService } from '../../../services/communication.service';
 
 @Component({
   selector: 'app-add-activity-page',
@@ -14,16 +17,39 @@ import { S3ApiService } from '../../../s3-api.service';
     HeaderComponent,
     CheckboxInputComponent,
     InputComponent,
-    FileInputComponent
+    FileInputComponent,
+    DatePickerComponent
   ],
   templateUrl: './add-activity-page.component.html',
   styleUrl: './add-activity-page.component.css'
 })
 export class AddActivityPageComponent {
-  constructor(private s3ApiService: S3ApiService) {}
-  filename: string = "assets/images/activityHolder.jpg"
-  isPresential: boolean = true;
+  constructor(private s3ApiService: S3ApiService, private CS: CommunicationService ) {}
+  filename: string = ""
   file!: any;
+
+  typeOfActivity: string = 'Orientadora';
+  activityName: string = '';
+  responsibles: string[] = [];
+  executionDate: string = '';
+  executionWeek: number = 1;
+  announcementDate: string = '';
+  reminderDates: number = 0;
+  comments: string[] = [];
+  isRemote: boolean = false;
+  virtualActivityLink: string = '';
+  activityPoster: string = '';
+  currentState: string = 'Planeada';
+
+
+  //Input string variables to treat the data
+  inputExecutionWeek: string = '';
+  inputReminderDates: string = '';
+  inputResponsibles: string = '';
+
+  //Responsibles emails
+  professorEmails: string[] = []
+  professorEmailsSet: Set<string> = new Set<string>()
 
   getFile(file: any) {
     this.file = file;
@@ -39,6 +65,13 @@ export class AddActivityPageComponent {
     )
   }
 
+  onAcivityTypeChange(event: any){
+    const selectedActivityType = event?.target?.value;
+    if(selectedActivityType){
+      this.typeOfActivity = selectedActivityType;
+    }
+  }
+
   
   updateImage(filename: string){
     this.s3ApiService.getFileByName(filename).subscribe(
@@ -47,5 +80,125 @@ export class AddActivityPageComponent {
         console.log(this.filename)
       }
     )
+  }
+
+  getDaysDifference(dateString1: string, dateString2: string): number {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+    
+    // Calculate the difference in milliseconds
+    const differenceMs = date1.getTime() - date2.getTime();
+    
+    // Convert the difference to days
+    const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
+    
+    return differenceDays;
+  }
+  checkDates(){
+    let daysDiff = this.getDaysDifference(this.executionDate, this.announcementDate)
+    if(daysDiff < 0){
+      console.log("La fecha de anuncio no puede ser después de la fecha de ejecución")
+      return false
+    }
+    if(this.reminderDates > daysDiff){
+      console.log("La fecha de recordatorio no puede ser después de la fecha de anuncio")
+      return false
+    }
+    return true
+  }
+
+  checkResponsibles(){
+    let correctFormat = true
+    let responsibles = this.inputResponsibles.split(',')
+    responsibles.forEach(responsible => {
+      responsible = responsible.trim()
+      if(responsible.length < 3){
+        correctFormat = false
+      }
+      if(!responsible.includes('@')){
+        correctFormat = false
+      }
+      if(this.professorEmailsSet.has(responsible)){
+      } else {
+        this.professorEmailsSet.add(responsible)
+        this.professorEmails.push(responsible)
+        console.log(this.professorEmails)
+      }
+    });
+    return correctFormat
+  }
+
+  loadProfessorsByEmails(){
+    console.log(this.professorEmailsSet)
+    this.professorEmailsSet.forEach(email => {
+      console.log("AAAAA ", email)
+      this.CS.getProfessorByEmail(email).subscribe(
+        (res: any) => {
+          if(res){
+            this.responsibles.push(res._id)
+          } else {
+            console.log("No se encontró el profesor")
+          }
+        }
+      )
+    });
+  }
+
+  checkInputs() {
+    this.professorEmailsSet.clear()
+    this.professorEmails = []
+    this.responsibles = []
+    let correctFormat = true
+    if(this.activityName == '' || this.executionDate == '' || this.announcementDate == ''){
+      console.log("a")
+      correctFormat = false;
+    }
+    if(!this.checkResponsibles() || !this.checkDates()) {
+      console.log("aa")
+      correctFormat = false;
+    }
+
+    this.loadProfessorsByEmails()
+
+    if(Number(this.inputExecutionWeek) < 1 || Number(this.inputExecutionWeek) > 19 || Number.isNaN(parseFloat(this.inputExecutionWeek))){
+      console.log("A")
+      correctFormat = false;
+    }
+    if(Number(this.inputReminderDates) < 0 || Number(this.inputReminderDates) > 60 || Number.isNaN(parseFloat(this.inputReminderDates))){
+      console.log("AA")
+      correctFormat = false;
+    }
+
+
+
+    return correctFormat
+    
+  }
+
+  uploadActivity(){
+    if(this.checkInputs()){
+      const activityData: Activity = {
+        typeOfActivity: this.typeOfActivity,
+        activityName: this.activityName,
+        responsibles: this.responsibles,
+        executionDate: new Date(this.executionDate),
+        executionWeek: Number(this.inputExecutionWeek),
+        announcementDate: new Date(this.announcementDate),
+        reminderDates: Number(this.inputReminderDates),
+        comments: [],
+        isRemote: this.isRemote,
+        virtualActivityLink: this.virtualActivityLink,
+        activityPoster: this.filename,
+        currentState: this.currentState
+      }
+      console.log(activityData)
+      this.CS.registerActivity(activityData).subscribe(
+        (res: any) => {
+          console.log(res)
+        }
+      )
+    } else {
+      console.log("Error en el formato de los datos ingresados")
+    }
   }
 }

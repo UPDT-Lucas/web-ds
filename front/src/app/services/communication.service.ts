@@ -61,6 +61,11 @@ export class CommunicationService {
     const url = `${this.apiUrl}/getProfessorByName?name=${name}&limit=${limit}&skip=${skip}`
     return this.http.get<Professor>(url)
   }
+
+  getProfessorByEmail(email: string): Observable<Professor> {
+    const url = `${this.apiUrl}/getProfessorByEmail/${email}`;
+    return this.http.get<Professor>(url);
+  }
   
   getCampusById(id: string): string {
     if (
@@ -120,6 +125,11 @@ export class CommunicationService {
     return this.http.put<Student>(url, studentData);
   }
 
+
+  registerActivity(activityData: any): Observable<Activity> {
+    const url = `${this.apiUrl}/register-activity`; 
+    return this.http.post<Activity>(url, activityData); 
+  }
 
 }
 

@@ -1,7 +1,9 @@
+@if (!isPDF){
 @if(preview == ""){
     <img [src]="placeholderPreviewImage">
 }@else {
     <img [src]="preview">
+}
 }
 <input 
     type="file" 

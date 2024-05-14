@@ -214,6 +214,21 @@ const getProfessorsByName = async (req, res) => {
     }
 };
 
+// Nota para futuras implementaciones:
+// En el return res.status(200).json({ professors }); debería de ser return res.status(200).json(professors);
+// En esta funcion esta corregido pero en otras todavia se
+// hace un .json({variable}) en lugar de .json(variable)
+// El resultado es parecido pero el contenido es un poco más limpio en el frontend
+const getProfessorsByEmail = async (req, res) => {
+    try {
+        const { email } = req.params;
+        const professors = await Professor.findOne({ email: email });
+        return res.status(200).json(professors);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
 /*
 Permite loguear a un profesor en la base de datos
 toma 2 parametros, req y res (request y response respectivamente). res sirve tanto como parametro de entrada como valor de retorno
@@ -486,6 +501,6 @@ const sendVerificationEmail = (email, verificationToken) => {
 
 
 
-module.exports = {registerProfessor, getAllProfessor, getProfessor, 
+module.exports = {registerProfessor, getAllProfessor, getProfessor, getProfessorsByEmail,
     editAccount, login, deleteProfessor, getProfessorByCampus, getProfessorsByName,
     forgotPassword, verifyOtp, resetPassword, sendVerificationEmail}

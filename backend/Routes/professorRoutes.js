@@ -1,5 +1,5 @@
 const express = require('express');
-const {registerProfessor, getAllProfessor, getProfessor, editAccount, login, deleteProfessor, getProfessorByCampus, forgotPassword, verifyOtp, resetPassword, getProfessorsByName} = require('../Controllers/professorController');
+const {registerProfessor, getAllProfessor, getProfessor, editAccount, login, deleteProfessor, getProfessorByCampus, forgotPassword, verifyOtp, resetPassword, getProfessorsByName, getProfessorsByEmail} = require('../Controllers/professorController');
 
 const router = express.Router();
 
@@ -13,6 +13,7 @@ router.put('/editAccount/:id', editAccount);
 router.post('/login', login);
 router.delete('/delete-professor/:id', deleteProfessor);
 router.get('/getProfessorByCampus/:id', getProfessorByCampus);
+router.get('/getProfessorByEmail/:email', getProfessorsByEmail);
 router.post('/forgot-password', forgotPassword);
 router.post('/verify-otp/:id', verifyOtp);
 router.post('/reset-password/:id', resetPassword);

@@ -26,7 +26,7 @@ export class ViewActivityPageComponent {
     executionDate: new Date(),
     executionWeek: 1,
     announcementDate: new Date(),
-    reminderDates: [],
+    reminderDates: 0,
     comments: [],
     isRemote: false,
     virtualActivityLink: '',
