@@ -45,6 +45,8 @@ export class ViewProfilePageComponent {
         this.officePhone = res.account.officePhone
         this.phone = res.account.cellPhone
         this.photo = res.account.photo
+        console.log(this.photo)
+        console.log("xd")
 
         console.log(res.account)
 
@@ -67,8 +69,6 @@ export class ViewProfilePageComponent {
   editProfile(){
     this.router.navigate(['/editTeacher', this.id])
   }
-
-
 
 
 }

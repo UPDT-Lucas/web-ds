@@ -2,8 +2,6 @@ const Campus = require('../Models/Campus');
 const {validateCampus} = require('../Utils/campusValidator');
 const mongoose = require('mongoose');
 
-
-
 const registerCampus = async (req, res) => {
     try {
         const result = validateCampus(req.body);

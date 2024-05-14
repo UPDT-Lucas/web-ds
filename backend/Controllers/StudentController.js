@@ -84,7 +84,7 @@ OUT:
 
 const getAllStudent = async(req, res) => {
     try{
-        const students = await Student.find();
+        const students = await Student.find().limit(req.query.limit).skip(req.query.skip);
         return res.status(200).json({students});
     }catch(error){
         console.log(error);

@@ -94,7 +94,7 @@ export class CommunicationService {
   }
 
   getAllStudent(): Observable<Student[]  | any> {
-    const url = `${this.apiUrl}/all-student.`; 
+    const url = `${this.apiUrl}/all-student`; 
     return this.http.get<Student[]>(url); 
   }
 

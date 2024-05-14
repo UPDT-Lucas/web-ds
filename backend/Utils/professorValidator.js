@@ -7,7 +7,7 @@ const ProfessorScheme = z.object({
     secondSurname: z.string().optional(),
     email: z.string().email(),
     campus: z.string(),
-    password: z.string().min(6),
+    password: z.string().min(8),
     cellPhone: z.string().min(8),
     officePhone: z.string().min(8),
     isCordinator: z.boolean(),

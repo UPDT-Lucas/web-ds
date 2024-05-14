@@ -22,6 +22,10 @@ const activityRoutes = require('./Routes/activityRoutes');
 app.use('/', activityRoutes);
 
 
+const assistantRoutes = require('./Routes/assistantRoutes');
+app.use('/', assistantRoutes);
+
+
 /*const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

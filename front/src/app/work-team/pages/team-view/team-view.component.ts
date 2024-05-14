@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { TableComponent } from '../../../shared/components/table/table.component';
@@ -20,7 +20,7 @@ import { EditTeacherPageComponent } from '../../../guide-teacher/pages/edit-teac
   templateUrl: './team-view.component.html',
   styleUrl: './team-view.component.css'
 })
-export class TeamViewComponent {
+export class TeamViewComponent{
 
   professorList: Professor[] = []
 
@@ -32,7 +32,7 @@ export class TeamViewComponent {
     ['Acciones', 'icon']]
 
   actions = [['delete', ''],
-  ['edit', '/editTeacher'],
+  ['edit', ''],
   ['exit_to_app', '']]
 
   data: any[] = []
@@ -97,7 +97,7 @@ export class TeamViewComponent {
       const campusBadge = this.getBadge(campusName);
       const campusProfessor = campusBadge;
       const professorData = [
-        rolProfessor, nameProfessor, emailProfessor, campusProfessor, this.actions
+        rolProfessor, nameProfessor, emailProfessor, campusProfessor, professorActions
       ];
       this.data.push(professorData);
     }
@@ -133,12 +133,10 @@ export class TeamViewComponent {
   }
     
     
-
-    
-
   ngOnInit() {
     this.limit = 5
     this.changePage(5, 0)
+    console.log("aaa")
   }
 }
 

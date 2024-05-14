@@ -61,7 +61,6 @@ const registerProfessor = async (req, res) => {
             secondSurname: result.data.secondSurname,
             email: result.data.email,
             campus: result.data.campus,
-            photo: result.data.photo,
             password: hashed,
             photo: result.data.photo,
             security:{
@@ -146,7 +145,6 @@ const getProfessor = async (req, res) => {
         // Construir el objeto de cuenta
         const account = {
             name: { firstName, secondName, firstSurname, secondSurname },
-            //username,
             email,
             campus,
             cellPhone,
@@ -185,9 +183,6 @@ const editAccount = async (req, res) => {
             
         }
 
-        /*if (file){
-            updates.photo = `http://localhost:3000/public/${file.filename}`;
-        }*/
 
         //check if the user exists
         const professor = await Professor.findOneAndUpdate({_id: id}, updates, {new: true})
