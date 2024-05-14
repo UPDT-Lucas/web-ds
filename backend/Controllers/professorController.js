@@ -2,6 +2,7 @@ const Professor = require('../Models/Professor');
 const {validateProfessor} = require('../Utils/professorValidator');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const Campus = require('../Models/Campus');
 const JWT = require('jsonwebtoken');
 const { hashPassword, comparePassword, generateOTP, checkToken } = require('../Utils/authUtils');
 const {sendEmail, forgotPasswordTemplate} = require('../Utils/emailUtils')
@@ -53,6 +54,39 @@ const registerProfessor = async (req, res) => {
         const hashed = await hashPassword(result.data.password);
         const verificationToken = crypto.randomBytes(20).toString('hex');
 
+
+        const campus = await Campus.findById(result.data.campus);
+
+        if (!campus) {
+            return res.status(400).json({ error: 'Campus not found' });
+        }
+
+        let campusCode = '';
+        switch (campus._id.toString()) {
+            case '663057633ee524ad51bd5b05':
+                campusCode = 'CA'; // Cartago
+                break;
+            case '6630576f3ee524ad51bd5b09':
+                campusCode = 'AL'; // Alajuela
+                break;
+            case '663057763ee524ad51bd5b0c':
+                campusCode = 'SC'; // San Carlos
+                break;
+            case '663057863ee524ad51bd5b0f':
+                campusCode = 'SJ'; // San José
+                break;
+            case '6630578f3ee524ad51bd5b12':
+                campusCode = 'LI'; // Limón
+                break;
+            default:
+                campusCode = 'OT'; 
+        }
+
+        const count = await Professor.countDocuments({ campus: campus._id });
+
+        const professorCode = `${campusCode}-${count.toString().padStart(2, '0')}`;
+
+
         const newProfessor = Professor({
             //username: result.data.username,
             firstName: result.data.firstName,
@@ -60,6 +94,7 @@ const registerProfessor = async (req, res) => {
             firstSurname: result.data.firstSurname,
             secondSurname: result.data.secondSurname,
             email: result.data.email,
+            code: professorCode,
             campus: result.data.campus,
             password: hashed,
             photo: result.data.photo,
@@ -493,7 +528,7 @@ const sendVerificationEmail = (email, verificationToken) => {
         const subject = 'Verify your Project email';
         const text = `Click on this link to verify your email: ${verificationLink}`;
         //const template = verificationLinkTemplate(verificationLink);
-        sendEmail(email, subject, text, template);
+        sendEmail(email, subject, text);
     } catch (error) {
         console.log(error);
     }

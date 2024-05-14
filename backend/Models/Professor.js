@@ -11,6 +11,7 @@ const ProfessorScheme = new Schema({
     firstSurname: String,
     secondSurname: String,
     email: String, 
+    code: String,
     campus: {
         type: Schema.Types.ObjectId,
         ref: 'Campus'
