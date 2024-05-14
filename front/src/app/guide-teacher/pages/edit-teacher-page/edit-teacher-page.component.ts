@@ -57,6 +57,7 @@ export class EditTeacherPageComponent {
     this.id = localStorage.getItem('-id') || '';
   }
 
+
   filename: string = "assets/images/teacher.png"
   file!: any;
   selectedValue: string = "1";
@@ -169,13 +170,14 @@ export class EditTeacherPageComponent {
       photo: this.filename !== "assets/images/teacher.png" ? this.filename : this.actualPhoto,
       isCordinator: this.isCordinator !== this.actualIsCoordinator ? this.isCordinator : this.actualIsCoordinator
     };
+    console.log(this.id);
 
     console.log(professorData)
 
     this.CS.editAccount(this.id, professorData).subscribe(
       response => {
         console.log('La información del profesor se ha actualizado con éxito:', response);
-        this.router.navigate(["/viewProfile"])
+        this.routers.navigate(["/"])
         
       },
       error => {
@@ -183,5 +185,37 @@ export class EditTeacherPageComponent {
       }
     );
   }
+
+  //--------------
+  /*
+  deleteProfessor() {
+    this.getData();
+    const professorData = {
+      id: this.id,
+      firstName: this.firstName,
+      secondName: this.secondName,
+      firstSurname: this.firstSurname,
+      secondSurname: this.secondSurname,
+      email: this.email,
+      campus: this.campus,
+      cellPhone: this.cellPhone,
+      officePhone: this.officePhone,
+      isCordinator: this.isCordinator
+    };
+    console.log(this.id);
+
+    console.log(professorData);
+
+    this.CS.deleteProfessor(this.id).subscribe(
+      response => {
+        console.log('La información del profesor se ha actualizado con éxito:', response);
+        this.routers.navigate(["/"])
+        
+      },
+      error => {
+        console.error('Error al actualizar la información del profesor:', error);
+      }
+    );
+  }*/
 }
 

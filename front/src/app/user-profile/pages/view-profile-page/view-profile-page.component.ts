@@ -33,6 +33,7 @@ export class ViewProfilePageComponent {
     private CS: CommunicationService,
     private router: Router) {
     this.id = localStorage.getItem('-id') || '';
+    //console.log(this.id);
   }
 
 

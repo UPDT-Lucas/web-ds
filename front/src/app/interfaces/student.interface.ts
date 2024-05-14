@@ -3,8 +3,8 @@ export interface Student{
     secondName: string,
     firstSurname: string,
     secondSurname: string,
-    email: string, 
+    carnet: string,
     campus: string,
-    cellPhone: string,
-    carnet: string }
+    email: string, 
+    cellPhone: string,}
 

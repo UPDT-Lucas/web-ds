@@ -67,7 +67,7 @@ export const routes: Routes = [
     component: AddStudentPageComponent
   },
   {
-    path: 'editStudent',
+    path: 'editStudent/:id',
     component: EditStudentPageComponent,
   },
   {	

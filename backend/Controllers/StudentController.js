@@ -184,5 +184,37 @@ const getStudentsByCampus = async (req, res) => {
 
 
 
+const editAccountStudent = async (req, res) => {
+    try{
+        const { id } = req.params;
+
+        let updates = {
+
+            firstName: req.body.firstName,
+            secondName: req.body.secondName,
+            firstSurname: req.body.firstSurname,
+            secondSurname: req.body.secondSurname,
+            email: req.body.email,
+            campus: req.body.campus,
+            cellPhone: req.body.cellPhone,
+            carnet: req.body.carnet,
+        }
+
+        const student = await Student.findOneAndUpdate({_id: id}, updates, {new: true})
+
+        if(!student){
+            return res.status(400).json({error: 'Student does not exits'});
+        }
+        return res.status(200).json({message: 'Student update successfully', student: student});
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({error: 'Internal server error'});
+
+    }
+}
+
+
+
+
 module.exports = { registerStudent, getAllStudent, getStudent, deleteStudent,
-    getStudentsByCampus }
+    getStudentsByCampus, editAccountStudent }

@@ -79,6 +79,14 @@ export class CommunicationService {
     {return "San Carlos"}
   }
 
+  deleteProfessor(id: string): Observable<Professor> {
+    const url = `${this.apiUrl}/delete-professor/${id}`;
+    return this.http.delete<Professor>(url);
+  }
+
+
+
+
   //----------------------------------------- STUDENT -----------------------------------------//
   registerStudent(studentData: any): Observable<Student> {
     const url = `${this.apiUrl}/register-student`; 
@@ -107,4 +115,11 @@ export class CommunicationService {
     return this.http.get<Activity>(url); 
   }
 
+  editAccountStudent(id: string, studentData: any): Observable<Student> {
+    const url = `${this.apiUrl}/editAccountStudent/${id}`;
+    return this.http.put<Student>(url, studentData);
+  }
+
+
 }
+

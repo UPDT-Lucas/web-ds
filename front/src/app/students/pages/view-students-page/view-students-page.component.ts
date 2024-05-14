@@ -46,7 +46,7 @@ export class ViewStudentsPageComponent {
 
   actions = [
     ["delete", ""],
-    ["edit", "/editTeacher"],
+    ["edit", ""],
     ["exit_to_app", ""],
   ];
 
@@ -230,6 +230,18 @@ export class ViewStudentsPageComponent {
     for (const index in studentList.students) {
       console.log(studentList.students[index]);
 
+
+      console.log("Indice", index);
+      console.log("Información:", studentList.students[index]);
+
+      const id = studentList.students[index]._id; 
+      console.log("ID:", id);
+
+      const studentsActions = JSON.parse(JSON.stringify(this.actions));
+      studentsActions[1][1] = `/editStudent/${id}`;
+
+
+
       const rolStudent = "Estudiante";
       const nameStudent =
         studentList.students[index].firstName +
@@ -249,7 +261,8 @@ export class ViewStudentsPageComponent {
         emailStudent,
         carnetStudent,
         campusStudent,
-        this.actions,
+        studentsActions
+        //this.actions,
       ];
       this.data.push(studentData);
     }
@@ -289,7 +302,7 @@ export class ViewStudentsPageComponent {
       //this.professorList = res
       // console.log(this.professorList);
       this.getData(res);
-      this.getExcelData(res);
+      //this.getExcelData(res);
     });
   }
 }

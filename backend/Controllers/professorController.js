@@ -293,19 +293,8 @@ const deleteProfessor = async (req, res) => {
             return res.status(404).json({ error: 'Professor not found' });
         }
 
-        // Verificar si la contraseña proporcionada coincide con la contraseña almacenada para el profesor
-        /*if (!comparePassword(password, professor.password)) {
-            return res.status(401).json({ error: 'Wrong password' });
-        }*/
-
         // Eliminar el profesor de la base de datos
         await Professor.findByIdAndDelete(id);
-
-        // Eliminar la foto del profesor si existe
-        if (professor.photo) {
-            const photoAddress = './storage/professor/' + professor.photo.substring(28);
-            deletePhoto(photoAddress);
-        }
 
         return res.status(200).json({ message: 'Professor deleted' }); // Código 200: OK
     } catch (error) {

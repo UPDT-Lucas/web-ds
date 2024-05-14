@@ -6,6 +6,7 @@ import { CommunicationService } from '../../../services/communication.service';
 import { Professor } from '../../../interfaces/professor.interface';
 import { Router } from "@angular/router";
 import { InputComponent } from '../../../shared/components/input/input.component';
+import { EditTeacherPageComponent } from '../../../guide-teacher/pages/edit-teacher-page/edit-teacher-page.component';
 
 @Component({
   selector: 'app-team-view',
@@ -79,6 +80,16 @@ export class TeamViewComponent {
     for (const index in professorList.professors) {
       console.log(professorList.professors[index])
 
+      console.log("Índice:", index);
+      console.log("Información:", professorList.professors[index]);
+    
+      const id = professorList.professors[index]._id; 
+      console.log("ID:", id);
+      //this.actions[1][1] = `/editTeacher/${id}`; 
+
+      const professorActions = JSON.parse(JSON.stringify(this.actions));
+      professorActions[1][1] = `/editTeacher/${id}`;
+
       const rolProfessor = professorList.professors[index].isCordinator ? "Profesor Coordinador" : "Profesor";
       const nameProfessor = professorList.professors[index].firstName + " " + professorList.professors[index].firstSurname;
       const emailProfessor = professorList.professors[index].email;
@@ -120,6 +131,10 @@ export class TeamViewComponent {
       } 2
     }
   }
+    
+    
+
+    
 
   ngOnInit() {
     this.limit = 5
