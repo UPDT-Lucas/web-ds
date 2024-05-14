@@ -85,9 +85,14 @@ export class CommunicationService {
     return this.http.post<Student>(url, studentData); 
   }
 
-  getAllStudent(): Observable<Student[]> {
+  getAllStudent(): Observable<Student[]  | any> {
     const url = `${this.apiUrl}/all-student.`; 
     return this.http.get<Student[]>(url); 
+  }
+
+  getStudentByName(name: string, limit: number, skip: number): Observable<Student | any> {
+    const url = `${this.apiUrl}/getStudentByName?name=${name}&limit=${limit}&skip=${skip}`
+    return this.http.get<Student>(url)
   }
 
 

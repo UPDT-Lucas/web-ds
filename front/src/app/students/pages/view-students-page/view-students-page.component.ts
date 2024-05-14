@@ -8,6 +8,8 @@ import { FileSaverService } from "ngx-filesaver";
 import { co, el } from "@fullcalendar/core/internal-common";
 import { CommunicationService } from "../../../services/communication.service";
 import { Student } from "../../../interfaces/student.interface";
+import { Router } from "@angular/router";
+import { InputComponent } from '../../../shared/components/input/input.component';
 
 @Component({
   selector: "app-view-students-page",
@@ -17,6 +19,7 @@ import { Student } from "../../../interfaces/student.interface";
     HeaderComponent,
     TableComponent,
     FileInputComponent,
+    InputComponent
   ],
   templateUrl: "./view-students-page.component.html",
   styleUrl: "./view-students-page.component.css",
@@ -24,7 +27,8 @@ import { Student } from "../../../interfaces/student.interface";
 export class ViewStudentsPageComponent {
   constructor(
     private fileSaver: FileSaverService,
-    private CS: CommunicationService
+    private CS: CommunicationService,
+    private router: Router
   ) {}
 
   studentList: Student[] = [];
@@ -48,6 +52,25 @@ export class ViewStudentsPageComponent {
 
   data: any[] = [];
   excelData: any[] = [];
+  page: number = 0;
+  actualSkip: number = 0;
+  limit: number = 0;
+  filterOnInput: string = ""
+  filter: boolean = false;
+
+  searchByName() {
+    if (this.filterOnInput) {
+      this.filter = true
+    } else {
+      this.filter = false
+    }
+    this.changePage(5, 0)
+  }
+
+  viewMemberDetails(email: string) {
+    this.router.navigate(['/member-details', email]);
+  }
+
 
   downloadExcel(): void {
     const EXCEL_TYPE =
@@ -232,6 +255,35 @@ export class ViewStudentsPageComponent {
     }
   }
 
+  
+ changePage(limit: number, nextPage: number) {
+    if (nextPage >= 0) {
+      if (this.filter) {
+        this.CS.getStudentByName(this.filterOnInput, limit, nextPage * limit).subscribe(
+          res => {
+            if (res.students.length != 0) {
+              console.log(res)
+              this.data = []
+              this.studentList = res
+              this.getData(res)
+              this.page = nextPage;
+            }
+          }
+        )
+      } else {
+        this.CS.getAllStudent().subscribe(
+          res => {
+            if (res.students.length != 0) {
+              this.data = []
+              this.studentList = res
+              this.getData(res)
+              this.page = nextPage;
+            }
+          }
+        )
+      } 2
+    }
+  }
   ngOnInit() {
     this.CS.getAllStudent().subscribe((res) => {
       //this.professorList = res
