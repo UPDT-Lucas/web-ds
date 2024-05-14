@@ -6,7 +6,7 @@ export interface Activity {
   executionDate: Date;
   executionWeek: number;
   announcementDate: Date;
-  reminderDates: Date[];
+  reminderDates: number;
   comments: Comment[];
   isRemote: boolean;
   virtualActivityLink: string;

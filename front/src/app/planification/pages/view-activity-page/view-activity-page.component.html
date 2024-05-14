@@ -40,13 +40,10 @@
                 </div>
                 <div class="text">
                     <h2>
-                        Fechas de recordatorio
+                        Frecuencia de recordatorio en días
                     </h2>
                     <p>
-
-                        @for (reminder of activity.reminderDates; track $index) {
-                            {{prettyPrintDate(reminder)}} <br>
-                        }
+                        activity.reminderDates
                     </p>
                 </div>
                 <div class="text">
