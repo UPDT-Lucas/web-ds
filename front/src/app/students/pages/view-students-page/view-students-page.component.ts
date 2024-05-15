@@ -10,6 +10,7 @@ import { CommunicationService } from "../../../services/communication.service";
 import { Student } from "../../../interfaces/student.interface";
 import { Router } from "@angular/router";
 import { InputComponent } from '../../../shared/components/input/input.component';
+import { ExcelStudent } from "../../../interfaces/excelStudent.interface";
 
 @Component({
   selector: "app-view-students-page",
@@ -126,7 +127,7 @@ export class ViewStudentsPageComponent {
       const jsonData = XLSX.utils.sheet_to_json(sheet);
 
       for (let index in jsonData) {
-        let student: Student = {
+        let student: ExcelStudent = {
           firstName: (jsonData[index] as any).firstName,
           secondName: (jsonData[index] as any).secondName,
           firstSurname: (jsonData[index] as any).firstSurname,

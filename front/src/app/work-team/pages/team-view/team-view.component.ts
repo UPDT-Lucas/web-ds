@@ -85,10 +85,16 @@ export class TeamViewComponent{
     
       const id = professorList.professors[index]._id; 
       console.log("ID:", id);
-      //this.actions[1][1] = `/editTeacher/${id}`; 
+
 
       const professorActions = JSON.parse(JSON.stringify(this.actions));
       professorActions[1][1] = `/editTeacher/${id}`;
+      //professorActions[0][1] = `deleteProfessor('${id}')`;
+      //professorActions[0][1] = () => this.deleteProfessor(id);
+      //professorActions[0][1] = `${id}`;
+
+
+
 
       const rolProfessor = professorList.professors[index].isCordinator ? "Profesor Coordinador" : "Profesor";
       const nameProfessor = professorList.professors[index].firstName + " " + professorList.professors[index].firstSurname;
@@ -102,6 +108,7 @@ export class TeamViewComponent{
       this.data.push(professorData);
     }
   }
+  
 
   changePage(limit: number, nextPage: number) {
     if (nextPage >= 0) {
@@ -130,6 +137,18 @@ export class TeamViewComponent{
         )
       } 2
     }
+  }
+
+  
+  deleteProfessor(id: string) {
+    
+    this. CS.deleteProfessor(id).subscribe(() => {
+      console.log('Profesor eliminado exitosamente');
+      
+      this.router.navigate(['/']);
+    }, error => {
+      console.error('Error al eliminar el profesor', error);
+    });
   }
     
     

@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { Professor } from '../interfaces/professor.interface';
 import { Student } from '../interfaces/student.interface';
 import { Activity } from '../interfaces/activity.interface';
+import { Assistant } from '../interfaces/assitant.interface'
 
 @Injectable({
   providedIn: 'root'
@@ -108,6 +109,16 @@ export class CommunicationService {
     return this.http.get<Student>(url)
   }
 
+  editAccountStudent(id: string, studentData: any): Observable<Student> {
+    const url = `${this.apiUrl}/editAccountStudent/${id}`;
+    return this.http.put<Student>(url, studentData);
+  }
+
+  getStudent(id: string): Observable<Student> {
+    const url = `${this.apiUrl}/getStudent/${id}`;
+    return this.http.get<Student>(url);
+  }
+
 
   //----------------------------------------- ACTIVITY -----------------------------------------//
   getAllActivities(): Observable<Activity[]> {
@@ -120,15 +131,16 @@ export class CommunicationService {
     return this.http.get<Activity>(url); 
   }
 
-  editAccountStudent(id: string, studentData: any): Observable<Student> {
-    const url = `${this.apiUrl}/editAccountStudent/${id}`;
-    return this.http.put<Student>(url, studentData);
-  }
-
 
   registerActivity(activityData: any): Observable<Activity> {
     const url = `${this.apiUrl}/register-activity`; 
     return this.http.post<Activity>(url, activityData); 
+  }
+
+  //----------------------------------------- ASSISTANT -----------------------------------------//
+
+  loginAssistant(email: string, pass: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/loginAssistant`, {"email": email, "password": pass});
   }
 
 }

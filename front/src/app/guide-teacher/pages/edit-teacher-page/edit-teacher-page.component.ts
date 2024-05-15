@@ -187,35 +187,19 @@ export class EditTeacherPageComponent {
   }
 
   //--------------
-  /*
-  deleteProfessor() {
-    this.getData();
-    const professorData = {
-      id: this.id,
-      firstName: this.firstName,
-      secondName: this.secondName,
-      firstSurname: this.firstSurname,
-      secondSurname: this.secondSurname,
-      email: this.email,
-      campus: this.campus,
-      cellPhone: this.cellPhone,
-      officePhone: this.officePhone,
-      isCordinator: this.isCordinator
-    };
-    console.log(this.id);
 
-    console.log(professorData);
-
-    this.CS.deleteProfessor(this.id).subscribe(
-      response => {
-        console.log('La información del profesor se ha actualizado con éxito:', response);
-        this.routers.navigate(["/"])
-        
+  deleteProfessor(id: string) {
+    this.CS.deleteProfessor(id).subscribe(
+      () => {
+        console.log('Profesor eliminado correctamente');
+        this.router.navigate(['/']); 
       },
-      error => {
-        console.error('Error al actualizar la información del profesor:', error);
+      (error) => {
+        console.error('Error al eliminar al profesor', error);
       }
     );
-  }*/
+  }
+  
+
 }
 

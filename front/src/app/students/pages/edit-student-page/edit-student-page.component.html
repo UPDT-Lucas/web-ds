@@ -12,7 +12,8 @@
                         </h5>
                         <shared-input
                         placeholder="Primer Nombre"
-                        [(entry)]="firstName">
+                            [(entry)]="firstNameOnInput"
+                            [value]="actualFirstName">
                         </shared-input>
                     </div>
                     <div class="input">
@@ -20,8 +21,9 @@
                             Segundo Nombre
                         </h5>
                         <shared-input 
-                            [(entry)]="secondName"
-                            placeholder="Segundo Nombre">
+                        placeholder="Segundo Nombre"
+                        [(entry)]="secondNameOnInput"
+                        [value]="actualSecondName">
                         </shared-input>
                     </div>
                     <div class="input">
@@ -29,8 +31,9 @@
                             Primer Apellido
                         </h5>
                         <shared-input
-                            [(entry)]="firstSurname" 
-                            placeholder="Primer Apellido">
+                        placeholder="Primer Apellido"
+                        [(entry)]="firstSurnameOnInput"
+                        [value]="actualFirstSurname">
                         </shared-input>
                     </div>
                     <div class="input">
@@ -38,8 +41,9 @@
                             Segundo Apellido
                         </h5>
                         <shared-input 
-                            [(entry)]="secondSurname"
-                            placeholder="Segundo Apellido">
+                        placeholder="Segundo Apellido"
+                        [(entry)]="secondSurnameOnInput"
+                        [value]="actualSecondSurname">
                         </shared-input>
                     </div>
                     <div class="input">
@@ -47,23 +51,48 @@
                             Carné
                         </h5>
                         <shared-input
-                            [(entry)]="carnet" 
-                            placeholder="Número de Carné">
+                            placeholder="Número de Carné"
+                            [(entry)]="carnetOnInput" 
+                            [value]="actualCarnet">
                         </shared-input>
                     </div>
                     <div class="input">
                         <h5>
                             Campus 
                         </h5>
-                        <select 
-                            id="campus"
-                            (change)="onCampusChange($event)"
-                            class="custom-select">
+                        <select id="campus"
+                        (change)="onCampusChange($event)"
+                        class="custom-select">
+
+                        @if (actualCampus == "663057863ee524ad51bd5b0f") {
+                            <option value="663057863ee524ad51bd5b0f" selected>San José</option>
+                        }@else {
                             <option value="663057863ee524ad51bd5b0f">San José</option>
+                        }
+
+                        @if (actualCampus == "663057633ee524ad51bd5b05") {
+                            <option value="663057633ee524ad51bd5b05" selected>Cartago</option>
+                        }@else {
                             <option value="663057633ee524ad51bd5b05">Cartago</option>
+                        }
+
+                        @if (actualCampus == "6630576f3ee524ad51bd5b09"){
+                            <option value="6630576f3ee524ad51bd5b09" selected>Alajuela</option>
+                        }@else {
                             <option value="6630576f3ee524ad51bd5b09">Alajuela</option>
+                        }
+
+                        @if (actualCampus == "6630578f3ee524ad51bd5b12") {
+                            <option value="6630578f3ee524ad51bd5b12" selected>Limón</option>
+                        }@else {
                             <option value="6630578f3ee524ad51bd5b12">Limón</option>
+                        }
+
+                        @if (actualCampus == "663057763ee524ad51bd5b0c") {
+                            <option value="663057763ee524ad51bd5b0c" selected>San Carlos</option>
+                        }@else {
                             <option value="663057763ee524ad51bd5b0c">San Carlos</option>
+                        }
                         </select>
                     </div>
                 </div>
@@ -76,8 +105,9 @@
                             Correo
                         </h5>
                         <shared-input
-                            [(entry)]="email" 
-                            placeholder="Correo">
+                            placeholder="Correo"
+                            [(entry)]="emailOnInput" 
+                            [value]="actualEmail">
                         </shared-input>
                     </div>
                     <div class="input">
@@ -85,17 +115,18 @@
                             Teléfono Celular
                         </h5>
                         <shared-input
-                            [(entry)]="cellPhone" 
-                            placeholder="Teléfono Celular">
+                            placeholder="Teléfono Celular"
+                            [(entry)]="cellPhoneOnInput" 
+                            [value]="actualCellPhone">
                         </shared-input>
                     </div>
                 </div>
             </div>
             <div class="options">
-                <!-- <shared-button
+                <shared-button
                     text="Editar estudiante"
                     (click)="editStudent()">
-                </shared-button> -->
+                </shared-button>
             </div>
         </div>
     </div>

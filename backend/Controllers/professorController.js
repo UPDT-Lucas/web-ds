@@ -3,6 +3,7 @@ const {validateProfessor} = require('../Utils/professorValidator');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const Campus = require('../Models/Campus');
+const Assistant = require('../Models/Assistant');
 const JWT = require('jsonwebtoken');
 const { hashPassword, comparePassword, generateOTP, checkToken } = require('../Utils/authUtils');
 const {sendEmail, forgotPasswordTemplate} = require('../Utils/emailUtils')
@@ -294,14 +295,27 @@ const login = async (req, res) => {
 
         // Busca en la base de datos un usuario que coincida con el email proporcionado
         const professor = await Professor.findOne({ email });
+        var actualPassword;
+        var isTeacher = true;
+        var id;
+        //const assistant = await Assistant.findOne({ email })
 
         // Si no se encuentra ningún usuario, devuelve un error
         if (!professor) {
-            return res.status(401).json({ error: 'Professor not found' });
-        }
+            const assistant = await Assistant.findOne({ email })  
+            if (!assistant) {
+                return res.status(401).json({ error: 'Assistant not found' });
+            }else{
+                id = assistant.id
+                isTeacher = false 
+                actualPassword =  assistant.password
+            }
+        } else{
+            actualPassword =  professor.password
+            id = professor.id        }
 
         // Compara la contraseña proporcionada con la contraseña almacenada en la base de datos
-        const match = await comparePassword(password, professor.password);
+        const match = await comparePassword(password, actualPassword);
 
         // Si la contraseña no coincide, devuelve un error
         if (!match) {
@@ -311,10 +325,9 @@ const login = async (req, res) => {
         // Devuelve el nombre del usuario
         return res.status(200).json({ 
             message: 'Login successful', 
-            _id: professor._id,
-            firstName: professor.firstName,
-            firstSurname: professor.firstSurname,
-            secondSurname: professor.secondSurname
+            _id: id,
+            isTeacher: isTeacher
+
         });
 
     } catch (error) {
@@ -522,6 +535,7 @@ const resetPassword = async (req, res) => {
 Utilidad que crea un metodo de abstracion para enviar correos electronicos
 Funciona como una plantilla
 */
+
 const sendVerificationEmail = (email, verificationToken) => {
     try {
         const verificationLink = `http://localhost:3000/verify-email?token=${verificationToken}`;

@@ -11,9 +11,11 @@
                 class="filter-input">
                 
            </shared-input>
-       
       </div>
-      <app-table [headers]="headers" [data]="data"> </app-table>
+      <app-table 
+          [headers]="headers" 
+          [data]="data"> 
+      </app-table>
       <div class="pagination clickable">
         <i class="material-icons"
         (click)="changePage(limit, page-1)">arrow_back_ios</i>

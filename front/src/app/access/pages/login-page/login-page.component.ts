@@ -4,7 +4,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { Router, RouterModule } from '@angular/router';
 import { S3ApiService } from '../../../s3-api.service';
 import { CommunicationService } from '../../../services/communication.service';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login-page',
@@ -12,7 +12,8 @@ import { CommunicationService } from '../../../services/communication.service';
   imports: [
     InputComponent,
     ButtonComponent,
-    RouterModule
+    RouterModule, 
+    CommonModule 
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
@@ -24,6 +25,8 @@ export class LoginPageComponent {
 
   email: string = '';
   password: string = '';
+  showErrorMessage: boolean = false;
+  errorMessage: string = '';
   
   //maskedPassword: string = '';
   /*
@@ -34,6 +37,18 @@ export class LoginPageComponent {
   }*/
 
   getInputs(){
+
+    if (!this.email && !this.password) {
+      this.showErrorMessage = true; 
+      return; 
+    } else if (!this.email) {
+      this.showErrorMessage = true; 
+      return; 
+    } else if (!this.password) {
+      this.showErrorMessage = true; 
+      return; 
+    }
+    
     this.CS.login(this.email, this.password).subscribe(
       (res) => {
         if(res.message === 'Login successful'){
@@ -58,8 +73,6 @@ export class LoginPageComponent {
       }
     )
   }
-    
-
 
 }
 
