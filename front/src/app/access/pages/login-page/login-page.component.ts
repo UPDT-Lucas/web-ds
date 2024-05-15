@@ -39,12 +39,15 @@ export class LoginPageComponent {
   getInputs(){
 
     if (!this.email && !this.password) {
+      this.errorMessage = 'Por favor ingrese tanto el correo como la contraseña.';
       this.showErrorMessage = true; 
       return; 
     } else if (!this.email) {
+      this.errorMessage = 'Por favor ingrese el correo.';
       this.showErrorMessage = true; 
       return; 
     } else if (!this.password) {
+      this.errorMessage = 'Por favor ingrese la contraseña.';
       this.showErrorMessage = true; 
       return; 
     }

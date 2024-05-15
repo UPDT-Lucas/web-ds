@@ -6,21 +6,9 @@
     <h1>
       Iniciar Sesión
     </h1>
+    
+    <ng-container *ngIf="errorMessage" class="error-message">{{ errorMessage }}</ng-container>
 
-    <!-- Mensaje de error -->
-    <!-- <div class="error-message" *ngIf="showErrorMessage">
-      <ng-container *ngIf="!email && !password">
-        Por favor ingrese tanto el correo como la contraseña.
-      </ng-container>
-      <ng-container *ngIf="!email && password">
-        Por favor ingrese el correo.
-      </ng-container>
-      <ng-container *ngIf="email && !password">
-        Por favor ingrese la contraseña.
-      </ng-container>
-        <ng-container *ngIf="errorMessage">{{ errorMessage }}</ng-container>
-      </ng-container>
-    </div> -->
 
     <div class="inputs-container">
       <div class="each-input">
@@ -36,7 +24,6 @@
         </shared-input>
       </div>
     </div>
-
     <div class="change-password-container">
       <h2 [routerLink]="'/changePassword/addMail'" class="clickable">
         Cambiar contraseña
