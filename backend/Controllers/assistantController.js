@@ -90,6 +90,48 @@ const registerAssistant = async (req, res) => {
 
 
 //-------------------------------------------------------------------
+/*
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Verifica que se proporcionen tanto el email como la contraseña
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Please enter both email and password' });
+        }
+
+        // Busca en la base de datos un usuario que coincida con el email proporcionado
+        const assitant = await Assistant.findOne({ email });
+
+        // Si no se encuentra ningún usuario, devuelve un error
+        if (!assitant) {
+            return res.status(401).json({ error: 'Assistant not found' });
+        }
+
+        // Compara la contraseña proporcionada con la contraseña almacenada en la base de datos
+        const match = await comparePassword(password, assitant.password);
+
+        // Si la contraseña no coincide, devuelve un error
+        if (!match) {
+            return res.status(401).json({ error: 'Incorrect password' });
+        }
+
+        // Devuelve el nombre del usuario
+        return res.status(200).json({ 
+            message: 'Login successful', 
+            _id: assitant._id,
+            firstName: assitant.firstName,
+            firstSurname: assitant.firstSurname,
+            secondSurname: assitant.secondSurname
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}*/
+
+//-------------------------------------------------------------------
 
 const getAllAssistant = async(req, res) => {
     try{

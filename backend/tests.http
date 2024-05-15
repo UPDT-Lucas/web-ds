@@ -1,14 +1,14 @@
 
 ### add ass
-POST http://localhost:3000/register-professor HTTP/1.1
+POST http://localhost:3000/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "firstName": "Maria",
-  "secondName": "Ernesto",
-  "firstSurname": "Alvarado",
-  "secondSurname": "Durán",
-  "email": "mariamolinag69@gmail.com",
+  "firstName": "Ericka",
+  "secondName": "Vanessa",
+  "firstSurname": "Solano",
+  "secondSurname": "Molina",
+  "email": "ericka@gmail.com",
   "campus": "6630576f3ee524ad51bd5b09", 
   "password": "12345678",
   "cellPhone": "22924880",
