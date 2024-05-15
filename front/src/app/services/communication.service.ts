@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { Professor } from '../interfaces/professor.interface';
 import { Student } from '../interfaces/student.interface';
 import { Activity } from '../interfaces/activity.interface';
-import { Assistant } from '../interfaces/assitant.interface'
+import { Assistant, AssistantResponse } from '../interfaces/assistant.interface'
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,18 @@ import { Assistant } from '../interfaces/assitant.interface'
 export class CommunicationService {
   constructor(private http: HttpClient) {}  
   private apiUrl = 'http://localhost:3000';
+
+  setActualUser(id: string, isTeacher: string){
+    localStorage.setItem('-id', id);
+    localStorage.setItem('isTeacher', isTeacher)
+  }
+
+  getActualUser(){
+    const id = localStorage.getItem('-id') || ""
+    const isTeacherString = localStorage.getItem('isTeacher') || ""
+    const isTeacher = isTeacherString == "false" ? false : true
+    return {id, isTeacher}
+  }
 
   //----------------------------------------- PROFESSOR -----------------------------------------//
   login(email: string, pass: string): Observable<any> {
@@ -46,8 +58,6 @@ export class CommunicationService {
 
 
   registerProfessor(professorData: any): Observable<Professor> {
-    console.log("la data")
-    console.log(professorData)
     const url = `${this.apiUrl}/register-professor`; 
     return this.http.post<Professor>(url, professorData); 
   }
@@ -103,8 +113,8 @@ export class CommunicationService {
     return this.http.post<Student>(url, studentData); 
   }
 
-  getAllStudent(): Observable<Student[]  | any> {
-    const url = `${this.apiUrl}/all-student`; 
+  getAllStudent(limit: number, skip: number): Observable<Student[]  | any> {
+    const url = `${this.apiUrl}/all-student?limit=${limit}&skip=${skip}`; 
     return this.http.get<Student[]>(url); 
   }
 
@@ -145,6 +155,11 @@ export class CommunicationService {
 
   loginAssistant(email: string, pass: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/loginAssistant`, {"email": email, "password": pass});
+  }
+
+  getAssistant(id: string): Observable<AssistantResponse>{
+    const url = `${this.apiUrl}/getAssistant/${id}`
+    return this.http.get<AssistantResponse>(url)
   }
 
 }

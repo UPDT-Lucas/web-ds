@@ -11,6 +11,8 @@ import { Student } from "../../../interfaces/student.interface";
 import { Router } from "@angular/router";
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ExcelStudent } from "../../../interfaces/excelStudent.interface";
+import { AssistantResponse } from "../../../interfaces/assistant.interface";
+import { Professor } from "../../../interfaces/professor.interface";
 
 @Component({
   selector: "app-view-students-page",
@@ -37,19 +39,13 @@ export class ViewStudentsPageComponent {
   file: any;
 
   headers = [
-    ["Rol", "text"],
-    ["Nombre", "text"],
-    ["Correo", "text"],
-    ["Carné", "text"],
-    ["Código", "span"],
-    ["Acciones", "icon"],
-  ];
+    ['Rol', 'text'],
+    ['Nombre', 'text'],
+    ['Correo', 'text'],
+    ['Carnet', 'text'],
+    ['Código', 'span']]
 
-  actions = [
-    ["delete", ""],
-    ["edit", ""],
-    ["exit_to_app", ""],
-  ];
+  actions: [string, string][] = [] 
 
   data: any[] = [];
   excelData: any[] = [];
@@ -58,6 +54,50 @@ export class ViewStudentsPageComponent {
   limit: number = 0;
   filterOnInput: string = ""
   filter: boolean = false;
+  userIsTeacher: boolean = false;
+  actualProfessor!: Professor;
+  assistant!: AssistantResponse;
+  actualId: string = ""
+
+  
+  ngOnInit() {
+    const user = this.CS.getActualUser()
+    this.actualId = user.id
+    this.userIsTeacher = user.isTeacher
+    if(user.isTeacher){
+      this.getProfessor()
+    }else{
+      this.getAssistant()
+    }
+    this.limit = 5
+    this.changePage(5, 0)
+    this.setActions()
+  }
+
+  getAssistant(){
+    this.CS.getAssistant(this.actualId).subscribe(
+      assistant => {
+        this.assistant = assistant
+      }
+    )
+  }
+
+  getProfessor(){
+    this.CS.getProfessor(this.actualId).subscribe(
+      prof => {
+        this.actualProfessor = prof
+      }
+    )
+  }
+
+
+  setActions() {
+    this.headers.push(['Acciones', 'icon'])
+    this.actions = 
+    [['delete', ''],
+    ['edit', ''],
+    ['exit_to_app', '']]  
+  }
 
   searchByName() {
     if (this.filterOnInput) {
@@ -238,11 +278,6 @@ export class ViewStudentsPageComponent {
       const id = studentList.students[index]._id; 
       console.log("ID:", id);
 
-      const studentsActions = JSON.parse(JSON.stringify(this.actions));
-      studentsActions[1][1] = `/editStudent/${id}`;
-
-
-
       const rolStudent = "Estudiante";
       const nameStudent =
         studentList.students[index].firstName +
@@ -256,15 +291,32 @@ export class ViewStudentsPageComponent {
       console.log(campusName);
       const campusBadge = this.getBadge(campusName);
       const campusStudent = campusBadge;
+
+
       const studentData = [
         rolStudent,
         nameStudent,
         emailStudent,
         carnetStudent,
         campusStudent,
-        studentsActions
         //this.actions,
       ];
+
+      if(this.userIsTeacher){
+          const studentsActions = JSON.parse(JSON.stringify(this.actions));
+          studentsActions[1][1] = `/editStudent/${id}`;
+          studentData.push(studentsActions)
+      }else if(this.assistant){          
+        const studentsActions = JSON.parse(JSON.stringify(this.actions));
+        if(this.assistant.assistant.campus == studentList.students[index].campus){
+          studentsActions[1][1] = `/editStudent/${id}`;
+        }else{
+          studentsActions[1][1] = `/viewStudents`;
+        }
+        studentData.push(studentsActions)
+      } 
+
+
       this.data.push(studentData);
     }
   }
@@ -285,7 +337,7 @@ export class ViewStudentsPageComponent {
           }
         )
       } else {
-        this.CS.getAllStudent().subscribe(
+        this.CS.getAllStudent(this.limit, nextPage * limit).subscribe(
           res => {
             if (res.students.length != 0) {
               this.data = []
@@ -295,15 +347,8 @@ export class ViewStudentsPageComponent {
             }
           }
         )
-      } 2
+      } 
     }
   }
-  ngOnInit() {
-    this.CS.getAllStudent().subscribe((res) => {
-      //this.professorList = res
-      // console.log(this.professorList);
-      this.getData(res);
-      //this.getExcelData(res);
-    });
-  }
+
 }

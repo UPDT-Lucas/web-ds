@@ -52,18 +52,8 @@ export class LoginPageComponent {
     this.CS.login(this.email, this.password).subscribe(
       (res) => {
         if(res.message === 'Login successful'){
-
-        localStorage.setItem('-id', res._id);
-        localStorage.setItem('firstName', res.firstName);
-        localStorage.setItem('firstSurname', res.firstSurname);
-        localStorage.setItem('secondSurname', res.secondSurname);
-
-        console.log('id: ', res._id);
-        console.log('Nombre:', res.firstName);
-        console.log('Primer Apellido:', res.firstSurname);
-        console.log('Segundo Apellido:', res.secondSurname);
-
-         window.location.href = '/';
+        this.CS.setActualUser(res._id, res.isTeacher)
+        window.location.href = '/';
         }else{
           console.log('Error: ', res.error);
         }

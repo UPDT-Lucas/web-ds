@@ -7,6 +7,7 @@ import { Professor } from '../../../interfaces/professor.interface';
 import { Router } from "@angular/router";
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { EditTeacherPageComponent } from '../../../guide-teacher/pages/edit-teacher-page/edit-teacher-page.component';
+import { AssistantResponse } from '../../../interfaces/assistant.interface';
 
 @Component({
   selector: 'app-team-view',
@@ -20,7 +21,7 @@ import { EditTeacherPageComponent } from '../../../guide-teacher/pages/edit-teac
   templateUrl: './team-view.component.html',
   styleUrl: './team-view.component.css'
 })
-export class TeamViewComponent{
+export class TeamViewComponent {
 
   professorList: Professor[] = []
 
@@ -28,12 +29,9 @@ export class TeamViewComponent{
     ['Rol', 'text'],
     ['Nombre', 'text'],
     ['Correo', 'text'],
-    ['Código', 'span'],
-    ['Acciones', 'icon']]
+    ['Código', 'span']]
 
-  actions = [['delete', ''],
-  ['edit', ''],
-  ['exit_to_app', '']]
+  actions: [string, string][] = [] 
 
   data: any[] = []
   page: number = 0;
@@ -42,25 +40,58 @@ export class TeamViewComponent{
   filterOnInput: string = ""
   filter: boolean = false;
   actualId: string = "";
+  actualProfessor!: Professor;
+  userIsTeacher: boolean = false;
+  assistant!: AssistantResponse;
 
-  constructor(private CS: CommunicationService, private router: Router) {}
+  constructor(private CS: CommunicationService, private router: Router) { }
 
   ngOnInit() {
+    const user = this.CS.getActualUser()
+    this.actualId = user.id
+    this.userIsTeacher = user.isTeacher
+    if(user.isTeacher){
+      this.getProfessor()
+    }else{
+      this.getAssistant()
+    }
     this.limit = 5
     this.changePage(5, 0)
-    this.actualId = localStorage.getItem('-id') || '';
-    this.getProfessorCampus()
-    console.log(this.actualId)
+    this.setActions()
   }
 
-  getProfessorCampus(){
-    // this.CS.getProfessor(this.actualId).subscribe(
-    //   prof => {
-    //     this.CS.getProfessorByCampus().subscribe(
-    //       profList => console.log(profList)
-    //     )
-    //   }
-    // )
+  setActions() {
+      this.headers.push(['Acciones', 'icon'])
+      this.actions = 
+      [['delete', ''],
+      ['edit', ''],
+      ['exit_to_app', '']]
+  }
+
+  // getProfessorCampus() {
+  //   this.CS.getProfessor(this.actualId).subscribe(
+  //     prof => {
+  //       this.CS.getProfessorByCampus().subscribe(
+  //         profList => console.log(profList)
+  //       )
+  //     }
+  //   )
+  // }
+
+  getAssistant(){
+    this.CS.getAssistant(this.actualId).subscribe(
+      assistant => {
+        this.assistant = assistant
+      }
+    )
+  }
+
+  getProfessor(){
+    this.CS.getProfessor(this.actualId).subscribe(
+      prof => {
+        this.actualProfessor = prof
+      }
+    )
   }
 
   searchByName() {
@@ -96,18 +127,9 @@ export class TeamViewComponent{
 
       console.log("Índice:", index);
       console.log("Información:", professorList.professors[index]);
-    
-      const id = professorList.professors[index]._id; 
+
+      const id = professorList.professors[index]._id;
       console.log("ID:", id);
-
-
-      const professorActions = JSON.parse(JSON.stringify(this.actions));
-      professorActions[1][1] = `/editTeacher/${id}`;
-      //professorActions[0][1] = `deleteProfessor('${id}')`;
-      //professorActions[0][1] = () => this.deleteProfessor(id);
-      //professorActions[0][1] = `${id}`;
-
-
 
 
       const rolProfessor = professorList.professors[index].isCordinator ? "Profesor Coordinador" : "Profesor";
@@ -116,9 +138,29 @@ export class TeamViewComponent{
       const campusName = this.CS.getCampusById(professorList.professors[index].campus);
       const campusBadge = this.getBadge(campusName);
       const campusProfessor = campusBadge;
-      const professorData = [
-        rolProfessor, nameProfessor, emailProfessor, campusProfessor, professorActions
+      var professorData = [
+        rolProfessor, nameProfessor, emailProfessor, campusProfessor
       ];
+      if(this.userIsTeacher){
+        const professorActions = JSON.parse(JSON.stringify(this.actions));
+        if(professorList.professors[index].campus == this.actualProfessor.account.campus){
+          professorActions[1][1] = `/editTeacher/${id}`;
+        }else{
+          professorActions[1][1] = `/teamView`;
+        }
+        professorData.push(professorActions)
+      }else if(this.assistant){          
+        const assistantActions = JSON.parse(JSON.stringify(this.actions));
+        if(this.assistant.assistant.campus == "663057633ee524ad51bd5b05"){
+          assistantActions[1][1] = `/editTeacher/${id}`;
+        }else if(this.assistant.assistant.campus == professorList.professors[index].campus){
+          assistantActions[1][1] = `/editTeacher/${id}`;
+        }else{
+          assistantActions[1][1] = `/teamView`;
+        }
+        professorData.push(assistantActions)
+      } 
+      
       this.data.push(professorData);
     }
   }
@@ -135,6 +177,8 @@ export class TeamViewComponent{
               this.professorList = res
               this.getData(res)
               this.page = nextPage;
+              console.log(this.professorList)
+              console.log("aa")
             }
           }
         )
@@ -156,7 +200,7 @@ export class TeamViewComponent{
   
   deleteProfessor(id: string) {
     
-    this. CS.deleteProfessor(id).subscribe(() => {
+    this.CS.deleteProfessor(id).subscribe(() => {
       console.log('Profesor eliminado exitosamente');
       
       this.router.navigate(['/']);

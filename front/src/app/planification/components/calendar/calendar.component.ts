@@ -20,14 +20,54 @@ export class CalendarComponent {
   
   @Input() activities: any[] = [{ title: 'Meeting', start: new Date(2024,2,26,10,30), end: new Date(2024,2,28,10,30), id: '1' }];
   calendarActivities: any = [];
+  actualUser: {id: string, isTeacher: boolean} = {id: "", isTeacher: false}
 
   constructor(private router: Router, private CS: CommunicationService){}
 
   ngOnInit() {
     console.log(this.activities)
+    this.actualUser = this.CS.getActualUser()
+    if(this.actualUser.isTeacher){
+      this.CS.getProfessor(this.actualUser.id).subscribe(
+        prof => {
+          if(prof.account.isCordinator){
+            this.calendarOptions = this.calendarWthAddOptions
+          }
+        }
+      )
+    }
   }
 
   calendarOptions: CalendarOptions = {
+    customButtons: {
+      addActivity: {
+        text: 'Agregar Actividad',
+        click: () => {
+          this.router.navigate(['/addActivity'])
+        }
+      }
+    },
+    eventClick: (event) => {
+      this.getEventDetails(event.event.id)
+      // console.log(event.event.id)
+    },
+    locale: esLocale,
+    plugins: [dayGridPlugin],
+    initialView: 'dayGridWeek',
+    hiddenDays: [0],
+    events: this.activities,
+    headerToolbar: {
+      start: 'title',
+      center: '',
+      end: ''
+    },
+    footerToolbar: {
+      start: 'dayGridWeek,dayGridMonth',
+      end: 'prev,next'
+    }
+  };
+
+  calendarWthAddOptions: CalendarOptions = {
     customButtons: {
       addActivity: {
         text: 'Agregar Actividad',

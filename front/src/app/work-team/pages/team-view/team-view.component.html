@@ -1,5 +1,5 @@
 <div class="flex-container">
-    <shared-header></shared-header>
+    <shared-header [isTeacher]="userIsTeacher"></shared-header>
     <div class="container">
         <div class="content-fixer">
             <div class="top-table">
@@ -26,10 +26,12 @@
                     text="Ver estudiantes" 
                     link="/viewStudents">
                 </shared-button>
-                <shared-button 
+                @if(!userIsTeacher){
+                    <shared-button 
                     text="Agregar profesor" 
                     link="/addTeacher">
                 </shared-button>
+                }
             </div>
         </div>
     </div>

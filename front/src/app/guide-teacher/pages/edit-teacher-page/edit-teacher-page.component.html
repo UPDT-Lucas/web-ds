@@ -1,5 +1,5 @@
 <div class="flex-container">
-    <shared-header></shared-header>
+    <shared-header [isTeacher]="userIsTeacher"></shared-header>
 
     <div class="container">
         <div class="info-container">
@@ -138,17 +138,19 @@
                             </shared-file-input>
                         </div>
                     </div>
-                    <div class="input">
-                        <h5>
-                            Coordinador
-                        </h5>
-                        <div class="checkbox-container">
-                            <shared-checkbox-input 
-                                (change)="toggleIsCoordinator($event)"
-                                [isChecked]="actualIsCoordinator">
-                            </shared-checkbox-input>
+                    @if((!userIsTeacher) && (userCampus == "663057633ee524ad51bd5b05")){
+                        <div class="input">
+                            <h5>
+                                Coordinador
+                            </h5>
+                            <div class="checkbox-container">
+                                <shared-checkbox-input 
+                                    (change)="toggleIsCoordinator($event)"
+                                    [isChecked]="actualIsCoordinator">
+                                </shared-checkbox-input>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
 
             <div class="options">

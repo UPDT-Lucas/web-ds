@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { RouterModule } from '@angular/router';
 
@@ -13,6 +13,9 @@ import { RouterModule } from '@angular/router';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+
+  @Input()
+  isTeacher: boolean = true
 
   constructor(router: RouterModule){}
 }

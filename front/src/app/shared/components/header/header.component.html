@@ -5,9 +5,11 @@
         </h2>
     </div>
     <div class="options">
-        <h2 [routerLink]="'/viewProfile'" class="clickable">
-            Ver perfil
-        </h2>
+        @if (isTeacher) {
+            <h2 [routerLink]="'/viewProfile'" class="clickable">
+                Ver perfil
+            </h2>
+        }
         <shared-button
             text="Cerrar sesión"
             link="/login">

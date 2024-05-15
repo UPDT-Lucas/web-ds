@@ -1,5 +1,5 @@
 <div class="flex-container">
-    <shared-header></shared-header>
+    <shared-header [isTeacher]="actualUser.isTeacher"></shared-header>
     <div class="container">
         <div class="info-container">
             <div class="img-container">
@@ -92,17 +92,20 @@
                 </div>
             </div>
         </div>
-        <div class="options-container">
-            <!--TODO: poner los links de los botones-->
-            <shared-button 
-                text="Ver comentarios"
-                link="">
-            </shared-button>
-            <!--TODO: poner los links de los botones-->
-            <shared-button
-                text="Editar"
-                link="/editActivity">
-            </shared-button>
-        </div>
+
+            <div class="options-container">
+                <!--TODO: poner los links de los botones-->
+                <shared-button 
+                    text="Ver comentarios"
+                    link="">
+                </shared-button>
+                <!--TODO: poner los links de los botones-->
+                @if (userIsCordinator) {
+                <shared-button
+                    text="Editar"
+                    link="/editActivity">
+                </shared-button>
+            }
+            </div>
     </div>
 </div>

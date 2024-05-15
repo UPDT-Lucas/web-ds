@@ -34,11 +34,20 @@ export class ViewActivityPageComponent {
     currentState: ''
   };
 
+  userIsCordinator: boolean = false;
   activityId: string = '';
-
+  actualUser: {id: string, isTeacher: boolean} = {id: "", isTeacher: true}
 
 
   ngOnInit() {
+    this.actualUser = this.CS.getActualUser();
+    this.CS.getProfessor(this.actualUser.id).subscribe(
+      prof => {
+        if(prof.account.isCordinator){
+          this.userIsCordinator = true
+        }
+      }
+    )
     this.route.params.subscribe(params => {
       this.activityId = params['id'];
       this.CS.getActivity(this.activityId).subscribe(res =>{

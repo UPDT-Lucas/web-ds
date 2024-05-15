@@ -24,7 +24,7 @@ export class ViewProfilePageComponent {
   phone: string = '';
   campus: string = '';
   photo: string = '/assets/images/profileHolder.png';
-  
+  actualProfessor!: Professor;
   //isCordinator: string = '';
 
 
@@ -32,33 +32,29 @@ export class ViewProfilePageComponent {
   constructor(
     private CS: CommunicationService,
     private router: Router) {
-    this.id = localStorage.getItem('-id') || '';
     //console.log(this.id);
   }
 
-
   ngOnInit() {
+    this.id = localStorage.getItem('-id') || '';
     this.CS.getProfessor(this.id).subscribe(
       res => {
-        this.email = res.account.email
-        this.name = res.account.name.firstName + " " + res.account.name.secondName + " " + res.account.name.firstSurname + " " + res.account.name.secondSurname
-        this.officePhone = res.account.officePhone
-        this.phone = res.account.cellPhone
-        this.photo = res.account.photo
-        console.log(this.photo)
-        console.log("xd")
+        this.actualProfessor = res
+        this.email = this.actualProfessor.account.email
+        this.name = this.actualProfessor.account.name.firstName + " " + this.actualProfessor.account.name.secondName + " " + this.actualProfessor.account.name.firstSurname + " " + this.actualProfessor.account.name.secondSurname
+        this.officePhone = this.actualProfessor.account.officePhone
+        this.phone = this.actualProfessor.account.cellPhone
+        this.photo = this.actualProfessor.account.photo
 
-        console.log(res.account)
-
-        if (res.account.campus === "663057633ee524ad51bd5b05") {
+        if (this.actualProfessor.account.campus === "663057633ee524ad51bd5b05") {
           this.campus = "Cartago";
-        } else if (res.account.campus === "6630576f3ee524ad51bd5b09") {
+        } else if (this.actualProfessor.account.campus === "6630576f3ee524ad51bd5b09") {
           this.campus = "Alajuela";
-        } else if (res.account.campus === "663057763ee524ad51bd5b0c") {
+        } else if (this.actualProfessor.account.campus === "663057763ee524ad51bd5b0c") {
           this.campus = "San Carlos";
-        } else if (res.account.campus === "663057863ee524ad51bd5b0f") {
+        } else if (this.actualProfessor.account.campus === "663057863ee524ad51bd5b0f") {
           this.campus = "San José";
-        } else if (res.account.campus === "6630578f3ee524ad51bd5b12") {
+        } else if (this.actualProfessor.account.campus === "6630578f3ee524ad51bd5b12") {
           this.campus = "Limón";
         }
 

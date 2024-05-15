@@ -19,12 +19,13 @@ export class ViewCalendarPageComponent {
 
   activities: Activity[] = [];
   calendarActivities: any = [];
+  actualUser: {id: string, isTeacher: boolean} = {id: "", isTeacher: true}
 
   // { title: 'Meeting', start: new Date(2024,2,26,10,30), end: new Date(2024,2,28,10,30), id: '1' },
   // { title: 'Meeting', start: new Date(2024,2,27,12,0), end: new Date(2024,2,27,14,0), id: '2' }
 
   ngOnInit() {
-    console.log("Getting all activities");
+    this.actualUser = this.CS.getActualUser()
     this.CS.getAllActivities().subscribe(
       (res) => {
         this.getData(res);

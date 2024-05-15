@@ -25,6 +25,8 @@ import { map } from 'rxjs';
 export class EditTeacherPageComponent {
 
   id: string = "";
+  userIsTeacher: boolean = true;
+  userCampus: string = ""
   
   firstNameOnInput: string = '';
   secondNameOnInput: string = '';
@@ -53,8 +55,6 @@ export class EditTeacherPageComponent {
     private CS: CommunicationService, 
     private route: ActivatedRoute,
     private router: Router) {
-
-    this.id = localStorage.getItem('-id') || '';
   }
 
 
@@ -66,6 +66,15 @@ export class EditTeacherPageComponent {
 
 
   ngOnInit(){
+    this.id = this.CS.getActualUser().id
+    this.userIsTeacher = this.CS.getActualUser().isTeacher
+    if(!this.userIsTeacher){
+      this.CS.getAssistant(this.id).subscribe(
+        assistant => {
+          this.userCampus = assistant.assistant.campus
+        }
+      )
+    }
     this.route.params.subscribe(
       params => {
         this.id = params["id"]  

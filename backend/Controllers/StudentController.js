@@ -92,6 +92,19 @@ const getAllStudent = async(req, res) => {
     }
 }
 
+const getStudentByName = async (req, res) => {
+    try {
+        const students = await Student.find({ 
+            $or: [
+                { firstName: { $regex: new RegExp(req.query.name, 'i') } }, // Busca por coincidencia de nombre
+            ]
+        }).skip(req.query.skip).limit(req.query.limit)
+        return res.status(200).json({ students });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 /*
 Permite consultar un estudiante para obtener su cuenta de la base de datos
@@ -217,4 +230,4 @@ const editAccountStudent = async (req, res) => {
 
 
 module.exports = { registerStudent, getAllStudent, getStudent, deleteStudent,
-    getStudentsByCampus, editAccountStudent }
+    getStudentsByCampus, editAccountStudent, getStudentByName }
