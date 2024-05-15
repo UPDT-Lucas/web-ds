@@ -41,13 +41,27 @@ export class TeamViewComponent{
   limit: number = 0;
   filterOnInput: string = ""
   filter: boolean = false;
+  actualId: string = "";
 
-  constructor(private CS: CommunicationService, private router: Router) { }
+  constructor(private CS: CommunicationService, private router: Router) {}
 
-  /*handleEdit(email: string) {
-    console.log('Correo del profesor:', email);
+  ngOnInit() {
+    this.limit = 5
+    this.changePage(5, 0)
+    this.actualId = localStorage.getItem('-id') || '';
+    this.getProfessorCampus()
+    console.log(this.actualId)
+  }
 
-  }*/
+  getProfessorCampus(){
+    // this.CS.getProfessor(this.actualId).subscribe(
+    //   prof => {
+    //     this.CS.getProfessorByCampus().subscribe(
+    //       profList => console.log(profList)
+    //     )
+    //   }
+    // )
+  }
 
   searchByName() {
     if (this.filterOnInput) {
@@ -132,12 +146,6 @@ export class TeamViewComponent{
     }
   }
     
-    
-  ngOnInit() {
-    this.limit = 5
-    this.changePage(5, 0)
-    console.log("aaa")
-  }
 }
 
 

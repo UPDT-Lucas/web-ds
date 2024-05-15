@@ -61,12 +61,16 @@ export class CommunicationService {
     const url = `${this.apiUrl}/getProfessorByName?name=${name}&limit=${limit}&skip=${skip}`
     return this.http.get<Professor>(url)
   }
-
+  getProfessorByCampus(campus: string, limit: number, skip: number): Observable<Professor | any> {
+    const url = `${this.apiUrl}/getProfessorByCampus?campus=${campus}&limit=${limit}&skip=${skip}`
+    return this.http.get<Professor>(url)
+  }
+  
   getProfessorByEmail(email: string): Observable<Professor> {
     const url = `${this.apiUrl}/getProfessorByEmail/${email}`;
     return this.http.get<Professor>(url);
   }
-  
+
   getCampusById(id: string): string {
     if (
       id == "663057863ee524ad51bd5b0f"

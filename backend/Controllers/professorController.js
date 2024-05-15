@@ -97,7 +97,6 @@ const registerProfessor = async (req, res) => {
             code: professorCode,
             campus: result.data.campus,
             password: hashed,
-            photo: result.data.photo,
             security:{
                 resetPasswordOTP: undefined,
                 emailVerificationToken: verificationToken,
@@ -357,7 +356,9 @@ const getProfessorByCampus = async (req, res) => {
         const { id } = req.params;
 
         // Buscar todos los profesores que tienen el ID del campus en su campo 'campus'
-        const professor = await Professor.find({ campus: id });
+        const professor = await Professor.find({ campus: id })
+        .skip(req.query.skip)
+        .limit(req.query.limit);
 
         if (!professor || professor.length === 0) {
             return res.status(404).json({ error: 'No professor found in this campus' });
