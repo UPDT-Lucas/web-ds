@@ -30,7 +30,7 @@ export class AddActivityPageComponent {
 
   typeOfActivity: string = 'Orientadora';
   activityName: string = '';
-  responsibles: string[] = [];
+  responsibles!: string[];
   executionDate: string = '';
   executionWeek: number = 1;
   announcementDate: string = '';
