@@ -2,7 +2,7 @@
     <shared-header></shared-header>
     <div class="container">
       <div class="info-container">
-        <h2 class="header">Agregar Actividad</h2>
+        <h2 class="header">Editar Actividad</h2>
         <div class="row">
           <div class="input">
             <h5>Tipo</h5>
@@ -32,34 +32,35 @@
         <div class="row">
           <div class="input">
             <h5>Fecha de ejecución</h5>
-            <shared-date-picker [(entry)]="executionDate" [value]="executionDate"></shared-date-picker>
+            <shared-date-picker [(entry)]="executionDate" [value]="activityId" [typeOfDate]="'executionDate'"></shared-date-picker>
           </div>
           <div class="input">
             <h5>Fecha de anuncio a la comunidad</h5>
-            <shared-date-picker [(entry)]="announcementDate"></shared-date-picker>
+            <shared-date-picker [(entry)]="announcementDate" [value]="activityId" [typeOfDate]="'announcementDate'"></shared-date-picker>
           </div>
         </div>
         <div class="row">
           <div class="input">
             <h5>Frecuencia de recordatorios en días</h5>
-            <shared-input placeholder="3" [(entry)]="inputReminderDates"> </shared-input>
+            <shared-input placeholder="3" [(entry)]="inputReminderDates" [value]="reminderDates.toString()"> </shared-input>
           </div>
           <div class="input">
             <h5>Semana de realización</h5>
-            <shared-input placeholder="0" [(entry)]="inputExecutionWeek"> </shared-input>
+            <shared-input placeholder="0" [(entry)]="inputExecutionWeek" [value]="executionWeek.toString()"> </shared-input>
           </div>
         </div>
         <div class="row">
           <div class="input">
             <h5>Responsables (Inserte correos separados por comas)</h5>
-            <shared-input placeholder="prof1@example.com, prof2@example.com..." [(entry)]="inputResponsibles"> </shared-input>
+            <shared-input placeholder="prof1@example.com, prof2@example.com..." [(entry)]="inputResponsibles" [value]="professorEmailsToShow"> </shared-input>
           </div>
           <div class="input">
             <div class="image-poster-container">
               <shared-file-input
                 (fileSelected)="getFile($event)"
                 [acceptedExtensions]="['.jpg', '.png', '.jpeg', '.pdf']"
-                placeholder="Subir afiche"
+                [isPDF]="true"
+                [placeholder]="activityPoster"
               >
               </shared-file-input>
             </div>
@@ -74,13 +75,13 @@
           @if(isRemote){
           <div class="input">
             <h5>Enlace</h5>
-            <shared-input placeholder="linkreunion.com" [(entry)]="virtualActivityLink"> </shared-input>
+            <shared-input placeholder="linkreunion.com" [(entry)]="virtualActivityLink" [value]="virtualActivityLink"> </shared-input>
           </div>
           }
         </div>
       </div>
       <div class="options">
-        <shared-button text="Agregar actividad" (click)="test()"> </shared-button>
+        <shared-button text="Confirmar actividad" (click)="getData()"> </shared-button>
       </div>
     </div>
   </div>

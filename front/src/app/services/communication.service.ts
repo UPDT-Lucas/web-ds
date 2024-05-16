@@ -155,6 +155,11 @@ export class CommunicationService {
     return this.http.post<Activity>(url, activityData); 
   }
 
+  editActivity(id: string, activityData: Activity): Observable<Activity> {
+    const url = `${this.apiUrl}/editActivity/${id}`;
+    return this.http.put<Activity>(url, activityData);
+  }
+
   //----------------------------------------- ASSISTANT -----------------------------------------//
 
   loginAssistant(email: string, pass: string): Observable<any> {

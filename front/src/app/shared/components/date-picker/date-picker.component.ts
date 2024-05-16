@@ -7,6 +7,7 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Output } from '@angular/core';
+import { CommunicationService } from '../../../services/communication.service';
 
 
 
@@ -29,10 +30,15 @@ import { Output } from '@angular/core';
 })
 export class DatePickerComponent {
 
-  constructor() { }
+  constructor(private CS: CommunicationService){
+
+  }
 
   @Input()
   value: string | null = null;
+
+  @Input()
+  typeOfDate: string = '';
 
   @Input()
   entry!: string;
@@ -40,16 +46,36 @@ export class DatePickerComponent {
   @Output()
   entryChange = new EventEmitter<string>();
 
-  formsDate = new FormControl(this.value);
+  formsDate = new FormControl(new Date());
   
 
   onDateChange(event: MatDatepickerInputEvent<Date>) {
     if (event.value) {
-      this.formsDate = new FormControl(event.value.toISOString());
-      if (this.formsDate.value !== null) {
-        this.entryChange.emit(this.formsDate.value);
-      }
+       this.formsDate = new FormControl(event.value);
+       if (this.formsDate.value !== null) {
+         this.entryChange.emit(this.formsDate.value.toISOString());
+       }
     }
+  }
+
+  ngOnInit(){
+    let activityId = this.value;
+    if(activityId == null) return;
+    this.CS.getActivity(activityId).subscribe(
+      (activityRequest: any) => {
+        if(activityRequest){
+          if(this.typeOfDate == 'executionDate'){
+            let executionDate = activityRequest.activity.executionDate;
+            this.formsDate = new FormControl(new Date(executionDate));
+          } else if(this.typeOfDate == 'announcementDate'){
+            let announcementDate = activityRequest.activity.announcementDate;
+            this.formsDate = new FormControl(new Date(announcementDate));
+          } else {
+            this.formsDate = new FormControl(new Date());
+          }
+        }
+      }
+    )  
   }
 
   
