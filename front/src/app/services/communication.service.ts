@@ -150,7 +150,7 @@ export class CommunicationService {
   }
 
 
-  registerActivity(activityData: any): Observable<Activity> {
+  registerActivity(activityData: Activity): Observable<Activity> {
     const url = `${this.apiUrl}/register-activity`; 
     return this.http.post<Activity>(url, activityData); 
   }
