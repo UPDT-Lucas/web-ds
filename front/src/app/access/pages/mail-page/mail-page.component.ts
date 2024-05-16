@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { CommunicationService } from '../../../services/communication.service';
 import {Router} from "@angular/router";
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-mail-page',
@@ -12,7 +13,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     ButtonComponent,
     InputComponent,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   templateUrl: './mail-page.component.html',
   styleUrl: './mail-page.component.css', 
@@ -27,8 +29,16 @@ export class MailPageComponent {
   }
   showAlert: boolean = false;
   email: string = '';
+  showErrorMessage: boolean = false;
+  errorMessage: string = '';
 
   sendEmail() {
+
+    if (!this.email) {
+      this.errorMessage = 'Por favor ingrese el correo.';
+      this.showErrorMessage = true; 
+    }
+
     console.log(this.email)
     if (this.email !== '') {
       this.CS.forgotPassword(this.email).subscribe(

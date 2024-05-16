@@ -27,5 +27,7 @@ export class InputComponent {
     this.entryChange.emit(value)
   }
 
-  @Input() inputType: string = '';
+  @Input() isPassword: boolean = false;
+
+
 }

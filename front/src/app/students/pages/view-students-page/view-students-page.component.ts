@@ -45,7 +45,7 @@ export class ViewStudentsPageComponent {
     ['Carnet', 'text'],
     ['Código', 'span']]
 
-  actions: [string, string][] = [] 
+  actions: any
 
   data: any[] = [];
   excelData: any[] = [];
@@ -94,7 +94,7 @@ export class ViewStudentsPageComponent {
   setActions() {
     this.headers.push(['Acciones', 'icon'])
     this.actions = 
-    [['delete', ''],
+    [['delete'],
     ['edit', ''],
     ['exit_to_app', '']]  
   }
@@ -304,6 +304,7 @@ export class ViewStudentsPageComponent {
 
       if(this.userIsTeacher){
           const studentsActions = JSON.parse(JSON.stringify(this.actions));
+          studentsActions[0][1] = id;
           studentsActions[1][1] = `/editStudent/${id}`;
           studentData.push(studentsActions)
       }else if(this.assistant){          
@@ -349,6 +350,16 @@ export class ViewStudentsPageComponent {
         )
       } 
     }
+  }
+
+  deleteStudent(id: string) {
+    console.log("entra aquii")
+    console.log(id)
+
+   this.CS.deleteSudent(id).subscribe(() => {
+      console.log('Estudiante eliminado exitosamente');
+      //this.router.navigate(['/']);
+    });
   }
 
 }

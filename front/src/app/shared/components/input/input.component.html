@@ -1,8 +1,19 @@
-<input 
+@if(isPassword){
+    <input
+    type="password" 
+    [placeholder]="placeholder"
+    [ngModel]="entry"
+    (ngModelChange)="onInputChange($event)" 
+    [value]="value"
+    class="custom-input">
+}@else{
+    <input
     type="text" 
     [placeholder]="placeholder"
     [ngModel]="entry"
     (ngModelChange)="onInputChange($event)" 
     [value]="value"
     class="custom-input">
+}
+
     

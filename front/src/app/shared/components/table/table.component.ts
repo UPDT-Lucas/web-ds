@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BadgeComponent } from '../badge/badge.component';
 import { RouterModule } from '@angular/router';
 
@@ -19,5 +19,19 @@ export class TableComponent {
   @Input()
   data: any [][] = [];
 
+  @Input()
+  isDelete: boolean = false
+
+  @Output()
+  delete: EventEmitter<string> = new EventEmitter<string>()
+
   constructor(router: RouterModule) {}
+
+  deleteProfessor(id: string){
+    this.delete.emit(id);
+  }
+
 }
+
+
+

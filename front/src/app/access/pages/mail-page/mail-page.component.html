@@ -6,6 +6,8 @@
       <h1>
         Obtener OTP
       </h1>
+
+      <ng-container *ngIf="errorMessage" class="error-message">{{ errorMessage }}</ng-container>
   
       <div class="inputs-container">
         <div class="each-input">

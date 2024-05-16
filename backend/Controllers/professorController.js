@@ -297,43 +297,39 @@ const login = async (req, res) => {
         var actualPassword;
         var isTeacher = true;
         var id;
-        //const assistant = await Assistant.findOne({ email })
 
-        // Si no se encuentra ningún usuario, devuelve un error
         if (!professor) {
-            const assistant = await Assistant.findOne({ email })  
+            const assistant = await Assistant.findOne({ email });
             if (!assistant) {
-                return res.status(401).json({ error: 'Assistant not found' });
-            }else{
-                id = assistant.id
-                isTeacher = false 
-                actualPassword =  assistant.password
+                return res.status(200).json({ error: 'Usuario no encontrado' }); // Cambiado a 200 para no lanzar error
+            } else {
+                id = assistant.id;
+                isTeacher = false;
+                actualPassword = assistant.password;
             }
-        } else{
-            actualPassword =  professor.password
-            id = professor.id        }
+        } else {
+            actualPassword = professor.password;
+            id = professor.id;
+        }
 
         // Compara la contraseña proporcionada con la contraseña almacenada en la base de datos
         const match = await comparePassword(password, actualPassword);
 
-        // Si la contraseña no coincide, devuelve un error
         if (!match) {
-            return res.status(401).json({ error: 'Incorrect password' });
+            return res.status(200).json({ error: 'Incorrect password' }); // Cambiado a 200 para no lanzar error
         }
 
-        // Devuelve el nombre del usuario
-        return res.status(200).json({ 
-            message: 'Login successful', 
+        return res.status(200).json({
+            message: 'Login successful',
             _id: id,
             isTeacher: isTeacher
-
         });
 
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Internal server error' });
     }
-}
+};
 
 
 //elimina un profesor de la base de datos 
@@ -539,7 +535,7 @@ Funciona como una plantilla
 
 const sendVerificationEmail = (email, verificationToken) => {
     try {
-        const verificationLink = `http://localhost:3000/verify-email?token=${verificationToken}`;
+       //const verificationLink = `http://localhost:3000/verify-email?token=${verificationToken}`;
         const subject = 'Verify your Project email';
         const text = `Click on this link to verify your email: ${verificationLink}`;
         //const template = verificationLinkTemplate(verificationLink);

@@ -104,9 +104,6 @@ export class CommunicationService {
     return this.http.delete<Professor>(url);
   }
 
-
-
-
   //----------------------------------------- STUDENT -----------------------------------------//
   registerStudent(studentData: any): Observable<Student> {
     const url = `${this.apiUrl}/register-student`; 
@@ -133,6 +130,12 @@ export class CommunicationService {
     return this.http.get<Student>(url);
   }
 
+  deleteSudent(id: string): Observable<Student> {
+    const url = `${this.apiUrl}/delete-student/${id}`;
+    return this.http.delete<Student>(url);
+  }
+
+  //router.delete('/delete-student/:id', deleteStudent);
 
   //----------------------------------------- ACTIVITY -----------------------------------------//
   getAllActivities(): Observable<Activity[]> {

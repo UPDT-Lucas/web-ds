@@ -13,6 +13,7 @@
             </div>
             <app-table
                 [headers]="headers"
+                (delete)="deleteProfessor($event)"
                 [data]="data">
             </app-table>
             <div class="pagination clickable">
@@ -35,6 +36,4 @@
             </div>
         </div>
     </div>
-
-
 </div>

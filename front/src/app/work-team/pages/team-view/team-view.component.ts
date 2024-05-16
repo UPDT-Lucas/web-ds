@@ -31,7 +31,7 @@ export class TeamViewComponent {
     ['Correo', 'text'],
     ['Código', 'span']]
 
-  actions: [string, string][] = [] 
+  actions: any
 
   data: any[] = []
   page: number = 0;
@@ -63,7 +63,7 @@ export class TeamViewComponent {
   setActions() {
       this.headers.push(['Acciones', 'icon'])
       this.actions = 
-      [['delete', ''],
+      [['delete'],
       ['edit', ''],
       ['exit_to_app', '']]
   }
@@ -132,6 +132,8 @@ export class TeamViewComponent {
       console.log("ID:", id);
 
 
+
+
       const rolProfessor = professorList.professors[index].isCordinator ? "Profesor Coordinador" : "Profesor";
       const nameProfessor = professorList.professors[index].firstName + " " + professorList.professors[index].firstSurname;
       const emailProfessor = professorList.professors[index].email;
@@ -152,7 +154,11 @@ export class TeamViewComponent {
       }else if(this.assistant){          
         const assistantActions = JSON.parse(JSON.stringify(this.actions));
         if(this.assistant.assistant.campus == "663057633ee524ad51bd5b05"){
+      
+
+          assistantActions[0][1] = id;
           assistantActions[1][1] = `/editTeacher/${id}`;
+          
         }else if(this.assistant.assistant.campus == professorList.professors[index].campus){
           assistantActions[1][1] = `/editTeacher/${id}`;
         }else{
@@ -196,16 +202,14 @@ export class TeamViewComponent {
       } 2
     }
   }
-
   
   deleteProfessor(id: string) {
-    
-    this.CS.deleteProfessor(id).subscribe(() => {
+    console.log("entra aquii")
+    console.log(id)
+
+   this.CS.deleteProfessor(id).subscribe(() => {
       console.log('Profesor eliminado exitosamente');
-      
-      this.router.navigate(['/']);
-    }, error => {
-      console.error('Error al eliminar el profesor', error);
+      //this.router.navigate(['/']);
     });
   }
     

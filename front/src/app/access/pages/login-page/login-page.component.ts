@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { S3ApiService } from '../../../s3-api.service';
 import { CommunicationService } from '../../../services/communication.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login-page',
@@ -13,7 +14,8 @@ import { CommonModule } from '@angular/common';
     InputComponent,
     ButtonComponent,
     RouterModule, 
-    CommonModule 
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
@@ -50,21 +52,38 @@ export class LoginPageComponent {
       this.errorMessage = 'Por favor ingrese la contraseña.';
       this.showErrorMessage = true; 
       return; 
+    } else if (!this.isValidEmail(this.email)) {
+      this.errorMessage = 'Por favor ingrese un correo electrónico válido.';
+      this.showErrorMessage = true; 
+      return; 
     }
     
-    this.CS.login(this.email, this.password).subscribe(
-      (res) => {
-        if(res.message === 'Login successful'){
-        this.CS.setActualUser(res._id, res.isTeacher)
-        window.location.href = '/';
-        }else{
-          console.log('Error: ', res.error);
+    try{
+      this.CS.login(this.email, this.password).subscribe(
+        (res) => {
+          if(res.message === 'Login successful') {
+            this.CS.setActualUser(res._id, res.isTeacher);
+            this.router.navigate(['/']);
+          } else {
+            this.errorMessage = res.error;
+            this.showErrorMessage = true;
+          }
+        },
+        (error) => {
+          this.errorMessage = 'Error de conexión al servidor.';
+          this.showErrorMessage = true;
+          console.error('Error: ', error);
         }
-      },
-      (error) => {
-        console.error('Error: ', error);
-      }
-    )
+      )
+    }catch (error){
+      console.log(error)
+    }
+    
+  }
+
+  isValidEmail(email: string): boolean {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
   }
 
 }

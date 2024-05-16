@@ -14,6 +14,7 @@
       </div>
       <app-table 
           [headers]="headers" 
+          (delete)="deleteStudent($event)"
           [data]="data"> 
       </app-table>
       <div class="pagination clickable">

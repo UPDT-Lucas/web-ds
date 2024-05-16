@@ -26,7 +26,7 @@ export class ChangePasswordPageComponent {
 
 
   getInput() {
-
+  
     if (this.id) {
       console.log(this.id)
       this.CS.resetPassword(this.id, this.newPassword, this.confirmPassword).subscribe(
