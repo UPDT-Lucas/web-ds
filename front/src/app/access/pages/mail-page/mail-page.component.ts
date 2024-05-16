@@ -37,6 +37,10 @@ export class MailPageComponent {
     if (!this.email) {
       this.errorMessage = 'Por favor ingrese el correo.';
       this.showErrorMessage = true; 
+    }  else if (!this.isValidEmail(this.email)) {
+      this.errorMessage = 'Por favor ingrese un correo electrónico válido.';
+      this.showErrorMessage = true; 
+      return; 
     }
 
     console.log(this.email)
@@ -64,5 +68,9 @@ export class MailPageComponent {
     this.routers.navigate(["changePassword/addOtp"])
   }
 
+  isValidEmail(email: string): boolean {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
+  }
 
 }

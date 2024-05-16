@@ -59,6 +59,7 @@
             <shared-file-input
               (fileSelected)="getFile($event)"
               [acceptedExtensions]="['.jpg', '.png', '.jpeg', '.pdf']"
+              [isPDF] = "true"
               placeholder="Subir afiche"
             >
             </shared-file-input>
@@ -80,7 +81,7 @@
       </div>
     </div>
     <div class="options">
-      <shared-button text="Agregar actividad" (click)="uploadActivity()"> </shared-button>
+      <shared-button text="Agregar actividad" (click)="getData()"> </shared-button>
     </div>
   </div>
 </div>

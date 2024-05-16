@@ -1,111 +1,86 @@
 <div class="flex-container">
-    <shared-header [isTeacher]="actualUser.isTeacher"></shared-header>
-    <div class="container">
-        <div class="info-container">
-            <div class="img-container">
-                <img src="\assets\images\saludMental.jpg" alt="">
-            </div>
-            <div class="text-container">
-                <div class="text">
-                    <h2>
-                        Estado de la Actividad
-                    </h2>
-                    <p>
-                        {{activity.currentState}}
-                    </p>
-                </div>
-                <div class="text">
-                    <h2>
-                        Nombre de Actividad
-                    </h2>
-                    <p>
-                        {{activity.activityName}}
-                    </p>
-                </div>
-                <div class="text">
-                    <h2>
-                        Tipo
-                    </h2>
-                    <p>
-                        {{activity.typeOfActivity}}
-                    </p>
-                </div>
-                <div class="text">
-                    <h2>
-                        Fecha de anuncio
-                    </h2>
-                    <p>
-                        {{prettyPrintDate(activity.announcementDate)}}
-                    </p>
-                </div>
-                <div class="text">
-                    <h2>
-                        Frecuencia de recordatorio en días
-                    </h2>
-                    <p>
-                        activity.reminderDates
-                    </p>
-                </div>
-                <div class="text">
-                    <h2>
-                        Responsables
-                    </h2>
-                    <p>
-                        @for (item of activity.responsibles; track $index) {
-                            {{item}} 
-                        }
-                    </p>
-                </div>
-                <div class="text">
-                    <h2>
-                        Fecha de realización
-                    </h2>
-                    <p>
-                        {{prettyPrintDate(activity.executionDate)}}
-                    </p>
-                </div>
-                <div class="text">
-                    <h2>
-                        @if (activity.isRemote === true) {
-                            Actividad remota
-                            <p><a [href]="activity.virtualActivityLink">Enlace a la reunión</a></p>
-                        } @else {
-                            Actividad presencial
-                        }
-                    </h2>
-                </div>
-                <div class="text">
-                    <h2>
-                        Afiche de la actividad
-                    </h2>
-                    <p>
-                        <a [href]="activity.activityPoster">Enlace al afiche</a>
-                    </p>
-                </div>
-                <div class="text">
-                    <h2>
-                        Semana en la que se realizará
-                    </h2>
-                    <p>
-                        {{activity.executionWeek}}
-                    </p>
-                </div>
-            </div>
+  <shared-header [isTeacher]="actualUser.isTeacher"></shared-header>
+  <div class="container">
+    <div class="info-container">
+      <div class="text-container">
+        <div class="text">
+          <h2>Estado de la Actividad</h2>
+          <p>
+            {{ activity.currentState }}
+          </p>
         </div>
+        <div class="text">
+          <h2>Nombre de Actividad</h2>
+          <p>
+            {{ activity.activityName }}
+          </p>
+        </div>
+        <div class="text">
+          <h2>Tipo</h2>
+          <p>
+            {{ activity.typeOfActivity }}
+          </p>
+        </div>
+        <div class="text">
+          <h2>Fecha de anuncio</h2>
+          <p>
+            {{ prettyPrintDate(activity.announcementDate) }}
+          </p>
+        </div>
+        <div class="text">
+          <h2>Frecuencia de recordatorio en días</h2>
+          <p>
+            {{ activity.reminderDates }}
+          </p>
+        </div>
+      </div>
 
-            <div class="options-container">
-                <!--TODO: poner los links de los botones-->
-                <shared-button 
-                    text="Ver comentarios"
-                    link="">
-                </shared-button>
-                <!--TODO: poner los links de los botones-->
-                @if (userIsCordinator) {
-                <shared-button
-                    text="Editar"
-                    link="/editActivity">
-                </shared-button>
+      <div class="text-container">
+        <div class="text">
+          <h2>Responsables</h2>
+          <p>
+            @for (item of activity.responsibles; track $index) {
+            {{ item }}
             }
-            </div>
+          </p>
+        </div>
+        <div class="text">
+          <h2>Fecha de realización</h2>
+          <p>
+            {{ prettyPrintDate(activity.executionDate) }}
+          </p>
+        </div>
+        <div class="text">
+          <h2>
+            @if (activity.isRemote === true) { Actividad remota
+            <p>
+              <a [href]="activity.virtualActivityLink">Enlace a la reunión</a>
+            </p>
+            } @else { Actividad presencial }
+          </h2>
+        </div>
+        <div class="text">
+          <h2>Afiche de la actividad</h2>
+          <p>
+            <a [href]="activity.activityPoster">Enlace al afiche</a>
+          </p>
+        </div>
+        <div class="text">
+          <h2>Semana en la que se realizará</h2>
+          <p>
+            {{ activity.executionWeek }}
+          </p>
+        </div>
+      </div>
     </div>
+
+    <div class="options-container">
+      <!--TODO: poner los links de los botones-->
+      <shared-button text="Ver comentarios" link=""> </shared-button>
+      <!--TODO: poner los links de los botones-->
+      @if (userIsCordinator) {
+      <shared-button text="Editar" link="/editActivity"> </shared-button>
+      }
+    </div>
+  </div>
 </div>

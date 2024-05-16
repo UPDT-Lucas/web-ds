@@ -8,6 +8,7 @@ import { S3ApiService } from '../../../s3-api.service';
 import { Activity } from '../../../interfaces/activity.interface';
 import { DatePickerComponent } from '../../../shared/components/date-picker/date-picker.component';
 import { CommunicationService } from '../../../services/communication.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-add-activity-page',
@@ -30,10 +31,10 @@ export class AddActivityPageComponent {
 
   typeOfActivity: string = 'Orientadora';
   activityName: string = '';
-  responsibles: string[] = [];
-  executionDate: string = '';
+  responsibles!: string[];
+  executionDate: string = new Date().toISOString();
   executionWeek: number = 1;
-  announcementDate: string = '';
+  announcementDate: string = new Date().toISOString();
   reminderDates: number = 0;
   comments: string[] = [];
   isRemote: boolean = false;
@@ -55,14 +56,27 @@ export class AddActivityPageComponent {
     this.file = file;
   }
 
-  getData(){
-    const formData = new FormData();
-    formData.append('file', this.file);
-    this.s3ApiService.uploadFile(formData).subscribe(
-     (res) => {
-        this.updateImage(this.file.name)
-      }
-    )
+
+  getData() {
+    if (this.file) {
+      const formData = new FormData();
+      formData.append('file', this.file);
+      this.s3ApiService.uploadFile(formData).subscribe(
+        (res) => {
+          this.updateImage(this.file.name).subscribe(() => {
+            this.uploadActivity();
+          });
+        }
+      );
+    }
+  }
+
+  updateImage(filename: string) {
+    return this.s3ApiService.getFileByName(filename).pipe(
+      map(res => {
+        this.filename = res!.result;
+      })
+    );
   }
 
   onAcivityTypeChange(event: any){
@@ -72,15 +86,6 @@ export class AddActivityPageComponent {
     }
   }
 
-  
-  updateImage(filename: string){
-    this.s3ApiService.getFileByName(filename).subscribe(
-      res => {
-        this.filename = res!.result
-        // console.log(this.filename)
-      }
-    )
-  }
 
   getDaysDifference(dateString1: string, dateString2: string): number {
     const date1 = new Date(dateString1);
