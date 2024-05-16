@@ -14,7 +14,7 @@
           </h2>
           <shared-input 
             placeholder="Código"
-            [(entry)]="otp">
+            [(entry)]="otp"[isPassword]="true">
           </shared-input>
         </div>
         <div class="each-input">
@@ -23,7 +23,7 @@
           </h2>
           <shared-input 
             placeholder="Confirmar código"
-            [(entry)]="confirmationCode">
+            [(entry)]="confirmationCode"[isPassword]="true">
           </shared-input>
         </div>
       </div>
