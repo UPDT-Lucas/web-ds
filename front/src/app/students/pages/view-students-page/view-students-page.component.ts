@@ -66,12 +66,17 @@ export class ViewStudentsPageComponent {
     this.userIsTeacher = user.isTeacher
     if(user.isTeacher){
       this.getProfessor()
+      this.actions = [['edit']]
+      this.headers.push(['Acciones', 'icon'])
     }else{
       this.getAssistant()
+     this.actions =  [['delete'],
+      ['edit', '']]
+      this.headers.push(['Acciones', 'icon'])
     }
     this.limit = 5
     this.changePage(5, 0)
-    this.setActions()
+    //this.setActions()
   }
 
   getAssistant(){
@@ -93,9 +98,6 @@ export class ViewStudentsPageComponent {
 
   setActions() {
     this.headers.push(['Acciones', 'icon'])
-    this.actions = 
-    [['delete'],
-    ['edit', '']]
   }
 
   searchByName() {
@@ -301,12 +303,13 @@ export class ViewStudentsPageComponent {
 
       if(this.userIsTeacher){
           const studentsActions = JSON.parse(JSON.stringify(this.actions));
-          studentsActions[0][1] = id;
-          studentsActions[1][1] = `/editStudent/${id}`;
+          //studentsActions[0][1] = id;
+          studentsActions[0][1] = `/editStudent/${id}`;
           studentData.push(studentsActions)
       }else if(this.assistant){          
         const studentsActions = JSON.parse(JSON.stringify(this.actions));
         if(this.assistant.assistant.campus == studentList.students[index].campus){
+          studentsActions[0][1] = id;
           studentsActions[1][1] = `/editStudent/${id}`;
         }else{
           studentsActions[1][1] = `/viewStudents`;
@@ -350,13 +353,24 @@ export class ViewStudentsPageComponent {
   }
 
   deleteStudent(id: string) {
-    console.log("entra aquii")
-    console.log(id)
-
-   this.CS.deleteSudent(id).subscribe(() => {
-      console.log('Estudiante eliminado exitosamente');
-      //this.router.navigate(['/']);
-    });
+    this.CS.getStudent(id).subscribe(
+      student => {
+        if(this.userIsTeacher){
+          if(this.actualProfessor.account.campus == student.account.campus){
+            this.CS.deleteSudent(id).subscribe(() => {
+              console.log('Estudiante eliminado exitosamente');
+            });
+          }
+        }else{
+          if(this.assistant.assistant.campus == student.account.campus){
+            this.CS.deleteSudent(id).subscribe(() => {
+              console.log('Estudiante eliminado exitosamente');
+            });
+          }
+        }
+      }
+    )
+   
   }
 
 }

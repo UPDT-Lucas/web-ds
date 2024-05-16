@@ -184,17 +184,20 @@ export class TeamViewComponent {
       } 2
     }
   }
-  
-  deleteProfessor(id: string) {
-    console.log("entra aquii")
-    console.log(id)
 
-   this.CS.deleteProfessor(id).subscribe(() => {
-      console.log('Profesor eliminado exitosamente');
-      //this.router.navigate(['/']);
-    });
+  deleteProfessor(id: string) {
+    this.CS.getProfessor(id).subscribe(
+      professor => {
+        if(!this.userIsTeacher){
+          if(this.assistant.assistant.campus == professor.account.campus){
+            this.CS.deleteSudent(id).subscribe(() => {
+              console.log('Profesor eliminado exitosamente');
+            });
+          }
+        }
+      }
+    )
   }
-    
 }
 
 
