@@ -25,7 +25,7 @@ export class CalendarComponent {
   constructor(private router: Router, private CS: CommunicationService){}
 
   ngOnInit() {
-    console.log(this.activities)
+    // console.log(this.activities)
     this.actualUser = this.CS.getActualUser()
     if(this.actualUser.isTeacher){
       this.CS.getProfessor(this.actualUser.id).subscribe(
@@ -99,8 +99,8 @@ export class CalendarComponent {
   getCalendarActivities() {
     let x = [{ title: 'Meeting', start: new Date(2024,2,26,10,30), end: new Date(2024,2,28,10,30), id: '1' },
     { title: 'Meeting', start: new Date(2024,2,27,12,0), end: new Date(2024,2,27,14,0), id: '2' }]
-    console.log(x);
-    console.log(new Date(2024,2,27,12,0))
+    // console.log(x);
+    // console.log(new Date(2024,2,27,12,0))
     return this.calendarActivities;
   }
 

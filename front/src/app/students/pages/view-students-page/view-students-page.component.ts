@@ -95,8 +95,7 @@ export class ViewStudentsPageComponent {
     this.headers.push(['Acciones', 'icon'])
     this.actions = 
     [['delete', ''],
-    ['edit', ''],
-    ['exit_to_app', '']]  
+    ['edit', '']]  
   }
 
   searchByName() {
@@ -128,7 +127,7 @@ export class ViewStudentsPageComponent {
       "carnet",
     ];
     const data = this.excelData;
-    console.log(this.excelData);
+    // console.log(this.excelData);
     const jsonData = data.map((row) => {
       return columns.reduce((obj: { [key: string]: any }, column, index) => {
         obj[column] = row[index];
@@ -269,14 +268,12 @@ export class ViewStudentsPageComponent {
 
   getData(studentList: any) {
     for (const index in studentList.students) {
-      console.log(studentList.students[index]);
-
-
-      console.log("Indice", index);
-      console.log("Información:", studentList.students[index]);
+      // console.log(studentList.students[index]);
+      // console.log("Indice", index);
+      // console.log("Información:", studentList.students[index]);
 
       const id = studentList.students[index]._id; 
-      console.log("ID:", id);
+      // console.log("ID:", id);
 
       const rolStudent = "Estudiante";
       const nameStudent =
@@ -288,7 +285,7 @@ export class ViewStudentsPageComponent {
       const campusName = this.CS.getCampusById(
         studentList.students[index].campus
       );
-      console.log(campusName);
+      // console.log(campusName);
       const campusBadge = this.getBadge(campusName);
       const campusStudent = campusBadge;
 
@@ -304,7 +301,11 @@ export class ViewStudentsPageComponent {
 
       if(this.userIsTeacher){
           const studentsActions = JSON.parse(JSON.stringify(this.actions));
-          studentsActions[1][1] = `/editStudent/${id}`;
+          if(this.actualProfessor.account.campus ==  studentList.students[index].campus){
+            studentsActions[1][1] = `/editStudent/${id}`;
+          }else{
+            studentsActions[1][1] = `/viewStudents`;
+          }
           studentData.push(studentsActions)
       }else if(this.assistant){          
         const studentsActions = JSON.parse(JSON.stringify(this.actions));
@@ -328,7 +329,7 @@ export class ViewStudentsPageComponent {
         this.CS.getStudentByName(this.filterOnInput, limit, nextPage * limit).subscribe(
           res => {
             if (res.students.length != 0) {
-              console.log(res)
+              // console.log(res)
               this.data = []
               this.studentList = res
               this.getData(res)

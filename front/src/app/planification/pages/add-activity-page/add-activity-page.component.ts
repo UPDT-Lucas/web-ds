@@ -77,7 +77,7 @@ export class AddActivityPageComponent {
     this.s3ApiService.getFileByName(filename).subscribe(
       res => {
         this.filename = res!.result
-        console.log(this.filename)
+        // console.log(this.filename)
       }
     )
   }
@@ -97,11 +97,11 @@ export class AddActivityPageComponent {
   checkDates(){
     let daysDiff = this.getDaysDifference(this.executionDate, this.announcementDate)
     if(daysDiff < 0){
-      console.log("La fecha de anuncio no puede ser después de la fecha de ejecución")
+      // console.log("La fecha de anuncio no puede ser después de la fecha de ejecución")
       return false
     }
     if(this.reminderDates > daysDiff){
-      console.log("La fecha de recordatorio no puede ser después de la fecha de anuncio")
+      // console.log("La fecha de recordatorio no puede ser después de la fecha de anuncio")
       return false
     }
     return true
@@ -122,22 +122,22 @@ export class AddActivityPageComponent {
       } else {
         this.professorEmailsSet.add(responsible)
         this.professorEmails.push(responsible)
-        console.log(this.professorEmails)
+        // console.log(this.professorEmails)
       }
     });
     return correctFormat
   }
 
   loadProfessorsByEmails(){
-    console.log(this.professorEmailsSet)
+    // console.log(this.professorEmailsSet)
     this.professorEmailsSet.forEach(email => {
-      console.log("AAAAA ", email)
+      // console.log("AAAAA ", email)
       this.CS.getProfessorByEmail(email).subscribe(
         (res: any) => {
           if(res){
             this.responsibles.push(res._id)
           } else {
-            console.log("No se encontró el profesor")
+            // console.log("No se encontró el profesor")
           }
         }
       )
@@ -150,22 +150,22 @@ export class AddActivityPageComponent {
     this.responsibles = []
     let correctFormat = true
     if(this.activityName == '' || this.executionDate == '' || this.announcementDate == ''){
-      console.log("a")
+      // console.log("a")
       correctFormat = false;
     }
     if(!this.checkResponsibles() || !this.checkDates()) {
-      console.log("aa")
+      // console.log("aa")
       correctFormat = false;
     }
 
     this.loadProfessorsByEmails()
 
     if(Number(this.inputExecutionWeek) < 1 || Number(this.inputExecutionWeek) > 19 || Number.isNaN(parseFloat(this.inputExecutionWeek))){
-      console.log("A")
+      // console.log("A")
       correctFormat = false;
     }
     if(Number(this.inputReminderDates) < 0 || Number(this.inputReminderDates) > 60 || Number.isNaN(parseFloat(this.inputReminderDates))){
-      console.log("AA")
+      // console.log("AA")
       correctFormat = false;
     }
 

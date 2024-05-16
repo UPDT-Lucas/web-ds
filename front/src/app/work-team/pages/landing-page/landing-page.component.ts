@@ -27,7 +27,7 @@ export class LandingPageComponent  implements OnInit {
   ngOnInit(): void {
     this.id = this.CS.getActualUser().id
     this.isTeacher = this.CS.getActualUser().isTeacher             
-    console.log(this.isTeacher)
+    // console.log(this.isTeacher)
     if(this.isTeacher){
       this.CS.getProfessor(this.id).subscribe(
         prof => {

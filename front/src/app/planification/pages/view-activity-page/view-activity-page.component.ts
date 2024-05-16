@@ -61,10 +61,10 @@ export class ViewActivityPageComponent {
     for ( let responsibleIndex in ActivityRequest.activity.responsibles){
       this.CS.getProfessor(ActivityRequest.activity.responsibles[responsibleIndex]).subscribe(res => {
         responsiblesNames.push(res.account.name.firstName + ' ' + res.account.name.firstSurname);
-        console.log(responsiblesNames);
+        // console.log(responsiblesNames);
       });
     }
-    console.log(responsiblesNames);
+    // console.log(responsiblesNames);
     return responsiblesNames;
   }
 

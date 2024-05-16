@@ -33,7 +33,7 @@
                                     {{ item[0] }}
                                 </i>
                             } @else if (item[0] == "delete") {
-                                <i class="material-icons delete clickable" [routerLink]="item[1]">
+                                <i class="material-icons delete clickable" (click)="item[1]">
                                     {{ item[0] }}
                                 </i>
                             } @else {

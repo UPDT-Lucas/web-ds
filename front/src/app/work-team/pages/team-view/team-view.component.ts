@@ -54,6 +54,7 @@ export class TeamViewComponent {
       this.getProfessor()
     }else{
       this.getAssistant()
+      this.headers.push(['Acciones', 'icon'])
     }
     this.limit = 5
     this.changePage(5, 0)
@@ -61,11 +62,9 @@ export class TeamViewComponent {
   }
 
   setActions() {
-      this.headers.push(['Acciones', 'icon'])
       this.actions = 
       [['delete', ''],
-      ['edit', ''],
-      ['exit_to_app', '']]
+      ['edit', '']]
   }
 
   // getProfessorCampus() {
@@ -123,13 +122,7 @@ export class TeamViewComponent {
 
   getData(professorList: any) {
     for (const index in professorList.professors) {
-      console.log(professorList.professors[index])
-
-      console.log("Índice:", index);
-      console.log("Información:", professorList.professors[index]);
-
       const id = professorList.professors[index]._id;
-      console.log("ID:", id);
 
 
       const rolProfessor = professorList.professors[index].isCordinator ? "Profesor Coordinador" : "Profesor";
@@ -141,15 +134,7 @@ export class TeamViewComponent {
       var professorData = [
         rolProfessor, nameProfessor, emailProfessor, campusProfessor
       ];
-      if(this.userIsTeacher){
-        const professorActions = JSON.parse(JSON.stringify(this.actions));
-        if(professorList.professors[index].campus == this.actualProfessor.account.campus){
-          professorActions[1][1] = `/editTeacher/${id}`;
-        }else{
-          professorActions[1][1] = `/teamView`;
-        }
-        professorData.push(professorActions)
-      }else if(this.assistant){          
+      if(this.assistant){          
         const assistantActions = JSON.parse(JSON.stringify(this.actions));
         if(this.assistant.assistant.campus == "663057633ee524ad51bd5b05"){
           assistantActions[1][1] = `/editTeacher/${id}`;
@@ -172,13 +157,10 @@ export class TeamViewComponent {
         this.CS.getProfessorByName(this.filterOnInput, limit, nextPage * limit).subscribe(
           res => {
             if (res.professors.length != 0) {
-              console.log(res)
               this.data = []
               this.professorList = res
               this.getData(res)
               this.page = nextPage;
-              console.log(this.professorList)
-              console.log("aa")
             }
           }
         )
@@ -201,11 +183,9 @@ export class TeamViewComponent {
   deleteProfessor(id: string) {
     
     this.CS.deleteProfessor(id).subscribe(() => {
-      console.log('Profesor eliminado exitosamente');
-      
       this.router.navigate(['/']);
     }, error => {
-      console.error('Error al eliminar el profesor', error);
+      //console.error('Error al eliminar el profesor', error);
     });
   }
     
