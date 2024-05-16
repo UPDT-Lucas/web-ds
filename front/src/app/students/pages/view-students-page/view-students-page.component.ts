@@ -115,6 +115,7 @@ export class ViewStudentsPageComponent {
 
 
   downloadExcel(): void {
+    this.getExcelData(this.studentList);
     const EXCEL_TYPE =
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const EXCEL_EXTENSION = ".xlsx";
@@ -130,6 +131,7 @@ export class ViewStudentsPageComponent {
     ];
     const data = this.excelData;
     // console.log(this.excelData);
+
     const jsonData = data.map((row) => {
       return columns.reduce((obj: { [key: string]: any }, column, index) => {
         obj[column] = row[index];
@@ -169,15 +171,17 @@ export class ViewStudentsPageComponent {
 
       for (let index in jsonData) {
         let student: ExcelStudent = {
-          firstName: (jsonData[index] as any).firstName,
-          secondName: (jsonData[index] as any).secondName,
-          firstSurname: (jsonData[index] as any).firstSurname,
-          secondSurname: (jsonData[index] as any).secondSurname,
-          email: (jsonData[index] as any).email,
-          campus: this.getCampusId((jsonData[index] as any).campus) ?? "",
-          cellPhone: (jsonData[index] as any).cellPhone,
-          carnet: (jsonData[index] as any).carnet,
+          firstName: (jsonData[index] as any).firstName.toString(),
+          secondName: (jsonData[index] as any).secondName.toString(),
+          firstSurname: (jsonData[index] as any).firstSurname.toString(),
+          secondSurname: (jsonData[index] as any).secondSurname.toString(),
+          email: (jsonData[index] as any).email.toString(),
+          campus: this.getCampusId((jsonData[index] as any).campus.toString()) ?? "",
+          cellPhone: (jsonData[index] as any).cellPhone.toString(),
+          carnet: (jsonData[index] as any).carnet.toString(),
         };
+
+        console.log(student)  
 
         this.CS.registerStudent(student).subscribe(
           (response) => {
