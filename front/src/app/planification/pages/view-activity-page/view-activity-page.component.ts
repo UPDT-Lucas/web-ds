@@ -52,7 +52,7 @@ export class ViewActivityPageComponent {
     this.route.params.subscribe(params => {
       this.activityId = params['id'];
       this.CS.getActivity(this.activityId).subscribe(res =>{
-        // this.getData(res);
+         this.getData(res);
       })
     });
   }
@@ -75,21 +75,21 @@ export class ViewActivityPageComponent {
     return date.toLocaleDateString('es-ES', options);
   }
 
-  // getData(ActivityRequest: any) {
-  //     const typeOfActivity = ActivityRequest.activity.typeOfActivity;
-  //     const activityName = ActivityRequest.activity.activityName;
-  //     const responsibles = this.getResponsiblesNames(ActivityRequest);
-  //     const executionDate = ActivityRequest.activity.executionDate;
-  //     const executionWeek = ActivityRequest.activity.executionWeek;
-  //     const announcementDate = ActivityRequest.activity.announcementDate;
-  //     const reminderDates = ActivityRequest.activity.reminderDates;
-  //     const comments = ActivityRequest.activity.comments;
-  //     const isRemote = ActivityRequest.activity.isRemote;
-  //     const virtualActivityLink = ActivityRequest.activity.virtualActivityLink;
-  //     const activityPoster = ActivityRequest.activity.activityPoster;
-  //     const currentState = ActivityRequest.activity.currentState;
-  //     this.activity = { typeOfActivity, activityName, responsibles, executionDate, executionWeek, announcementDate, reminderDates, comments, isRemote, virtualActivityLink, activityPoster, currentState };
-  // }
+  getData(ActivityRequest: any) {
+      const typeOfActivity = ActivityRequest.activity.typeOfActivity;
+      const activityName = ActivityRequest.activity.activityName;
+      const responsibles = this.getResponsiblesNames(ActivityRequest);
+      const executionDate = ActivityRequest.activity.executionDate;
+      const executionWeek = ActivityRequest.activity.executionWeek;
+      const announcementDate = ActivityRequest.activity.announcementDate;
+      const reminderDates = ActivityRequest.activity.reminderDates;
+      const comments = ActivityRequest.activity.comments;
+      const isRemote = ActivityRequest.activity.isRemote;
+      const virtualActivityLink = ActivityRequest.activity.virtualActivityLink;
+      const activityPoster = ActivityRequest.activity.activityPoster;
+      const currentState = ActivityRequest.activity.currentState;
+      this.activity = { typeOfActivity, activityName, responsibles, executionDate, executionWeek, announcementDate, reminderDates, comments, isRemote, virtualActivityLink, activityPoster, currentState };
+  }
 
 
   redirectToActivity(){
