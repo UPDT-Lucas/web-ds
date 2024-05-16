@@ -30,7 +30,7 @@ export class AddActivityPageComponent {
 
   typeOfActivity: string = 'Orientadora';
   activityName: string = '';
-  responsibles!: string[];
+  responsibles: string[] = [];
   executionDate: string = '';
   executionWeek: number = 1;
   announcementDate: string = '';
@@ -137,7 +137,7 @@ export class AddActivityPageComponent {
           if(res){
             this.responsibles.push(res._id)
           } else {
-            // console.log("No se encontró el profesor")
+            console.log("No se encontró el profesor")
           }
         }
       )
@@ -170,8 +170,6 @@ export class AddActivityPageComponent {
       correctFormat = false;
     }
 
-
-
     return correctFormat
     
   }
@@ -192,7 +190,7 @@ export class AddActivityPageComponent {
         activityPoster: this.filename,
         currentState: this.currentState
       }
-      console.log(activityData)
+      console.log(activityData.responsibles)
       this.CS.registerActivity(activityData).subscribe(
         (res: any) => {
           console.log(res)

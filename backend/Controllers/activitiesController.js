@@ -11,6 +11,9 @@ const registerActivity = async (req, res) => {
       return res.status(400).json({ error: "Activity already exists" });
     }
 
+    console.log("on back")
+    console.log(req.body)
+
     const newActivity = new Activity({
         typeOfActivity: req.body.typeOfActivity,
         activityName: req.body.activityName,

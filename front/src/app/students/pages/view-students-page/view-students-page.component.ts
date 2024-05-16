@@ -70,8 +70,7 @@ export class ViewStudentsPageComponent {
       this.headers.push(['Acciones', 'icon'])
     }else{
       this.getAssistant()
-     this.actions =  [['delete'],
-      ['edit', '']]
+     this.actions =  [['delete'],['edit', '']]
       this.headers.push(['Acciones', 'icon'])
     }
     this.limit = 5
@@ -302,9 +301,10 @@ export class ViewStudentsPageComponent {
       ];
 
       if(this.userIsTeacher){
-          const studentsActions = JSON.parse(JSON.stringify(this.actions));
-          //studentsActions[0][1] = id;
+        const studentsActions = JSON.parse(JSON.stringify(this.actions));
+        if(this.actualProfessor.account.campus == studentList.students[index].campus){
           studentsActions[0][1] = `/editStudent/${id}`;
+        }
           studentData.push(studentsActions)
       }else if(this.assistant){          
         const studentsActions = JSON.parse(JSON.stringify(this.actions));
@@ -355,21 +355,14 @@ export class ViewStudentsPageComponent {
   deleteStudent(id: string) {
     this.CS.getStudent(id).subscribe(
       student => {
-        if(this.userIsTeacher){
-          if(this.actualProfessor.account.campus == student.account.campus){
-            this.CS.deleteSudent(id).subscribe(() => {
-              console.log('Estudiante eliminado exitosamente');
-            });
-          }
-        }else{
+        if(!this.userIsTeacher){
           if(this.assistant.assistant.campus == student.account.campus){
             this.CS.deleteSudent(id).subscribe(() => {
               console.log('Estudiante eliminado exitosamente');
             });
           }
-        }
       }
-    )
+  })
    
   }
 

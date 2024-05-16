@@ -2,13 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ActivityScheme = new Schema({
-    typeOfActivity: String,            //Orientadora, Motivacional, De apoyo a la vida estudiantil
-                                       // De orden técnico, De recración
+    typeOfActivity: String,            //Orientadora, Motivacional, De apoyo a la vida estudiantil                             // De orden técnico, De recración
     activityName: String,               
-    responsibles: [{                //Profesores responsables de la actividad
-        type: Schema.Types.ObjectId,
-        ref: 'Professor'
-    }], 
+    responsibles: [String],
     executionDate: Date,        //Fecha exacta de realización
     executionWeek: Number,      //Numero de semana de realización
     announcementDate: Date,    //Fecha de anuncio a la comunidad estudiantil ISO FORMAT

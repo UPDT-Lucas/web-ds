@@ -43,8 +43,9 @@ Global Styles
 }
 
 h2 {
-  font-weight: 600;
-  font-size: calc(12px + 0.27vw);
+  font-weight: 500;
+  font-size: calc(12px + 0.27vw); 
+  margin: 0 !important;
 }
 
 p {

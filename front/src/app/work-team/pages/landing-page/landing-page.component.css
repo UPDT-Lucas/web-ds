@@ -1,5 +1,7 @@
-h1 {
-    font-weight: 600;
+.welcome {
+    font-weight: 400;
+    font-size: xx-large;
+    line-height: 1.5;
 }
 
 .flex-container {
