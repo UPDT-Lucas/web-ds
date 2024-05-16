@@ -75,12 +75,12 @@
     </div>
 
     <div class="options-container">
-      <!--TODO: poner los links de los botones-->
-      <shared-button text="Ver comentarios" link=""> </shared-button>
-      <!--TODO: poner los links de los botones-->
       @if (userIsCordinator) {
-      <shared-button text="Editar" link="/editActivity"> </shared-button>
+      <shared-button text="Editar" (click)="redirectToActivity()" > </shared-button>
       }
     </div>
+  </div>
+  <div class="info-container">
+    <h2>Comentarios</h2>
   </div>
 </div>

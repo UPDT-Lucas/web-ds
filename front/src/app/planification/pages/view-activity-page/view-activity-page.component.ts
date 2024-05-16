@@ -5,6 +5,7 @@ import { CommunicationService } from '../../../services/communication.service';
 import { Activity } from '../../../interfaces/activity.interface';
 import { ActivatedRoute } from '@angular/router';
 import { Professor } from '../../../interfaces/professor.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-activity-page',
@@ -17,7 +18,7 @@ import { Professor } from '../../../interfaces/professor.interface';
   styleUrl: './view-activity-page.component.css'
 })
 export class ViewActivityPageComponent {
-  constructor(private CS: CommunicationService, private route: ActivatedRoute) {}
+  constructor(private CS: CommunicationService, private route: ActivatedRoute, private router: Router ) {}
 
   activity: Activity = {
     typeOfActivity: '',
@@ -89,6 +90,11 @@ export class ViewActivityPageComponent {
   //     const currentState = ActivityRequest.activity.currentState;
   //     this.activity = { typeOfActivity, activityName, responsibles, executionDate, executionWeek, announcementDate, reminderDates, comments, isRemote, virtualActivityLink, activityPoster, currentState };
   // }
+
+
+  redirectToActivity(){
+    this.router.navigate(['/editActivity/', this.activityId]);
+  }
 
 
 }
