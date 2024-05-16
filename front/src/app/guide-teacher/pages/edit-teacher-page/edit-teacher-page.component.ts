@@ -97,8 +97,8 @@ export class EditTeacherPageComponent {
         this.actualIsCoordinator = prof.account.isCordinator
         this.actualPhoto = prof.account.photo
         this.actualCampus = prof.account.campus
-        console.log("prof is")
-        console.log(this.actualIsCoordinator)
+        // console.log("prof is")
+        // console.log(this.actualIsCoordinator)
       }
     )
   }
@@ -165,8 +165,8 @@ export class EditTeacherPageComponent {
 
   editTeacherAfterUpdate() {
     // console.log(this.isCordinator)
-    console.log("a")
-    console.log(this.filename)
+    // console.log("a")
+    // console.log(this.filename)
     const professorData = {
       firstName: this.firstNameOnInput ? this.firstNameOnInput : this.actualFirstName ,
       secondName: this.secondNameOnInput ? this.secondNameOnInput : this.actualSecondName,
@@ -179,10 +179,9 @@ export class EditTeacherPageComponent {
       photo: this.filename !== "assets/images/teacher.png" ? this.filename : this.actualPhoto,
       isCordinator: this.isCordinator !== this.actualIsCoordinator ? this.isCordinator : this.actualIsCoordinator
     };
-    console.log(this.id);
+    // console.log(this.id);
 
-    console.log(professorData)
-
+    // console.log(professorData)
     this.CS.editAccount(this.id, professorData).subscribe(
       response => {
         console.log('La información del profesor se ha actualizado con éxito:', response);

@@ -82,7 +82,7 @@ export class EditStudentPageComponent {
     this.CS.getStudent(this.id).subscribe(
       
       (stud) => {
-        console.log(stud);
+        //console.log(stud);
         this.actualFirstName = stud.account.name.firstName
       
         this.actualSecondName = stud.account.name.secondName
@@ -92,8 +92,8 @@ export class EditStudentPageComponent {
         this.actualCampus = stud.account.campus
         this.actualCellPhone = stud.account.cellPhone
         this.actualCarnet = stud.account.carnet
-        console.log("hiii",this.actualFirstSurname)
-        console.log("stud is")
+        //console.log("hiii",this.actualFirstSurname)
+        //console.log("stud is")
        
       }
     )
@@ -110,7 +110,7 @@ export class EditStudentPageComponent {
   OnSelectChange(event: any) {
     if(event !== null){
       this.selectedValue = event.target.value
-      console.log(this.selectedValue)
+      //console.log(this.selectedValue)
     }
   }
 
@@ -126,7 +126,7 @@ export class EditStudentPageComponent {
   }
 
   editStudentAfterUpdate() {
-    console.log("a")
+    //console.log("a")
     const studentData = {
       firstName: this.firstNameOnInput ? this.firstNameOnInput : this.actualFirstName ,
       secondName: this.secondNameOnInput ? this.secondNameOnInput : this.actualSecondName,
@@ -138,18 +138,12 @@ export class EditStudentPageComponent {
       carnet: this.carnetOnInput ? this.carnetOnInput : this.actualCarnet  
       
     };
-    console.log(this.id);
-
-    console.log(studentData)
+    // console.log(this.id);
+    // console.log(studentData)
 
     this.CS.editAccountStudent(this.id, studentData).subscribe(
       response => {
-        console.log('La información del estudiante se ha actualizado con éxito:', response);
-        this.router.navigate(["/"])
-        
-      },
-      error => {
-        console.error('Error al actualizar la información del estudiante:', error);
+        this.router.navigate(["/viewStudents"])
       }
     );
   }

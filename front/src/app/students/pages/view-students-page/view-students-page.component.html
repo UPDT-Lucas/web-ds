@@ -25,8 +25,10 @@
       </div>
       <div class="bottom-table">
         <shared-button text="Descargar estudiantes" (click)="downloadExcel()"> </shared-button>
-        <shared-button text="Agregar estudiante" link="/addStudent">
-        </shared-button>
+        @if (!userIsTeacher) {
+          <shared-button text="Agregar estudiante" link="/addStudent">
+          </shared-button>
+        }
         <div class="file-input-container">
           <!-- <shared-file-input
               [acceptedExtensions]="['.xls', '.xlsx']"

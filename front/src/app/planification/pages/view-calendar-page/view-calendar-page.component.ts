@@ -32,7 +32,7 @@ export class ViewCalendarPageComponent {
         this.formatCalendarActivities(this.activities);
       }
     )
-    console.log(this.activities)
+    // console.log(this.activities)
   }
 
   formatCalendarActivities(activities: any) {
