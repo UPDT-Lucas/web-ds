@@ -12,7 +12,8 @@ import { Assistant, AssistantResponse } from '../interfaces/assistant.interface'
   providedIn: 'root'
 })
 export class CommunicationService {
-  constructor(private http: HttpClient) {}  
+  constructor(private http: HttpClient) {} 
+  // apiUrl for production https://back-ds.onrender.com 
   private apiUrl = 'http://localhost:3000';
 
   setActualUser(id: string, isTeacher: string){
@@ -149,7 +150,7 @@ export class CommunicationService {
   }
 
 
-  registerActivity(activityData: any): Observable<Activity> {
+  registerActivity(activityData: Activity): Observable<Activity> {
     const url = `${this.apiUrl}/register-activity`; 
     return this.http.post<Activity>(url, activityData); 
   }

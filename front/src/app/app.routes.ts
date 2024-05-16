@@ -83,7 +83,7 @@ export const routes: Routes = [
     component: AddActivityPageComponent
   },
   {
-    path: 'editActivity',
+    path: 'editActivity/:id',
     component: EditActivityPageComponent
   }
 ];

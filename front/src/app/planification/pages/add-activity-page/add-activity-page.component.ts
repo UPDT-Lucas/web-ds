@@ -30,7 +30,7 @@ export class AddActivityPageComponent {
 
   typeOfActivity: string = 'Orientadora';
   activityName: string = '';
-  responsibles: string[] = [];
+  responsibles!: string[];
   executionDate: string = '';
   executionWeek: number = 1;
   announcementDate: string = '';
@@ -150,22 +150,23 @@ export class AddActivityPageComponent {
     this.responsibles = []
     let correctFormat = true
     if(this.activityName == '' || this.executionDate == '' || this.announcementDate == ''){
-      // console.log("a")
+       console.log("a")
       correctFormat = false;
     }
+    console.log(this.checkResponsibles(), this.checkDates())
     if(!this.checkResponsibles() || !this.checkDates()) {
-      // console.log("aa")
+       console.log("aa")
       correctFormat = false;
     }
 
     this.loadProfessorsByEmails()
 
     if(Number(this.inputExecutionWeek) < 1 || Number(this.inputExecutionWeek) > 19 || Number.isNaN(parseFloat(this.inputExecutionWeek))){
-      // console.log("A")
+       console.log("A")
       correctFormat = false;
     }
     if(Number(this.inputReminderDates) < 0 || Number(this.inputReminderDates) > 60 || Number.isNaN(parseFloat(this.inputReminderDates))){
-      // console.log("AA")
+       console.log("AA")
       correctFormat = false;
     }
 

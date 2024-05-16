@@ -31,15 +31,16 @@ export class DatePickerComponent {
 
   constructor() { }
 
-
-
-  formsDate = new FormControl();
+  @Input()
+  value: string | null = null;
 
   @Input()
   entry!: string;
 
   @Output()
   entryChange = new EventEmitter<string>();
+
+  formsDate = new FormControl(this.value);
   
 
   onDateChange(event: MatDatepickerInputEvent<Date>) {
