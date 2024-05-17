@@ -13,6 +13,8 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { ExcelStudent } from "../../../interfaces/excelStudent.interface";
 import { AssistantResponse } from "../../../interfaces/assistant.interface";
 import { Professor } from "../../../interfaces/professor.interface";
+import { CheckboxInputComponent } from "../../../shared/components/checkbox-input/checkbox-input.component";
+import { DropdownMenuComponent } from "../../../shared/components/dropdown-menu/dropdown-menu.component";
 
 @Component({
   selector: "app-view-students-page",
@@ -22,7 +24,9 @@ import { Professor } from "../../../interfaces/professor.interface";
     HeaderComponent,
     TableComponent,
     FileInputComponent,
-    InputComponent
+    InputComponent,
+    CheckboxInputComponent,
+    DropdownMenuComponent
   ],
   templateUrl: "./view-students-page.component.html",
   styleUrl: "./view-students-page.component.css",
@@ -35,8 +39,14 @@ export class ViewStudentsPageComponent {
   ) {}
 
   studentList: Student[] = [];
+  selectedDropdownValues: boolean[] = []
 
   file: any;
+
+  campusOptions = [
+    'San José', 'Cartago',
+    'Alajuela', 'San Carlos',
+    'Limón']
 
   headers = [
     ['Rol', 'text'],
@@ -70,18 +80,17 @@ export class ViewStudentsPageComponent {
       this.headers.push(['Acciones', 'icon'])
     }else{
       this.getAssistant()
-     this.actions =  [['delete'],['edit', '']]
+      this.actions =  [['delete'],['edit', '']]
       this.headers.push(['Acciones', 'icon'])
     }
     this.limit = 5
-    this.changePage(5, 0)
-    //this.setActions()
   }
 
   getAssistant(){
     this.CS.getAssistant(this.actualId).subscribe(
       assistant => {
         this.assistant = assistant
+        this.changePage(5, 0)
       }
     )
   }
@@ -90,6 +99,7 @@ export class ViewStudentsPageComponent {
     this.CS.getProfessor(this.actualId).subscribe(
       prof => {
         this.actualProfessor = prof
+        this.changePage(5, 0)
       }
     )
   }
@@ -306,6 +316,7 @@ export class ViewStudentsPageComponent {
 
       if(this.userIsTeacher){
         const studentsActions = JSON.parse(JSON.stringify(this.actions));
+        // console.log(this.actualProfessor)
         if(this.actualProfessor.account.campus == studentList.students[index].campus){
           studentsActions[0][1] = `/editStudent/${id}`;
         }
@@ -320,7 +331,6 @@ export class ViewStudentsPageComponent {
         }
         studentData.push(studentsActions)
       } 
-
 
       this.data.push(studentData);
     }
@@ -368,6 +378,12 @@ export class ViewStudentsPageComponent {
       }
   })
    
+  }
+
+  getSelectedCampus(values: boolean[]) {
+    this.selectedDropdownValues = values;
+    // Aquí puedes hacer cualquier otra cosa que necesites con los valores seleccionados
+    console.log(this.selectedDropdownValues);
   }
 
 }

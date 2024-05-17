@@ -27,21 +27,22 @@ export class CalendarComponent {
   ngOnInit() {
     // console.log(this.activities)
     this.actualUser = this.CS.getActualUser()
-    this.CS.getAllActivities().subscribe(
-      (res) => {
-        this.getData(res);
-        this.formatCalendarActivities(this.activities);
-      }
-    )
     if(this.actualUser.isTeacher){
       this.CS.getProfessor(this.actualUser.id).subscribe(
         prof => {
+          console.log(prof)
           if(prof.account.isCordinator){
             this.calendarOptions = this.calendarWthAddOptions
           }
         }
       )
     }
+    this.CS.getAllActivities().subscribe(
+      (res) => {
+        this.getData(res);
+        this.formatCalendarActivities(this.activities);
+      }
+    )
     
   }
 
@@ -91,7 +92,7 @@ export class CalendarComponent {
     plugins: [dayGridPlugin],
     initialView: 'dayGridWeek',
     hiddenDays: [0],
-    events: this.activities,
+    events: this.calendarActivities,
     headerToolbar: {
       start: 'title',
       center: '',

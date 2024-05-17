@@ -1,0 +1,18 @@
+<div class="dropdown-menu">
+    <div (click)="toggleOpen()" class="dropdown-header">
+        <div class="header-text-container">
+            <p>Campus</p>
+        </div>
+    </div>
+    @if (isOpened) {
+    <div class="dropdown-items-container">
+        @for (opt of options; track $index) {
+        <div class="dropdown-item">
+            <input type="checkbox" [checked]="selectedOptions[$index]" (change)="toggleOption($index)">
+            {{opt}}
+        </div>
+        }
+    </div>
+    }
+</div>
+

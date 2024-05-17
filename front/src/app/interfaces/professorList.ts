@@ -1,4 +1,4 @@
-export interface PorfessorList {
+export interface ProfessorList {
     professors: Professor[];
 }
 

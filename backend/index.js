@@ -14,10 +14,7 @@ async function initApp(appConfig, dbConfig) {
             nameDB: "proyecto_diseno"
         });
         
-
         await mongoConnection.connect();
-
-      
 
         app.listen(appConfig.port, () => console.log(`Listening on http://localhost:${appConfig.port}`));
     } catch (error) {

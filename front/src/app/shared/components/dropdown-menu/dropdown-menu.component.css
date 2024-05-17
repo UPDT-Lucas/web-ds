@@ -1,0 +1,55 @@
+p {
+    font-size: 14px;
+    margin: 0;
+}
+
+.dropdown-menu {
+    position: relative;
+    width: fit-content;
+    border-radius: 10px;
+    border: 1px solid gray;
+    box-sizing: border-box;
+    padding: 0 0.5rem;
+    z-index: 99999; /* Asegura que el dropdown esté en el frente */
+}
+
+.dropdown-header {
+    height: 30px;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    text-align: center;
+}
+
+.header-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-items-container {
+    position: absolute;
+    top: 100%; /* Posiciona el contenedor justo debajo del header */
+    left: 0;
+    width: fit-content;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    cursor: default;
+    max-height: 150px; /* Limita la altura del contenedor */
+    overflow-y: auto; /* Hace que el contenido sea desplazable */
+    z-index: 1000; /* Asegura que el dropdown-items-container esté encima de otros elementos */
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

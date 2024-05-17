@@ -256,9 +256,31 @@ const getProfessorsByName = async (req, res) => {
 // El resultado es parecido pero el contenido es un poco más limpio en el frontend
 const getProfessorsByEmail = async (req, res) => {
     try {
-        const { email } = req.params;
-        const professors = await Professor.findOne({ email: email });
-        return res.status(200).json(professors);
+        const { inputEmail } = req.params;
+        const professor = await Professor.findOne({ inputEmail });
+
+        if (!professor) {
+            return res.status(400).json({ error: 'Professor does not exist' });
+        }
+
+        // Extraer propiedades del objeto professor
+        const { _id, firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, officePhone, photo, isCordinator } = professor;
+
+        //const campusName = campus ? campus.campusName : null;
+        
+        // Construir el objeto de cuenta
+        const account = {
+            name: { firstName, secondName, firstSurname, secondSurname },
+            email,
+            campus,
+            cellPhone,
+            officePhone,
+            isCordinator,
+            photo,
+            _id
+        };
+
+        return res.status(200).json({ account });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Internal server error' });

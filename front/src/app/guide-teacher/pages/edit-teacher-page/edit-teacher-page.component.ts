@@ -185,7 +185,7 @@ export class EditTeacherPageComponent {
     this.CS.editAccount(this.id, professorData).subscribe(
       response => {
         console.log('La información del profesor se ha actualizado con éxito:', response);
-        this.router.navigate(["/"])
+        this.router.navigate(["/landing"])
         
       },
       error => {

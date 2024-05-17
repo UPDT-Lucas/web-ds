@@ -9,6 +9,7 @@ import { Activity } from '../../../interfaces/activity.interface';
 import { DatePickerComponent } from '../../../shared/components/date-picker/date-picker.component';
 import { CommunicationService } from '../../../services/communication.service';
 import { map } from 'rxjs';
+import { Professor } from '../../../interfaces/professor.interface';
 
 @Component({
   selector: 'app-add-activity-page',
@@ -31,7 +32,7 @@ export class AddActivityPageComponent {
 
   typeOfActivity: string = 'Orientadora';
   activityName: string = '';
-  responsibles!: string[];
+  responsibles: string[] = [];
   executionDate: string = new Date().toISOString();
   executionWeek: number = 1;
   announcementDate: string = new Date().toISOString();
@@ -58,17 +59,19 @@ export class AddActivityPageComponent {
 
 
   getData() {
-    if (this.file) {
-      const formData = new FormData();
-      formData.append('file', this.file);
-      this.s3ApiService.uploadFile(formData).subscribe(
-        (res) => {
-          this.updateImage(this.file.name).subscribe(() => {
-            this.uploadActivity();
-          });
-        }
-      );
-    }
+    this.uploadActivity();
+    // if (this.file) {
+    //   const formData = new FormData();
+    //   formData.append('file', this.file);
+    //   this.s3ApiService.uploadFile(formData).subscribe(
+    //     (res) => {
+    //       this.updateImage(this.file.name).subscribe(() => {
+    //         console.log(res)
+    //         this.uploadActivity();
+    //       });
+    //     }
+    //   );
+    // }
   }
 
   updateImage(filename: string) {
@@ -113,6 +116,7 @@ export class AddActivityPageComponent {
   }
 
   checkResponsibles(){
+    console.log("pasa")
     let correctFormat = true
     let responsibles = this.inputResponsibles.split(',')
     responsibles.forEach(responsible => {
@@ -135,18 +139,48 @@ export class AddActivityPageComponent {
 
   loadProfessorsByEmails(){
     // console.log(this.professorEmailsSet)
-    this.professorEmailsSet.forEach(email => {
+    console.log(this.professorEmails)
+    this.professorEmails.forEach(email => {
       // console.log("AAAAA ", email)
       this.CS.getProfessorByEmail(email).subscribe(
-        (res: any) => {
+        (res: Professor) => {
           if(res){
-            this.responsibles.push(res._id)
+            console.log("id")
+            console.log(res.account._id)
+            this.responsibles.push(res.account._id)
+            this.createActivity()
+            
           } else {
             console.log("No se encontró el profesor")
           }
         }
       )
     });
+    console.log("estos hay")
+    console.log(this.responsibles)
+    console.log(this.responsibles.length)
+  }
+  
+  createActivity(){
+    const activityData: Activity = {
+      typeOfActivity: this.typeOfActivity,
+      activityName: this.activityName,
+      responsibles: this.responsibles,
+      executionDate: new Date(this.executionDate),
+      executionWeek: Number(this.inputExecutionWeek),
+      announcementDate: new Date(this.announcementDate),
+      reminderDates: Number(this.inputReminderDates),
+      comments: [],
+      isRemote: this.isRemote,
+      virtualActivityLink: this.virtualActivityLink,
+      activityPoster: this.filename,
+      currentState: this.currentState
+    }
+    this.CS.registerActivity(activityData).subscribe(
+      (res: any) => {
+        console.log(res)
+      }
+    )
   }
 
   checkInputs() {
@@ -164,8 +198,6 @@ export class AddActivityPageComponent {
       correctFormat = false;
     }
 
-    this.loadProfessorsByEmails()
-
     if(Number(this.inputExecutionWeek) < 1 || Number(this.inputExecutionWeek) > 19 || Number.isNaN(parseFloat(this.inputExecutionWeek))){
        console.log("A")
       correctFormat = false;
@@ -181,26 +213,7 @@ export class AddActivityPageComponent {
 
   uploadActivity(){
     if(this.checkInputs()){
-      const activityData: Activity = {
-        typeOfActivity: this.typeOfActivity,
-        activityName: this.activityName,
-        responsibles: this.responsibles,
-        executionDate: new Date(this.executionDate),
-        executionWeek: Number(this.inputExecutionWeek),
-        announcementDate: new Date(this.announcementDate),
-        reminderDates: Number(this.inputReminderDates),
-        comments: [],
-        isRemote: this.isRemote,
-        virtualActivityLink: this.virtualActivityLink,
-        activityPoster: this.filename,
-        currentState: this.currentState
-      }
-      console.log(activityData.responsibles)
-      this.CS.registerActivity(activityData).subscribe(
-        (res: any) => {
-          console.log(res)
-        }
-      )
+      this.loadProfessorsByEmails()
     } else {
       console.log("Error en el formato de los datos ingresados")
     }
