@@ -179,13 +179,29 @@ const deleteStudent = async (req, res) => {
 
 const getStudentsByCampus = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { ids } = req.params
+        // console.log(ids)
+        // const { limit, skip } = req.query; // Extraer ids, limit y skip de los parámetros de la consulta
+
+        if (!ids) {
+            return res.status(400).json({ error: 'Invalid campus IDs' });
+        }
+
+        const idsArray = ids.split(',');
+
+        if (idsArray.length === 0) {
+            return res.status(400).json({ error: 'Invalid campus IDs' });
+        }
+
+        console.log(idsArray)
 
         // Buscar todos los estudiantes que tienen el ID del campus en su campo 'campus'
-        const students = await Student.find({ campus: id });
+        const students = await Student.find({ campus: { $in: idsArray } })
+            // .skip(parseInt(skip) || 0)  // Asegúrate de que skip sea un número
+            // .limit(parseInt(limit) || 10); // Asegúrate de que limit sea un número
 
         if (!students || students.length === 0) {
-            return res.status(404).json({ error: 'No students found in this campus' });
+            return res.status(404).json({ error: 'No students found in these campuses' });
         }
 
         return res.status(200).json({ students });

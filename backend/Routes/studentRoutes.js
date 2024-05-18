@@ -8,7 +8,8 @@ router.post('/register-student',  registerStudent);
 router.get('/all-student', getAllStudent);
 router.get('/getStudent/:id', getStudent);
 router.get('/getStudentByName', getStudentByName);
-router.get('/getStudentByCampus/:id', getStudentsByCampus);
+router.get('/getStudentByCampus/:ids', getStudentsByCampus);
+// router.get('/filterByCampus', filterByCampus)
 router.delete('/delete-student/:id', deleteStudent);
 router.put('/editAccountStudent/:id', editAccountStudent);
 

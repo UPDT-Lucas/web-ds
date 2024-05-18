@@ -136,6 +136,12 @@ export class CommunicationService {
     return this.http.delete<Student>(url);
   }
 
+  getStudentsByCampus(campus: string[], limit: number, skip: number) {
+    const idsParam = campus.join(',');
+    const url = `${this.apiUrl}/getStudentByCampus/${idsParam}`;
+    return this.http.get<Student[]>(url);
+}
+
   //router.delete('/delete-student/:id', deleteStudent);
 
   //----------------------------------------- ACTIVITY -----------------------------------------//
