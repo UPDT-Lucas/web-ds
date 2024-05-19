@@ -64,6 +64,7 @@ export class ViewStudentsPageComponent {
   limit: number = 0;
   filterOnInput: string = ""
   filter: boolean = false;
+  campusFilter: boolean = false;
   userIsTeacher: boolean = false;
   actualProfessor!: Professor;
   assistant!: AssistantResponse;
@@ -351,6 +352,24 @@ export class ViewStudentsPageComponent {
             }
           }
         )
+      } if(this.campusFilter){
+        const selectionCampusName = this.getActualCampus();
+        let selectionCampusId: string[] = [];
+        selectionCampusName.forEach(selection => {
+          selectionCampusId.push(this.getCampusId(selection)!);
+        });
+        if(selectionCampusId.length > (nextPage * limit)  ){
+          this.CS.getStudentsByCampus(selectionCampusId, limit, nextPage * limit).subscribe(
+            res => {
+              if (res.students.length != 0) {
+                this.data = []
+                this.studentList = res
+                this.getData(res)
+              this.page = nextPage;
+              }
+            }
+          );
+        }
       } else {
         this.CS.getAllStudent(this.limit, nextPage * limit).subscribe(
           res => {
@@ -374,7 +393,7 @@ export class ViewStudentsPageComponent {
             this.CS.deleteSudent(id).subscribe(() => {
               console.log('Estudiante eliminado exitosamente');
             });
-          }
+          } 
         }
       })
   }
@@ -385,16 +404,12 @@ export class ViewStudentsPageComponent {
   }
 
   filterByCampus() {
-    const selectionCampusName = this.getActualCampus();
-    let selectionCampusId: string[] = [];
-    selectionCampusName.forEach(selection => {
-      selectionCampusId.push(this.getCampusId(selection)!);
-    });
-    this.CS.getStudentsByCampus(selectionCampusId, 5, 0).subscribe(
-      res => {
-        console.log(res);
-      }
-    );
+    this.campusFilter = true  
+    this.changePage(5,0)
+    if (this.selectedDropdownValues.every(value => value === false)) {
+      this.campusFilter = false
+      this.changePage(5,0)
+    }
   }
 
   getActualCampus(): string[] {
