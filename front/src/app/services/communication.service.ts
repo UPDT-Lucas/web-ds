@@ -137,6 +137,12 @@ export class CommunicationService {
     return this.http.delete<Student>(url);
   }
 
+  getStudentsByCampus(campus: string[], limit: number, skip: number): Observable<Student | any>  {
+    const idsParam = campus.join(',');
+    const url = `${this.apiUrl}/getStudentByCampus/${idsParam}?limit=${limit}&skip=${skip}`;
+    return this.http.get<Student[]>(url);
+}
+
   //router.delete('/delete-student/:id', deleteStudent);
 
   //----------------------------------------- ACTIVITY -----------------------------------------//

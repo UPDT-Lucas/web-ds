@@ -3,6 +3,7 @@ export interface Professor {
 }
 
 export interface Account {
+    _id:         string;
     name:        Name;
     username:    string;
     email:       string;

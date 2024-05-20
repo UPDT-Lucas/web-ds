@@ -63,7 +63,7 @@ export class LoginPageComponent {
         (res) => {
           if(res.message === 'Login successful') {
             this.CS.setActualUser(res._id, res.isTeacher);
-            this.router.navigate(['/']);
+            this.router.navigate(['/landing']);
           } else {
             this.errorMessage = res.error;
             this.showErrorMessage = true;

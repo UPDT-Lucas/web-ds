@@ -13,6 +13,8 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { ExcelStudent } from "../../../interfaces/excelStudent.interface";
 import { AssistantResponse } from "../../../interfaces/assistant.interface";
 import { Professor } from "../../../interfaces/professor.interface";
+import { CheckboxInputComponent } from "../../../shared/components/checkbox-input/checkbox-input.component";
+import { DropdownMenuComponent } from "../../../shared/components/dropdown-menu/dropdown-menu.component";
 
 @Component({
   selector: "app-view-students-page",
@@ -22,7 +24,9 @@ import { Professor } from "../../../interfaces/professor.interface";
     HeaderComponent,
     TableComponent,
     FileInputComponent,
-    InputComponent
+    InputComponent,
+    CheckboxInputComponent,
+    DropdownMenuComponent
   ],
   templateUrl: "./view-students-page.component.html",
   styleUrl: "./view-students-page.component.css",
@@ -32,11 +36,17 @@ export class ViewStudentsPageComponent {
     private fileSaver: FileSaverService,
     private CS: CommunicationService,
     private router: Router
-  ) {}
+  ) { }
 
   studentList: Student[] = [];
+  selectedDropdownValues: boolean[] = []
 
   file: any;
+
+  campusOptions = [
+    'San José', 'Cartago',
+    'Alajuela', 'San Carlos',
+    'Limón']
 
   headers = [
     ['Rol', 'text'],
@@ -54,42 +64,43 @@ export class ViewStudentsPageComponent {
   limit: number = 0;
   filterOnInput: string = ""
   filter: boolean = false;
+  campusFilter: boolean = false;
   userIsTeacher: boolean = false;
   actualProfessor!: Professor;
   assistant!: AssistantResponse;
   actualId: string = ""
 
-  
+
   ngOnInit() {
     const user = this.CS.getActualUser()
     this.actualId = user.id
     this.userIsTeacher = user.isTeacher
-    if(user.isTeacher){
+    if (user.isTeacher) {
       this.getProfessor()
       this.actions = [['edit']]
       this.headers.push(['Acciones', 'icon'])
-    }else{
+    } else {
       this.getAssistant()
-     this.actions =  [['delete'],['edit', '']]
+      this.actions = [['delete'], ['edit', '']]
       this.headers.push(['Acciones', 'icon'])
     }
     this.limit = 5
-    this.changePage(5, 0)
-    //this.setActions()
   }
 
-  getAssistant(){
+  getAssistant() {
     this.CS.getAssistant(this.actualId).subscribe(
       assistant => {
         this.assistant = assistant
+        this.changePage(5, 0)
       }
     )
   }
 
-  getProfessor(){
+  getProfessor() {
     this.CS.getProfessor(this.actualId).subscribe(
       prof => {
         this.actualProfessor = prof
+        this.changePage(5, 0)
       }
     )
   }
@@ -180,7 +191,7 @@ export class ViewStudentsPageComponent {
           carnet: (jsonData[index] as any).carnet.toString(),
         };
 
-        console.log(student)  
+        console.log(student)
 
         this.CS.registerStudent(student).subscribe(
           (response) => {
@@ -227,7 +238,7 @@ export class ViewStudentsPageComponent {
       this.excelData.push(studentData);
     }
   }
-  
+
   getCampusId(campusName: string) {
     const campusData = [
       {
@@ -256,17 +267,17 @@ export class ViewStudentsPageComponent {
     );
     return campus ? campus._id.$oid : null;
   }
-  
-  getBadge(campus: string){
-    if(campus == "San José"){
+
+  getBadge(campus: string) {
+    if (campus == "San José") {
       return ["SJ", "#d68d33"]
-    }else if(campus == "Alajuela"){
+    } else if (campus == "Alajuela") {
       return ["AL", "#d45c5c"]
-    }else if(campus == "Cartago"){
+    } else if (campus == "Cartago") {
       return ["CA", "#3372d6"]
-    }else if(campus == "San Carlos"){
+    } else if (campus == "San Carlos") {
       return ["SC", "#ab60c2"]
-    }else{
+    } else {
       return ["LI", "#43cb59"]
     }
   }
@@ -277,7 +288,7 @@ export class ViewStudentsPageComponent {
       // console.log("Indice", index);
       // console.log("Información:", studentList.students[index]);
 
-      const id = studentList.students[index]._id; 
+      const id = studentList.students[index]._id;
       // console.log("ID:", id);
 
       const rolStudent = "Estudiante";
@@ -304,30 +315,30 @@ export class ViewStudentsPageComponent {
         //this.actions,
       ];
 
-      if(this.userIsTeacher){
+      if (this.userIsTeacher) {
         const studentsActions = JSON.parse(JSON.stringify(this.actions));
-        if(this.actualProfessor.account.campus == studentList.students[index].campus){
+        // console.log(this.actualProfessor)
+        if (this.actualProfessor.account.campus == studentList.students[index].campus) {
           studentsActions[0][1] = `/editStudent/${id}`;
         }
-          studentData.push(studentsActions)
-      }else if(this.assistant){          
+        studentData.push(studentsActions)
+      } else if (this.assistant) {
         const studentsActions = JSON.parse(JSON.stringify(this.actions));
-        if(this.assistant.assistant.campus == studentList.students[index].campus){
+        if (this.assistant.assistant.campus == studentList.students[index].campus) {
           studentsActions[0][1] = id;
           studentsActions[1][1] = `/editStudent/${id}`;
-        }else{
+        } else {
           studentsActions[1][1] = `/viewStudents`;
         }
         studentData.push(studentsActions)
-      } 
-
+      }
 
       this.data.push(studentData);
     }
   }
 
-  
- changePage(limit: number, nextPage: number) {
+
+  changePage(limit: number, nextPage: number) {
     if (nextPage >= 0) {
       if (this.filter) {
         this.CS.getStudentByName(this.filterOnInput, limit, nextPage * limit).subscribe(
@@ -341,6 +352,24 @@ export class ViewStudentsPageComponent {
             }
           }
         )
+      } if(this.campusFilter){
+        const selectionCampusName = this.getActualCampus();
+        let selectionCampusId: string[] = [];
+        selectionCampusName.forEach(selection => {
+          selectionCampusId.push(this.getCampusId(selection)!);
+        });
+        if(selectionCampusId.length > (nextPage * limit)  ){
+          this.CS.getStudentsByCampus(selectionCampusId, limit, nextPage * limit).subscribe(
+            res => {
+              if (res.students.length != 0) {
+                this.data = []
+                this.studentList = res
+                this.getData(res)
+              this.page = nextPage;
+              }
+            }
+          );
+        }
       } else {
         this.CS.getAllStudent(this.limit, nextPage * limit).subscribe(
           res => {
@@ -352,22 +381,46 @@ export class ViewStudentsPageComponent {
             }
           }
         )
-      } 
+      }
     }
   }
 
   deleteStudent(id: string) {
     this.CS.getStudent(id).subscribe(
       student => {
-        if(!this.userIsTeacher){
-          if(this.assistant.assistant.campus == student.account.campus){
+        if (!this.userIsTeacher) {
+          if (this.assistant.assistant.campus == student.account.campus) {
             this.CS.deleteSudent(id).subscribe(() => {
               console.log('Estudiante eliminado exitosamente');
             });
-          }
-      }
-  })
-   
+          } 
+        }
+      })
   }
+
+  getSelectedCampus(values: boolean[]) {
+    this.selectedDropdownValues = values;
+    console.log(this.selectedDropdownValues);
+  }
+
+  filterByCampus() {
+    this.campusFilter = true  
+    this.changePage(5,0)
+    if (this.selectedDropdownValues.every(value => value === false)) {
+      this.campusFilter = false
+      this.changePage(5,0)
+    }
+  }
+
+  getActualCampus(): string[] {
+    let actualSelection: string[] = [];
+    this.selectedDropdownValues.forEach((selected, index) => {
+      if (selected) {
+        actualSelection.push(this.campusOptions[index]);
+      }
+    });
+    return actualSelection;
+  }
+
 
 }

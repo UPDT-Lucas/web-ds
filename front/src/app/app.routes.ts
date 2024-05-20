@@ -18,7 +18,7 @@ import { OptPageComponent } from './access/pages/otp-page/otp-page.component';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'landing',
     component: LandingPageComponent
   },
   {
@@ -26,7 +26,7 @@ export const routes: Routes = [
     component: TeamViewComponent
   },
   {
-    path: 'login',
+    path: '',
     component: LoginPageComponent
   },
   {

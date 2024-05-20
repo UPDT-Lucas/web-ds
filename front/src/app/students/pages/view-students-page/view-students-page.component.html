@@ -4,40 +4,41 @@
     <div class="content-fixer">
       <div class="top-table">
         <h2>Lista de estudiantes</h2>
-        <shared-input
-                placeholder="Filtar por nombre"
-                [(entry)]="filterOnInput"
-                (keyup.enter)="searchByName()"
-                class="filter-input">
-                
-           </shared-input>
+        <div class="filters">
+          <div class="left">
+          <shared-input placeholder="Filtar por nombre" [(entry)]="filterOnInput" (keyup.enter)="searchByName()"
+            class="filter-input">
+          </shared-input>
+          <shared-dropdown-menu
+          [options]="campusOptions"
+          [selectedOptions]="selectedDropdownValues"
+          (selectedOptionsChange)="getSelectedCampus($event)">
+        </shared-dropdown-menu>
+          </div>
+          <shared-button 
+            text="Filtrar"
+            (click)="filterByCampus()">
+          </shared-button>
+        </div>
       </div>
-      <app-table 
-          [headers]="headers" 
-          (delete)="deleteStudent($event)"
-          [data]="data"> 
+      <app-table [headers]="headers" (delete)="deleteStudent($event)" [data]="data">
       </app-table>
       <div class="pagination clickable">
-        <i class="material-icons"
-        (click)="changePage(limit, page-1)">arrow_back_ios</i>
-        <i class="material-icons"
-        (click)="changePage(limit, page+1)">arrow_forward_ios</i>
+        <i class="material-icons" (click)="changePage(limit, page-1)">arrow_back_ios</i>
+        <i class="material-icons" (click)="changePage(limit, page+1)">arrow_forward_ios</i>
       </div>
       <div class="bottom-table">
         <shared-button text="Descargar estudiantes" (click)="downloadExcel()"> </shared-button>
         @if (!userIsTeacher) {
-          <shared-button text="Agregar estudiante" link="/addStudent">
-          </shared-button>
+        <shared-button text="Agregar estudiante" link="/addStudent">
+        </shared-button>
         }
         <div class="file-input-container">
-          <shared-file-input [isPDF]="true"
-              [acceptedExtensions]="['.xls', '.xlsx']"
-              placeholder="Subir estudiantes"
-              (change)="uploadExcel($event)">
+          <shared-file-input [isPDF]="true" [acceptedExtensions]="['.xls', '.xlsx']" placeholder="Subir estudiantes"
+            (change)="uploadExcel($event)">
           </shared-file-input>
-      </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
