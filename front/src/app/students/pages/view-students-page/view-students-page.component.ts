@@ -40,6 +40,7 @@ export class ViewStudentsPageComponent {
 
   studentList: Student[] = [];
   selectedDropdownValues: boolean[] = []
+  studentListToDownload: any[] = [];
 
   file: any;
 
@@ -125,7 +126,6 @@ export class ViewStudentsPageComponent {
 
 
   downloadExcel(): void {
-    this.getExcelData(this.studentList);
     const EXCEL_TYPE =
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const EXCEL_EXTENSION = ".xlsx";
@@ -139,32 +139,120 @@ export class ViewStudentsPageComponent {
       "cellPhone",
       "carnet",
     ];
-    const data = this.excelData;
-    // console.log(this.excelData);
+    const selectionCampusName = this.getActualCampus();
+    let selectionCampusId: string[] = [];
+    this.campusFilter = false
+    selectionCampusName.forEach(selection => {
+      selectionCampusId.push(this.getCampusId(selection)!);
+      if(selection) {
+        this.campusFilter = true
+      }
+    });
+    if(this.campusFilter){
+      this.CS.getStudentsByCampus(selectionCampusId, 0, 0).subscribe(
+        res => {
+          if (res.students.length != 0) {
+            this.data = []
+            this.excelData = []
+            this.studentList = res
+            this.getData(res)
+            this.getExcelData(this.studentList);
 
-    const jsonData = data.map((row) => {
-      return columns.reduce((obj: { [key: string]: any }, column, index) => {
-        obj[column] = row[index];
-        return obj;
-      }, {});
-    });
-    const formattedData = [];
-    for (let index in jsonData) {
-      formattedData.push(jsonData[index]);
+            const data = this.excelData;
+
+            const jsonData = data.map((row) => {
+              return columns.reduce((obj: { [key: string]: any }, column, index) => {
+                obj[column] = row[index];
+                return obj;
+              }, {});
+            });
+
+            let formattedDataSJ = [];
+            let formattedDataCA = [];
+            let formattedDataAL = [];
+            let formattedDataSC = [];
+            let formattedDataLI = [];
+
+            console.log(jsonData)
+
+            for (let index in jsonData) {
+              if (jsonData[index]['campus'] == "San José") {
+                formattedDataSJ.push(jsonData[index]);
+              } else if (jsonData[index]['campus'] == "Cartago") {
+                formattedDataCA.push(jsonData[index]);
+              } else if (jsonData[index]['campus'] == "Alajuela") {
+                formattedDataAL.push(jsonData[index]);
+              } else if (jsonData[index]['campus'] == "San Carlos") {
+                formattedDataSC.push(jsonData[index]);
+              } else if (jsonData[index]['campus'] == "Limón") {
+                formattedDataLI.push(jsonData[index]);
+              }
+            }
+
+            const worksheetSJ: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedDataSJ);
+            const worksheetCA: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedDataCA);
+            const worksheetAL: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedDataAL);
+            const worksheetSC: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedDataSC);
+            const worksheetLI: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedDataLI);
+
+            const workbook: XLSX.WorkBook = {
+              Sheets: {
+                "San José": worksheetSJ,
+                "Cartago": worksheetCA,
+                "Alajuela": worksheetAL,
+                "San Carlos": worksheetSC,
+                "Limón": worksheetLI
+              },
+              SheetNames: ["San José", "Cartago", "Alajuela", "San Carlos", "Limón"],
+            };
+            const excelBuffer: any = XLSX.write(workbook, {
+              bookType: "xlsx",
+              type: "array",
+            });
+            const blobData = new Blob([excelBuffer], { type: EXCEL_TYPE });
+            this.fileSaver.save(blobData, `students${EXCEL_EXTENSION}`); //FileName
+          }
+        }
+      );
+    } else {
+      this.CS.getAllStudent(0, 0).subscribe(
+        res => {
+          if (res.students.length != 0) {
+            this.data = []
+            this.excelData = []
+            this.studentList = res
+            this.getData(res)
+            this.getExcelData(this.studentList);
+
+            const data = this.excelData;
+
+            const jsonData = data.map((row) => {
+              return columns.reduce((obj: { [key: string]: any }, column, index) => {
+                obj[column] = row[index];
+                return obj;
+              }, {});
+            });
+            const formattedData = [];
+            for (let index in jsonData) {
+              formattedData.push(jsonData[index]);
+            }
+            const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
+            const workbook: XLSX.WorkBook = {
+              Sheets: {
+                Students: worksheet,
+              },
+              SheetNames: ["Students"],
+            };
+            const excelBuffer: any = XLSX.write(workbook, {
+              bookType: "xlsx",
+              type: "array",
+            });
+            const blobData = new Blob([excelBuffer], { type: EXCEL_TYPE });
+            this.fileSaver.save(blobData, `students${EXCEL_EXTENSION}`); //FileName
+          }
+        }
+      )
     }
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
-    const workbook: XLSX.WorkBook = {
-      Sheets: {
-        Students: worksheet,
-      },
-      SheetNames: ["Students"],
-    };
-    const excelBuffer: any = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
-    const blobData = new Blob([excelBuffer], { type: EXCEL_TYPE });
-    this.fileSaver.save(blobData, `students${EXCEL_EXTENSION}`); //FileName
   }
 
   uploadExcel(event: any): void {
