@@ -11,12 +11,14 @@ const ActivityScheme = new Schema({
     reminderDates: Number,    //Fechas de recordatorios
     comments: [{                //Commentarios de los profesores
         text: String,
+        date: Date,
         author: {
             type: Schema.Types.ObjectId,
             ref: 'Professor'
         },
         replies: [{
             text: String,
+            date: Date,
             author: {
                 type: Schema.Types.ObjectId,
                 ref: 'Professor'

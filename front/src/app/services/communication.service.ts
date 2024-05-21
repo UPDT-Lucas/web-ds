@@ -7,6 +7,7 @@ import { Professor } from '../interfaces/professor.interface';
 import { Student } from '../interfaces/student.interface';
 import { Activity } from '../interfaces/activity.interface';
 import { Assistant, AssistantResponse } from '../interfaces/assistant.interface'
+import { Comment } from '../interfaces/activity.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -165,6 +166,11 @@ export class CommunicationService {
   editActivity(id: string, activityData: Activity): Observable<Activity> {
     const url = `${this.apiUrl}/editActivity/${id}`;
     return this.http.put<Activity>(url, activityData);
+  }
+
+  insertComment(id: string, comment: any): Observable<Activity> {
+    const url = `${this.apiUrl}/insert-comment-activity/${id}`;
+    return this.http.put<Activity>(url, comment);
   }
 
   //----------------------------------------- ASSISTANT -----------------------------------------//

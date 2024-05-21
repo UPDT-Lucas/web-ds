@@ -97,6 +97,34 @@ const editActivity = async (req, res) => {
   }
 }
 
+const insertCommentActivity = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const activity = await Activity.findById(id);
+
+    if (!activity) {
+      return res.status(404).json({ error: "Activity not found" });
+    }
+
+    let updates = {
+        comments: req.body,
+    }
+    console.log(req.body)
+    console.log(updates)
+
+    const updatedActivity = await Activity.findOneAndUpdate({_id: id}, updates, {new: true})
+
+    if(!updatedActivity){
+        return res.status(500).json({error: "Activity does not exist"})
+    }
+
+    return res.status(200).json({ message: "Activity updated" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 const deleteActivity = async (req, res) => {
   try {
     const { id } = req.params;
@@ -115,4 +143,4 @@ const deleteActivity = async (req, res) => {
   }
 }
 
-module.exports = { registerActivity, getAllActivities, getActivity, editActivity, deleteActivity };
+module.exports = { registerActivity, getAllActivities, getActivity, editActivity, deleteActivity, insertCommentActivity };

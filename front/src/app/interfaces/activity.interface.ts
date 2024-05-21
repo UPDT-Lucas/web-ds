@@ -17,10 +17,12 @@ export interface Activity {
 export interface Comment {
   text: string;
   author: string; // Professor ID
+  date: Date;
   replies: CommentReply[];
 }
 
 export interface CommentReply {
+  date: Date;
   text: string;
   author: string; // Professor ID
 }

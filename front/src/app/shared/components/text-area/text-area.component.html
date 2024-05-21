@@ -1,0 +1,6 @@
+<textarea class="custom-text-area"
+    [placeholder]="placeholder"
+    [(ngModel)]="entry"
+    (ngModelChange)="onInputChange($event.toString())"
+    [value]="value"
+></textarea>

@@ -54,6 +54,59 @@
     gap: 1rem;
 }
 
+.comments-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.comment{
+    p {
+        font-size: 1rem;
+        font-weight: ligther;
+    }
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    p {
+        font-size: 1rem;
+        font-weight: bold;
+    }	
+}
+	
+
+.comment-reply {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    p {
+        font-size: 1rem;
+        font-weight: lighter;
+    }
+}
+
+.input-reply{
+    padding-left: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.add-comment{
+
+}
+
 @media(min-width: 768px) {
     .container {
         gap: 10%;

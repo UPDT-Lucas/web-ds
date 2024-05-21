@@ -1,6 +1,6 @@
 const express = require('express');
 const { registerActivity, getAllActivities, getActivity,
-     editActivity, deleteActivity } = require('../Controllers/activitiesController');
+     editActivity, insertCommentActivity, deleteActivity } = require('../Controllers/activitiesController');
 
 const router = express.Router();
 
@@ -9,6 +9,7 @@ router.post('/register-activity', registerActivity);
 router.get('/all-activities', getAllActivities);
 router.get('/getActivity/:id', getActivity);
 router.put('/editActivity/:id', editActivity);
+router.put('/insert-comment-activity/:id', insertCommentActivity);
 router.delete('/delete-activity/:id', deleteActivity);
 
 module.exports = router;
