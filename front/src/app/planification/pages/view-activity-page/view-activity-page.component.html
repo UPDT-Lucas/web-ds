@@ -79,40 +79,8 @@
       <shared-button text="Editar" (click)="redirectToActivity()">
       </shared-button>
       }
-    </div>
-  </div>
-  <div class="comments-container">
-    <h2>Comentarios</h2>
-    <div class="add-comment">
-      <shared-text-area placeholder="Escribe un comentario" [(entry)]="currentComment"></shared-text-area>
-      <shared-button text="Comentar" (click)="addComment()"> </shared-button>
-    </div>
-    <div class="comments-container">
-      @defer {
-        <div *ngFor="let item of commentsToShow; let i = index">
-          <div class="comment">
-            <div class="comment-header">
-              <p>{{ item.author }}  {{ prettyPrintDate(item.date) }}</p>
-            </div>
-            <p>{{ item.text }}</p>
-          </div>
-          <div class="comment-replies">
-            <div *ngFor="let reply of item.replies; let j = index">
-              <div class="comment-reply">
-                <div class="comment-header">
-                  <p>{{ reply.author }}  {{ prettyPrintDate(reply.date) }}</p>
-                </div>
-                <p>{{ reply.text }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="input-reply">
-            <shared-text-area placeholder="Escribe una respuesta" [(entry)]="currentReply"></shared-text-area>
-            <shared-button text="Responder" (click)="addReply(i)"> </shared-button>
-          </div>
-        </div>
-      } @placeholder (minimum 1000ms) {
-        <p>Cargando</p>
+      @if (userIsTeacher) {
+        <shared-button text="Comentarios" (click)="redirectToComments()"></shared-button>
       }
     </div>
   </div>

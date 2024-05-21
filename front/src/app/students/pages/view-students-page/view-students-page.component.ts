@@ -420,7 +420,7 @@ export class ViewStudentsPageComponent {
         }
         studentData.push(studentsActions)
       }
-
+      
       this.data.push(studentData);
     }
   }
@@ -432,7 +432,6 @@ export class ViewStudentsPageComponent {
         this.CS.getStudentByName(this.filterOnInput, limit, nextPage * limit).subscribe(
           res => {
             if (res.students.length != 0) {
-              // console.log(res)
               this.data = []
               this.studentList = res
               this.getData(res)
@@ -453,7 +452,7 @@ export class ViewStudentsPageComponent {
                 this.data = []
                 this.studentList = res
                 this.getData(res)
-              this.page = nextPage;
+                this.page = nextPage;
               }
             }
           );

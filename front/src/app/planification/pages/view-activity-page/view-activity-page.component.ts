@@ -43,7 +43,7 @@ export class ViewActivityPageComponent {
   userIsCordinator: boolean = false;
   activityId: string = '';
   actualUser: {id: string, isTeacher: boolean} = {id: "", isTeacher: true}
-
+  userIsTeacher: boolean = false;
   currentComment: string = '';
   currentReply: string = '';
 
@@ -52,13 +52,16 @@ export class ViewActivityPageComponent {
 
   ngOnInit() {
     this.actualUser = this.CS.getActualUser();
-    this.CS.getProfessor(this.actualUser.id).subscribe(
-      prof => {
-        if(prof.account.isCordinator){
-          this.userIsCordinator = true
+    this.userIsTeacher = this.actualUser.isTeacher
+    if(this.userIsTeacher){
+      this.CS.getProfessor(this.actualUser.id).subscribe(
+        prof => {
+          if(prof.account.isCordinator){
+            this.userIsCordinator = true
+          }
         }
-      }
-    )
+      )
+    }
     this.route.params.subscribe(params => {
       this.activityId = params['id'];
       this.CS.getActivity(this.activityId).subscribe(res =>{
@@ -94,23 +97,23 @@ export class ViewActivityPageComponent {
       const announcementDate = ActivityRequest.activity.announcementDate;
       const reminderDates = ActivityRequest.activity.reminderDates;
       let comments = ActivityRequest.activity.comments;
-      this.commentsToShow = this.deepCopy(comments);
-      for (let commentIndex in this.commentsToShow){
-        let comment = this.commentsToShow[commentIndex];
-        let authorId = comment.author;
-        this.CS.getProfessor(authorId).subscribe(res => {
-          let authorName = res.account.name.firstName + ' ' + res.account.name.firstSurname;
-          comment.author = authorName;
-        })
-        for(let replyIndex in comment.replies){
-          let reply = comment.replies[replyIndex];
-          let authorId = reply.author;
-          this.CS.getProfessor(authorId).subscribe(res => {
-            let authorName = res.account.name.firstName + ' ' + res.account.name.firstSurname;
-            reply.author = authorName;
-          })
-        }
-      }
+      // this.commentsToShow = this.deepCopy(comments);
+      // for (let commentIndex in this.commentsToShow){
+      //   let comment = this.commentsToShow[commentIndex];
+      //   let authorId = comment.author;
+      //   this.CS.getProfessor(authorId).subscribe(res => {
+      //     let authorName = res.account.name.firstName + ' ' + res.account.name.firstSurname;
+      //     comment.author = authorName;
+      //   })
+      //   for(let replyIndex in comment.replies){
+      //     let reply = comment.replies[replyIndex];
+      //     let authorId = reply.author;
+      //     this.CS.getProfessor(authorId).subscribe(res => {
+      //       let authorName = res.account.name.firstName + ' ' + res.account.name.firstSurname;
+      //       reply.author = authorName;
+      //     })
+      //   }
+      // }
       //this.cdr.detectChanges();
       const isRemote = ActivityRequest.activity.isRemote;
       const virtualActivityLink = ActivityRequest.activity.virtualActivityLink;
@@ -124,7 +127,6 @@ export class ViewActivityPageComponent {
   }
 
   addComment(){
-    console.log(this.activity.comments)
     this.commentsToShow = this.deepCopy(this.activity.comments);
     let actualComment: Comment = {
           text: this.currentComment.toString(),
@@ -168,6 +170,10 @@ export class ViewActivityPageComponent {
 
   redirectToActivity(){
     this.router.navigate(['/editActivity/', this.activityId]);
+  }
+
+  redirectToComments(){
+    this.router.navigate(['/activityComments', this.activityId])
   }
 
 

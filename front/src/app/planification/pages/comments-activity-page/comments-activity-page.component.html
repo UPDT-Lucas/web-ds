@@ -1,0 +1,46 @@
+<div class="flex-container">
+    <shared-header>
+    <!-- TODO: pasar is teacher-->
+    </shared-header>
+        <div class="container">
+            <div class="comments-container">
+                @defer {
+                    @for (comment of commentsToShow; track $index) {
+                        <app-comment
+                            [name]="comment.author"
+                            [text]="comment.text"
+                            [date]="comment.date"
+                            (isSelected)="activeIsReply($event)"
+                            (click)="getCommentIndex($index)">
+                        </app-comment>
+                        @for(reply of comment.replies; track $index){
+                            <app-comment
+                                [name]="reply.author"
+                                [text]="reply.text"
+                                [date]="reply.date"
+                                [isReply]="true">
+                            </app-comment>
+                        }
+                    } 
+                }@placeholder (minimum 300ms){
+                    <p>cargando comentarios...</p>
+                }
+            </div>
+            <div class="comments-options">
+                <div class="input-container">
+                    <!-- <shared-text-area></shared-text-area> -->
+                    <shared-input
+                        class="commentInput"
+                        placeholder="Insertar comentario"
+                        [(entry)]="commentTextInput">
+                    </shared-input>
+                </div>
+                <div class="button-container">
+                    <shared-button
+                        text="Comentar"
+                        (click)="addComment()">
+                    </shared-button>
+                </div>
+            </div>
+        </div>    
+</div>

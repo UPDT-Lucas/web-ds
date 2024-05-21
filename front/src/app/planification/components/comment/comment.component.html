@@ -1,0 +1,20 @@
+@if (isReply) {
+    <div class="reply-container">
+        <div class="reply">
+            <h2>{{name}}</h2>
+            <p>{{text}}</p>
+            <div class="options">
+                <p>{{date}}</p>
+            </div>
+        </div>
+    </div>
+}@else {
+    <div class="comment">
+        <h2>{{name}}</h2>
+        <p>{{text}}</p>
+        <div class="options">
+            <p (click)="callIsSelected()">Contestar</p>
+            <p>{{date}}</p>
+        </div>
+    </div>
+}
