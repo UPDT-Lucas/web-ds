@@ -27,7 +27,7 @@ export class AddStudentPageComponent {
   firstSurname: string = "";
   secondSurname: string = "";
   carnet: string = "";
-  campus: string | null = null;
+  campus: string = "663057863ee524ad51bd5b0f";
   email: string = "";
   cellPhone: string = "";
   selectedValue: string = "";

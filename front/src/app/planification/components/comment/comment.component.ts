@@ -15,7 +15,7 @@ export class CommentComponent {
   text: string = ""
 
   @Input()
-  date!: Date 
+  date: string = "" 
 
   @Input()
   isReply: boolean = false

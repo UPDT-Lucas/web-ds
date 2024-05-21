@@ -46,9 +46,13 @@ export class EditActivityPageComponent {
 
 
   //Input string variables to treat the data
+  inputActivityName: string = ''
   inputExecutionWeek: string = '';
   inputReminderDates: string = '';
   inputResponsibles: string = '';
+  inputActivityPoster: string = ''
+  inputVirtualActivityLink: string = ''
+  
 
   //Responsibles emails to get Ids
   professorEmails: string[] = []
@@ -127,6 +131,7 @@ export class EditActivityPageComponent {
       this.s3ApiService.uploadFile(formData).subscribe(
         (res) => {
           this.updateImage(this.file.name).subscribe(() => {
+            this.activityPoster = res
             this.uploadActivity();
           });
         }
@@ -154,6 +159,7 @@ export class EditActivityPageComponent {
     
     return differenceDays;
   }
+  
   checkDates(){
     let daysDiff = this.getDaysDifference(this.executionDate, this.announcementDate)
     if(daysDiff < 0){
@@ -196,15 +202,17 @@ export class EditActivityPageComponent {
     // console.log(this.professorEmailsSet)
     this.professorEmailsSet.forEach(email => {
       // console.log("AAAAA ", email)
-      this.CS.getProfessorByEmail(email).subscribe(
-        (res: any) => {
-          if(res){
-            this.responsibles.push(res._id)
-          } else {
-            // console.log("No se encontró el profesor")
+      if(email){
+        this.CS.getProfessorByEmail(email).subscribe(
+          (res: any) => {
+            if(res){
+              this.responsibles.push(res._id)
+            } else {
+              // console.log("No se encontró el profesor")
+            }
           }
-        }
-      )
+        )
+      }
     });
   }
 
@@ -252,7 +260,7 @@ export class EditActivityPageComponent {
         reminderDates: Number(this.inputReminderDates),
         comments: [],
         isRemote: this.isRemote,
-        virtualActivityLink: this.virtualActivityLink,
+        virtualActivityLink: this.inputActivityPoster,
         activityPoster: this.filename,
         currentState: this.currentState
       }

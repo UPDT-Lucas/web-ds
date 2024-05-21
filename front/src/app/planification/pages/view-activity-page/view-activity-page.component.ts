@@ -88,6 +88,7 @@ export class ViewActivityPageComponent {
     return date.toLocaleDateString('es-ES', options);
   }
 
+
   getData(ActivityRequest: any) {
       const typeOfActivity = ActivityRequest.activity.typeOfActivity;
       const activityName = ActivityRequest.activity.activityName;

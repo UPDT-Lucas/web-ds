@@ -61,7 +61,7 @@ export class ChangePasswordPageComponent {
           console.log(res);
 
           if (res && 'message' in res) {
-           this.router.navigate(["/login"]);
+           this.router.navigate([""]);
           } else if (res && 'error' in res) {
           } else {
             console.warn("Respuesta inesperada del servidor:", res);
