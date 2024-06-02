@@ -42,7 +42,7 @@ const registerStudent = async (req, res) => {
             return res.status(400).json({ error: 'An account with this email already exists!' }); //code 400: bad request
         }
 
-       
+        const hashed = await hashPassword(result.data.password);
 
         const newStudent = Student({
             firstName: result.data.firstName,
@@ -52,7 +52,7 @@ const registerStudent = async (req, res) => {
             email: result.data.email,
             campus: result.data.campus,
             cellPhone: result.data.cellPhone,
-            carnet: result.data.carnet 
+            carnet: hashed
         });
 
 

@@ -1,9 +1,10 @@
 const Professor = require('../Models/Professor');
+const Assistant = require('../Models/Assistant');
+const Student = require('../Models/Student');
 const {validateProfessor} = require('../Utils/professorValidator');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const Campus = require('../Models/Campus');
-const Assistant = require('../Models/Assistant');
 const JWT = require('jsonwebtoken');
 const { hashPassword, comparePassword, generateOTP, checkToken } = require('../Utils/authUtils');
 const {sendEmail, forgotPasswordTemplate} = require('../Utils/emailUtils')
@@ -316,35 +317,38 @@ const login = async (req, res) => {
 
         // Busca en la base de datos un usuario que coincida con el email proporcionado
         const professor = await Professor.findOne({ email });
-        var actualPassword;
-        var isTeacher = true;
-        var id;
+        let user, actualPassword;
 
         if (!professor) {
             const assistant = await Assistant.findOne({ email });
             if (!assistant) {
-                return res.status(200).json({ error: 'Usuario no encontrado' }); // Cambiado a 200 para no lanzar error
+                // Si no es ni profesor ni asistente, busca un estudiante que coincida con el email proporcionado
+                user = await Student.findOne({ email });
+                if (!user) {
+                    return res.status(200).json({ error: 'Usuario no encontrado' });
+                }
+                actualPassword = user.carnet;
             } else {
-                id = assistant.id;
-                isTeacher = false;
+                user = assistant;
                 actualPassword = assistant.password;
             }
         } else {
+            user = professor;
             actualPassword = professor.password;
-            id = professor.id;
         }
 
         // Compara la contraseña proporcionada con la contraseña almacenada en la base de datos
-        const match = await comparePassword(password, actualPassword);
+        const Match = await comparePassword(password, actualPassword);
 
-        if (!match) {
-            return res.status(200).json({ error: 'Incorrect password' }); // Cambiado a 200 para no lanzar error
+        // Verifica si la contraseña proporcionada coincide con la contraseña almacenada o con el carnet (en caso de ser estudiante)
+        if (!Match && password !== actualPassword) {
+            return res.status(200).json({ error: 'Incorrect password' });
         }
 
         return res.status(200).json({
             message: 'Login successful',
-            _id: id,
-            isTeacher: isTeacher
+            _id: user.id,
+            isTeacher: !user.hasOwnProperty('carnet') // Determina si el usuario es profesor o asistente
         });
 
     } catch (error) {
@@ -352,6 +356,7 @@ const login = async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 
 //elimina un profesor de la base de datos 
