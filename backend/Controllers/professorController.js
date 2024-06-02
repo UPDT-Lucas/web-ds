@@ -107,7 +107,6 @@ const registerProfessor = async (req, res) => {
             officePhone: result.data.officePhone,
             isCordinator: result.data.isCordinator,  
         });
-
         await Professor.create(newProfessor);
 
         sendVerificationEmail(result.data.email, verificationToken);
@@ -174,7 +173,7 @@ const getProfessor = async (req, res) => {
         }
 
         // Extraer propiedades del objeto professor
-        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, officePhone, photo, isCordinator } = professor;
+        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, officePhone, photo, isCordinator, code } = professor;
 
         //const campusName = campus ? campus.campusName : null;
         
@@ -186,7 +185,8 @@ const getProfessor = async (req, res) => {
             cellPhone,
             officePhone,
             isCordinator,
-            photo
+            photo,
+            code
         };
 
         return res.status(200).json({ account });
@@ -265,7 +265,7 @@ const getProfessorsByEmail = async (req, res) => {
         }
 
         // Extraer propiedades del objeto professor
-        const { _id, firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, officePhone, photo, isCordinator } = professor;
+        const { _id, firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, officePhone, photo, code,  isCordinator } = professor;
 
         //const campusName = campus ? campus.campusName : null;
         
@@ -278,6 +278,7 @@ const getProfessorsByEmail = async (req, res) => {
             officePhone,
             isCordinator,
             photo,
+            code,
             _id
         };
 

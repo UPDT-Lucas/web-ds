@@ -185,7 +185,7 @@ export class EditTeacherPageComponent {
     this.CS.editAccount(this.id, professorData).subscribe(
       response => {
         console.log('La información del profesor se ha actualizado con éxito:', response);
-        this.router.navigate(["/landing"])
+        this.router.navigate(["/teamView"])
         
       },
       error => {
@@ -200,7 +200,7 @@ export class EditTeacherPageComponent {
     this.CS.deleteProfessor(id).subscribe(
       () => {
         console.log('Profesor eliminado correctamente');
-        this.router.navigate(['/']); 
+        this.router.navigate(['/teamView']); 
       },
       (error) => {
         console.error('Error al eliminar al profesor', error);

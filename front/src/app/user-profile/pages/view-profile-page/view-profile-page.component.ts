@@ -25,6 +25,7 @@ export class ViewProfilePageComponent {
   campus: string = '';
   photo: string = '/assets/images/profileHolder.png';
   actualProfessor!: Professor;
+  consecutive: string = ''
   //isCordinator: string = '';
 
 
@@ -45,6 +46,7 @@ export class ViewProfilePageComponent {
         this.officePhone = this.actualProfessor.account.officePhone
         this.phone = this.actualProfessor.account.cellPhone
         this.photo = this.actualProfessor.account.photo
+        this.consecutive = this.actualProfessor.account.code
 
         if (this.actualProfessor.account.campus === "663057633ee524ad51bd5b05") {
           this.campus = "Cartago";

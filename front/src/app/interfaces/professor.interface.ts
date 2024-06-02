@@ -11,6 +11,7 @@ export interface Account {
     cellPhone:   string;
     officePhone: string;
     photo:       string;
+    code:        string;
     isCordinator: boolean;
 }
 

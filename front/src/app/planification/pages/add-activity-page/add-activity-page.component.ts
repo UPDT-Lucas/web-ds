@@ -59,19 +59,19 @@ export class AddActivityPageComponent {
 
 
   getData() {
-    this.uploadActivity();
-    // if (this.file) {
-    //   const formData = new FormData();
-    //   formData.append('file', this.file);
-    //   this.s3ApiService.uploadFile(formData).subscribe(
-    //     (res) => {
-    //       this.updateImage(this.file.name).subscribe(() => {
-    //         console.log(res)
-    //         this.uploadActivity();
-    //       });
-    //     }
-    //   );
-    // }
+    // this.uploadActivity();
+    if (this.file) {
+      const formData = new FormData();
+      formData.append('file', this.file);
+      this.s3ApiService.uploadFile(formData).subscribe(
+        (res) => {
+          this.updateImage(this.file.name).subscribe(() => {
+            // console.log(res)
+            this.uploadActivity();
+          });
+        }
+      );
+    }
   }
 
   updateImage(filename: string) {
