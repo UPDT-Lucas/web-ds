@@ -5,10 +5,75 @@
         </h2>
     </div>
     <div class="options">
+        <div class="icon-option clickable notifs">
+            <i class="material-icons">
+                notifications
+            </i>
+            Notificaciones
+            <div class="dropdown-content">
+                <!-- @for (item of options; track $index) {
+                  <a (click)="toggleOption($index)">{{item}}</a>
+                } -->
+
+                  <div class="notifs-options">
+
+
+                    <!-- <i class="material-icons">
+                        visibility_off
+                    </i> -->
+                    @if(isFilter){
+                        @if (isViewed) {
+                            <i class="material-icons" (click)="toggleView()">
+                                visibility
+                            </i>
+                            }@else{
+                            <i class="material-icons" (click)="toggleView()">
+                                visibility_off
+                            </i>
+                            }
+                            <i class="material-icons" (click)="toggleFilter()">
+                                filter_list
+                            </i>
+                    }@else {
+                        <i class="material-icons" (click)="toggleFilter()">
+                            filter_list_off
+                        </i>
+                    }
+
+                  </div>
+                  @if(notifications){
+                    <hr>
+                    @for (notif of notifications; track $index) {
+                        @if(!seenNotifications.includes(notif)){
+                            <shared-notification-msg
+                            user="Nombre Persona 1"
+                            [notification]="notif"
+                            (stateChange)="state">
+                          </shared-notification-msg>
+                        }@else {
+                            <shared-notification-msg
+                            user="Nombre Persona 1"
+                            [notification]="notif"
+                            [checked]="true"
+                            (stateChange)="state">
+                          </shared-notification-msg>
+                        }
+                      <hr>
+                    }
+                  }
+              </div>
+        </div>
         @if (isTeacher) {
-            <h2 [routerLink]="'/viewProfile'" class="clickable profile">
+            <div class="icon-option clickable">
+                <i class="material-icons" [routerLink]="'/viewProfile'">
+                    person
+                </i>
+                Perfil
+            </div>
+
+            <!-- <h2 [routerLink]="'/viewProfile'" class="clickable profile">
                 Ver perfil
-            </h2>
+            </h2> -->
         }
         <shared-button
             text="Cerrar sesión"

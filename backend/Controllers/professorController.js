@@ -172,7 +172,7 @@ const getProfessor = async (req, res) => {
         }
 
         // Extraer propiedades del objeto professor
-        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, officePhone, photo, isCordinator, code } = professor;
+        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, officePhone, photo, isCordinator, code, notifications } = professor;
 
         //const campusName = campus ? campus.campusName : null;
         
@@ -185,7 +185,9 @@ const getProfessor = async (req, res) => {
             officePhone,
             isCordinator,
             photo,
-            code
+            code,
+            id,
+            notifications
         };
 
         return res.status(200).json({ account });

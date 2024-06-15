@@ -1,4 +1,5 @@
 const Student = require('../Models/Student');
+const Professor = require('../Models/Professor');
 const {validateStudent} = require('../Utils/studentValidator');
 const mongoose = require('mongoose');
 
@@ -242,7 +243,73 @@ const editAccountStudent = async (req, res) => {
 }
 
 
+const addNotification = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const newNotification = req.body.notification;
+
+        // Encuentra el estudiante por ID
+        const student = await Professor.findById(id);
+
+        if (!student) {
+            return res.status(400).json({ error: 'Student does not exist' });
+        }
+
+        // Verifica si la notificación ya existe
+        const notificationExists = student.notifications.some(notification =>
+            notification.text === newNotification.text 
+            // && new Date(notification.date).getTime() === new Date(newNotification.date).getTime()
+        );
+
+        if (!notificationExists) {
+            // Agrega la nueva notificación al arreglo de notificaciones
+            student.notifications.push(newNotification);
+
+            // Guarda los cambios
+            await student.save();
+
+            return res.status(200).json({ message: 'Notification added successfully', student: student });
+        } 
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+const updateNotification = async (req, res) => {
+    try {
+        const { studentId, notificationId } = req.params;
+        const { seen } = req.body;
+
+        // Encuentra al estudiante por ID
+        const student = await Professor.findById(studentId);
+
+        if (!student) {
+            return res.status(404).json({ error: 'Student not found' });
+        }
+
+        // Encuentra la notificación por ID
+        const notification = student.notifications.find(notification => notification._id == notificationId);
+
+        if (!notification) {
+            return res.status(404).json({ error: 'Notification not found' });
+        }
+
+        // Actualiza el estado de "visto/no visto" de la notificación
+        notification.seen = seen;
+
+
+        // Guarda los cambios en la base de datos
+        await student.save();
+
+        return res.status(200).json({ message: 'Notification updated successfully', student: student });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 
 
 module.exports = { registerStudent, getAllStudent, getStudent, deleteStudent,
-    getStudentsByCampus, editAccountStudent, getStudentByName }
+    getStudentsByCampus, editAccountStudent, getStudentByName, addNotification, updateNotification }

@@ -29,6 +29,4 @@ export class S3ApiService {
   uploadFile(formData: FormData): Observable<any | undefined> {
     return this.httpClient.post<File>(`${this.baseURL}/files`, formData)
   }
-
-  
 }

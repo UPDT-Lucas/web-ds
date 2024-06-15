@@ -11,6 +11,10 @@ const StudentScheme = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Campus'
     },
+    notifications: [{           
+        text: String,
+        date: Date,
+    }],
     cellPhone: String,
     carnet: String, 
     createdBy: String,

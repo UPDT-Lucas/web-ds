@@ -8,6 +8,10 @@ import { Student } from '../interfaces/student.interface';
 import { Activity } from '../interfaces/activity.interface';
 import { Assistant, AssistantResponse } from '../interfaces/assistant.interface'
 import { Comment } from '../interfaces/activity.interface';
+import { PublishVisitor } from '../interfaces/visitor/publishVisitor';
+import { ReminderVisitor } from '../interfaces/visitor/reminderVisitor';
+import { NotificationCenter } from '../interfaces/observer/notificationCenter';
+import { StudentObserver } from '../interfaces/observer/studentObserver';
 
 @Injectable({
   providedIn: 'root'
@@ -184,5 +188,17 @@ export class CommunicationService {
     return this.http.get<AssistantResponse>(url)
   }
 
+  // ----------------------------------------- Notifications -----------------------------------------//
+  addNotification(studentId: string, notification: { text: string, date: Date }): Observable<any> {
+    const url = `${this.apiUrl}/addNotification/${studentId}`;
+    return this.http.put(url, { notification });
+  }
+
+  updateNotification(professorId: string, notificationId: string, seen: boolean): Observable<any> {
+    const url = `${this.apiUrl}/updateNotification/${professorId}/${notificationId}`;
+    return this.http.put(url, { seen });
+  }
+
 }
+
 

@@ -124,9 +124,6 @@ export class TeamViewComponent {
     for (const index in professorList.professors) {
       const id = professorList.professors[index]._id;
 
-
-
-
       const rolProfessor = professorList.professors[index].isCordinator ? "Profesor Coordinador" : "Profesor";
       const nameProfessor = professorList.professors[index].firstName + " " + professorList.professors[index].firstSurname;
       const emailProfessor = professorList.professors[index].email;

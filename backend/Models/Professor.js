@@ -21,6 +21,11 @@ const ProfessorScheme = new Schema({
         resetPasswordOtp: String,
         emailVerificationToken: String,
     },
+    notifications: [{           
+        text: String,
+        date: Date,
+        seen: Boolean
+    }], // <- Quitar, dejar solo en estudiantes (para pruebas)
     cellPhone: String,
     officePhone: String,
     photo: String, 

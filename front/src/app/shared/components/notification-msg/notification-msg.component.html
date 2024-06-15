@@ -1,0 +1,31 @@
+<div class="msg">
+    <div class="top">
+        <p>
+            <strong> 
+                {{user}}
+            </strong> ha enviado una notificación
+        </p>
+        <i class="material-icons" (click)="changeState()">
+            close
+        </i>
+    </div>
+    @if(checked){
+        <div class="msg-content checked">
+            <p>
+                {{notification.text}}
+                <!-- "La actividad de la semana ha sido publicada" -->
+            </p>
+        </div>
+    }@else {
+        <div class="msg-content">
+            <p>
+                {{notification.text}}
+                <!-- "La actividad de la semana ha sido publicada" -->
+            </p>
+        </div>
+    }
+    <p class="date">
+        {{ notification.date| date: 'medium'}}
+        <!-- 12/06/24 3:00 PM -->
+    </p>
+  </div>
