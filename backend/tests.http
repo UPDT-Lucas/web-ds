@@ -1,26 +1,28 @@
 
 ### add ass
-POST http://localhost:3000/login HTTP/1.1
+POST  http://localhost:3000/register-student HTTP/1.1
 Content-Type: application/json
 
 {
-  "firstName": "Ericka",
-  "secondName": "Vanessa",
-  "firstSurname": "Solano",
-  "secondSurname": "Molina",
-  "email": "ericka@gmail.com",
-  "campus": "6630576f3ee524ad51bd5b09", 
-  "password": "12345678",
-  "cellPhone": "22924880",
-  "officePhone": "86319415",
-  "photo": ""
+  "firstName": "Vanessa",
+  "secondName": "María",
+  "firstSurname": "Alvarado",
+  "secondSurname": "Torres",
+  "email": "arianaam335@gmail.com",
+  "campus": "663057633ee524ad51bd5b05",
+  "cellPhone": "85987067",
+  "carnet": "2021089068",
+  "isActive": true
 }
 
 
 ###
-GET http://localhost:3000/getAssistant/66437f9b0e7e7cbe4f67b8b0 HTTP/1.1
+POST http://localhost:3000/forgot-password HTTP/1.1
 Content-Type: application/json
 
+{
+  "email": "arianaam335@gmail.com"
+}
 
 
 ###edit account

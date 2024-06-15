@@ -46,6 +46,12 @@ export class LandingPageComponent  implements OnInit {
       )
     }
 
+  this.CS.getStudent(this.id).subscribe(
+    student => {
+      this.firstName = student.account.name.firstName
+      this.firstSurname = student.account.name.firstSurname
+      this.secondSurname = student.account.name.secondSurname
+    })
   }
 
 }

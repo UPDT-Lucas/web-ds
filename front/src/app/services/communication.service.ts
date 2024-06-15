@@ -38,7 +38,6 @@ export class CommunicationService {
   login(email: string, pass: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, {"email": email, "password": pass});
   }
-
   forgotPassword(email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/forgot-password`, {"email": email});
   }
@@ -52,6 +51,7 @@ export class CommunicationService {
     const url = `${this.apiUrl}/reset-password/${id}`;
     return this.http.post(url, {newPassword, confirmPassword})
   }
+
 
   getProfessor(id: string): Observable<Professor> {
     const url = `${this.apiUrl}/getProfessor/${id}`;
@@ -147,6 +147,20 @@ export class CommunicationService {
     const url = `${this.apiUrl}/getStudentByCampus/${idsParam}?limit=${limit}&skip=${skip}`;
     return this.http.get<Student[]>(url);
 }
+/*
+  forgotPasswordS(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password-student`, {"email": email});
+  }
+
+  verifyOtpS(id: string, otp: string, confirmation: string) {
+    const url = `${this.apiUrl}/verify-otp-student/${id}`;
+    return this.http.post(url, { otp, confirmation });
+  }
+
+  resetPasswordS(id: string, newPassword: string, confirmPassword: string) {
+    const url = `${this.apiUrl}/reset-password-student/${id}`;
+    return this.http.post(url, {newPassword, confirmPassword})
+  }*/
 
   //router.delete('/delete-student/:id', deleteStudent);
 
