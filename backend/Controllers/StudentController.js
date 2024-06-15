@@ -1,8 +1,9 @@
 const Student = require('../Models/Student');
 const {validateStudent} = require('../Utils/studentValidator');
 const mongoose = require('mongoose');
-
-
+const { hashPassword , generateOTP, comparePassword} = require('../Utils/authUtils');
+const {sendEmail, forgotPasswordTemplate} = require('../Utils/emailUtils');
+const JWT = require('jsonwebtoken');
 
 /*
 Permite registrar un estudiante en la base de datos
@@ -42,7 +43,7 @@ const registerStudent = async (req, res) => {
             return res.status(400).json({ error: 'An account with this email already exists!' }); //code 400: bad request
         }
 
-        const hashed = await hashPassword(result.data.password);
+        const hashed = await hashPassword(result.data.carnet);
 
         const newStudent = Student({
             firstName: result.data.firstName,
@@ -52,7 +53,13 @@ const registerStudent = async (req, res) => {
             email: result.data.email,
             campus: result.data.campus,
             cellPhone: result.data.cellPhone,
-            carnet: hashed
+            carnet: hashed,
+            security:{
+                resetPasswordOTP: undefined,
+                emailVerificationToken: verificationToken,
+            },
+            //rol: result.data.rol,
+            isActive: result.data.isActive,
         });
 
 
@@ -131,7 +138,7 @@ const getStudent = async (req, res) => {
         }
 
         // Extraer propiedades del objeto estudiante
-        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, carnet } = student;
+        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, isActive, photo} = student;
 
         // Construir el objeto de cuenta
         const account = {
@@ -139,7 +146,10 @@ const getStudent = async (req, res) => {
             email,
             campus,
             cellPhone,
-            carnet
+            photo,
+            //carnet,
+            //rol,
+            isActive
         };
 
         return res.status(200).json({ account });
@@ -217,7 +227,7 @@ const editAccountStudent = async (req, res) => {
         const { id } = req.params;
 
         let updates = {
-
+            //solo puede editar su numero y fotografia 
             firstName: req.body.firstName,
             secondName: req.body.secondName,
             firstSurname: req.body.firstSurname,
@@ -225,7 +235,10 @@ const editAccountStudent = async (req, res) => {
             email: req.body.email,
             campus: req.body.campus,
             cellPhone: req.body.cellPhone,
-            carnet: req.body.carnet,
+            photo: req.body.photo,
+            isActive: req.body.isActive,
+            //rol: req.body.rol,
+            //carnet: req.body.carnet,
         }
 
         const student = await Student.findOneAndUpdate({_id: id}, updates, {new: true})
@@ -242,7 +255,161 @@ const editAccountStudent = async (req, res) => {
 }
 
 
+/* 
+Permite enviar un correo electronico a un usuario para que pueda recuperar su contraseña
+toma 2 parametros, req y res (request y response respectivamente). res sirve tanto como 
+parametro de entrada como valor de retorno
+*/
 
+const forgotPasswordS = async (req, res) => {
+    try {
+        const { email } = req.body;
+        // check data here. can't trust the FE
+        // validate all REQUIRED fields are present
+        if (!email) {
+            return res.status(400).json({ error: 'Se requiere de un correo electrónico' }); //code 400: bad request
+        }
+        // check if the student exists
+        const student = await Student.findOne({ email: email })
+        if (!student) {
+            return res.status(404).json({ error: 'No se encontró la dirección de correo electrónico' });
+        }
+        // generate an otp here
+        const otp = generateOTP();
+
+        // update the student's otp
+        //const result = await Student.updateOne({ _id: id }, { 'security.resetPasswordOtp': otp });
+        student.security.resetPasswordOtp = otp;
+        await student.save();
+
+
+        // generate a token
+        const token = JWT.sign({
+            id: student._id
+        },
+            process.env.ACCESS_TOKEN_SEQUENCE,
+            { expiresIn: '15m' }
+        );
+
+        const subject = 'Reset password';
+        const template = forgotPasswordTemplate(otp);
+        sendEmail(email, subject, " ", template);
+
+        res.cookie("resetToken", token, {
+            httpOnly: true,
+            sameSite: 'lax',
+            maxAge: 1000 * 60 * 15
+        }  
+        );
+        return res.status(200).json({ message: `Código enviado a: ${student.email}`, otp: otp, _id: student._id,}); //code 200: OK
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+/*
+Verifica que el OTP (One-time password) enviado por el usuario sea el correcto
+toma 2 parametros, req y res (request y response respectivamente). res sirve tanto como parametro de entrada como valor de retorno
+*/
+const verifyOtp = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { otp, confirmation } = req.body;
+
+        // Verifica si se proporcionó el código OTP y la confirmación
+        if (!otp || !confirmation) {
+            return res.status(400).json({ error: 'Se requieren el código OTP y la confirmación' });
+        }
+
+        // Busca al student por su ID
+        const student = await Student.findById(id);
+        if (!student) {
+            return res.status(404).json({ error: 'Estudiante no encontrado' });
+        }
+
+        // Verifica si el código OTP coincide con la confirmación proporcionada por el usuario
+        if (otp !== confirmation) {
+            return res.status(401).json({ error: 'El código OTP y la confirmación no coinciden' });
+        }
+
+        // Verifica si el código OTP coincide con el generado y enviado al correo electrónico del usuario
+        if (otp !== student.security.resetPasswordOtp) {
+            return res.status(401).json({ error: 'Código OTP incorrecto' });
+        }
+
+        // Aquí puedes verificar si el OTP ha expirado según tus requisitos
+
+        // Elimina el código OTP una vez que se ha verificado correctamente
+        student.security.resetPasswordOtp = undefined;
+        await student.save();
+
+        // Responde con un mensaje de éxito
+        return res.status(200).json({ message: 'Código OTP y confirmación verificados con éxito' });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+/*  
+Permite reiniciar la contraseña de un usuario
+toma 2 parametros, req y res (request y response respectivamente). res sirve tanto como parametro de entrada como valor de retorno
+*/
+
+const resetPassword = async (req, res) => {
+    try {
+        const { newPassword, confirmPassword } = req.body;
+        const { id } = req.params; // Obtén el ID del estudiante de los parámetros de la URL
+
+        // Verifica que se proporcionen tanto la nueva contraseña como la confirmación
+        if (!newPassword || !confirmPassword) {
+            return res.status(400).json({ error: 'Por favor, llene todos los campos.' }); // Código 400: Solicitud incorrecta
+        }
+
+        // Verifica que las contraseñas coincidan
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({ error: 'Las contraseñas no coinciden.' }); // Código 400: Solicitud incorrecta
+        }
+
+        // Busca al estudiante por su ID
+        const student = await Student.findById(id);
+        if (!student) {
+            return res.status(404).json({ error: 'No se encontró el usuario.' }); // Código 404: No encontrado
+        }
+
+        // Hashea la nueva contraseña
+        const hashedPassword = await hashPassword(newPassword);
+
+        // Actualiza la contraseña del estudiante
+        student.password = hashedPassword;
+        await student.save();
+
+        // Responde con un mensaje de éxito
+        return res.status(200).json({ message: 'Su contraseña ha sido actualizada correctamente' }); // Código 200: OK
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' }); // Código 500: Error interno del servidor
+    }
+}
+
+
+const sendVerificationEmail = (email, verificationToken) => {
+    try {
+       //const verificationLink = `http://localhost:3000/verify-email?token=${verificationToken}`;
+        const subject = 'Verify your Project email';
+        //const text = `Click on this link to verify your email: ${verificationLink}`;
+        //const template = verificationLinkTemplate(verificationLink);
+        sendEmail(email, subject, text);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 module.exports = { registerStudent, getAllStudent, getStudent, deleteStudent,
-    getStudentsByCampus, editAccountStudent, getStudentByName }
+    getStudentsByCampus, editAccountStudent, getStudentByName, forgotPasswordS,
+    verifyOtp, resetPassword, sendVerificationEmail }

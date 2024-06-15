@@ -1,6 +1,7 @@
 const express = require('express');
 const {registerStudent, getAllStudent, getStudent, deleteStudent, 
-    getStudentsByCampus, editAccountStudent, getStudentByName} = require('../Controllers/StudentController');
+    getStudentsByCampus, editAccountStudent, getStudentByName,
+    forgotPasswordS, verifyOtp, resetPassword} = require('../Controllers/StudentController');
 const router = express.Router();
 
 
@@ -13,5 +14,9 @@ router.get('/getStudentByCampus/:ids', getStudentsByCampus);
 router.delete('/delete-student/:id', deleteStudent);
 router.put('/editAccountStudent/:id', editAccountStudent);
 
+
+//router.post('/forgot-password-student', forgotPasswordS);
+//router.post('/verify-otp-student/:id', verifyOtp);
+//router.post('/reset-password-student/:id', resetPassword);
 
 module.exports = router;

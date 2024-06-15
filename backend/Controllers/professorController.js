@@ -6,8 +6,11 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const Campus = require('../Models/Campus');
 const JWT = require('jsonwebtoken');
+const StudentAdapter = require('../Adapter/StudentAdapter');
+
 const { hashPassword, comparePassword, generateOTP, checkToken } = require('../Utils/authUtils');
-const {sendEmail, forgotPasswordTemplate} = require('../Utils/emailUtils')
+const {sendEmail, forgotPasswordTemplate} = require('../Utils/emailUtils');
+
 
 
 /*
@@ -306,7 +309,6 @@ body debe contener los siguientes campos:
 - password: contraseña del profesor
 */
 
-
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -318,38 +320,54 @@ const login = async (req, res) => {
 
         // Busca en la base de datos un usuario que coincida con el email proporcionado
         const professor = await Professor.findOne({ email });
-        let user, actualPassword;
+        var actualPassword;
+        var isTeacher = true;
+        var id;
 
         if (!professor) {
             const assistant = await Assistant.findOne({ email });
             if (!assistant) {
-                // Si no es ni profesor ni asistente, busca un estudiante que coincida con el email proporcionado
-                user = await Student.findOne({ email });
-                if (!user) {
-                    return res.status(200).json({ error: 'Usuario no encontrado' });
+
+                //const studentAdapter = await studentAdapter.load({email});
+
+                const studentAdapter = new StudentAdapter(email);
+                await studentAdapter.load();
+
+                if(!studentAdapter.student){
+                    return res.status(200).json({error: 'Usuario no encontrado'})
+                }else{
+                    actualPassword = studentAdapter.password;
+                    id = studentAdapter.id;
+                    isTeacher = false;
+
+                    //console.log(id);
+                    //console.log(studentAdapter);
+                    console.log('Student Password (Database):', studentAdapter.password);
+                    console.log('Password input (Request):', password);
                 }
-                actualPassword = user.carnet;
-            } else {
-                user = assistant;
+            }else{
+                id = assistant.id;
+                isTeacher = false;
                 actualPassword = assistant.password;
             }
         } else {
-            user = professor;
             actualPassword = professor.password;
+            id = professor.id;
         }
 
         // Compara la contraseña proporcionada con la contraseña almacenada en la base de datos
-        const Match = await comparePassword(password, actualPassword);
+        const match = await comparePassword(password, actualPassword);
 
-        // Verifica si la contraseña proporcionada coincide con la contraseña almacenada o con el carnet (en caso de ser estudiante)
-        if (!Match && password !== actualPassword) {
-            return res.status(200).json({ error: 'Incorrect password' });
+        console.log('Match:', match);
+
+        if (!match) {
+            return res.status(200).json({ error: 'Incorrect password' }); // Cambiado a 200 para no lanzar error
         }
 
         return res.status(200).json({
             message: 'Login successful',
-            _id: user.id,
-            isTeacher: !user.hasOwnProperty('carnet') // Determina si el usuario es profesor o asistente
+            _id: id,
+            isTeacher: isTeacher
         });
 
     } catch (error) {
@@ -417,33 +435,49 @@ parametro de entrada como valor de retorno
 const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
-        // check data here. can't trust the FE
-        // validate all REQUIRED fields are present
+
         if (!email) {
-            return res.status(400).json({ error: 'Se requiere de un correo electrónico' }); //code 400: bad request
+            return res.status(400).json({ error: 'Se requiere un correo electrónico' });
         }
-        // check if the professor exists
-        const professor = await Professor.findOne({ email: email })
-        if (!professor) {
+
+        let user;
+        let userType;
+
+        // Buscar primero como profesor
+        const professor = await Professor.findOne({ email: email });
+        if (professor) {
+            user = professor;
+            userType = 'professor';
+        } else {
+            // Si no se encuentra como profesor, buscar como estudiante
+            const student = await Student.findOne({ email: email });
+            if (student) {
+                user = student;
+                userType = 'student';
+            }
+        }
+
+        // Si no se encuentra ni como profesor ni como estudiante, devolver error
+        if (!user) {
             return res.status(404).json({ error: 'No se encontró la dirección de correo electrónico' });
         }
-        // generate an otp here
+
+        // Generar OTP
         const otp = generateOTP();
 
-        // update the professor's otp
-        //const result = await Professor.updateOne({ _id: id }, { 'security.resetPasswordOtp': otp });
-        professor.security.resetPasswordOtp = otp;
-        await professor.save();
+        // Actualizar OTP según el tipo de usuario encontrado
+        if (userType === 'professor') {
+            user.security.resetPasswordOtp = otp;
+        } else if (userType === 'student') {
+            user.security.resetPasswordOtp = otp;
+        }
 
+        await user.save();
 
-        // generate a token
-        const token = JWT.sign({
-            id: professor._id
-        },
-            process.env.ACCESS_TOKEN_SEQUENCE,
-            { expiresIn: '15m' }
-        );
+        // Generar token
+        const token = JWT.sign({ id: user._id }, process.env.ACCESS_TOKEN_SEQUENCE, { expiresIn: '15m' });
 
+        // Enviar correo con OTP
         const subject = 'Reset password';
         const template = forgotPasswordTemplate(otp);
         sendEmail(email, subject, " ", template);
@@ -452,15 +486,16 @@ const forgotPassword = async (req, res) => {
             httpOnly: true,
             sameSite: 'lax',
             maxAge: 1000 * 60 * 15
-        }  
-        );
-        return res.status(200).json({ message: `Código enviado a: ${professor.email}`, otp: otp, _id: professor._id,}); //code 200: OK
+        });
+
+        return res.status(200).json({ message: `Código enviado a: ${email}`, otp: otp, _id: user._id });
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Error interno del servidor' });
     }
 }
+
 
 
 /*
@@ -477,10 +512,26 @@ const verifyOtp = async (req, res) => {
             return res.status(400).json({ error: 'Se requieren el código OTP y la confirmación' });
         }
 
-        // Busca al profesor por su ID
+        let user;
+        let userType;
+
+        // Busca primero como profesor
         const professor = await Professor.findById(id);
-        if (!professor) {
-            return res.status(404).json({ error: 'Profesor no encontrado' });
+        if (professor) {
+            user = professor;
+            userType = 'professor';
+        } else {
+            // Busca como estudiante
+            const student = await Student.findById(id);
+            if (student) {
+                user = student;
+                userType = 'student';
+            }
+        }
+
+        // Si no se encuentra ni como profesor ni como estudiante, devuelve error
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
         // Verifica si el código OTP coincide con la confirmación proporcionada por el usuario
@@ -488,16 +539,14 @@ const verifyOtp = async (req, res) => {
             return res.status(401).json({ error: 'El código OTP y la confirmación no coinciden' });
         }
 
-        // Verifica si el código OTP coincide con el generado y enviado al correo electrónico del usuario
-        if (otp !== professor.security.resetPasswordOtp) {
+        // Verifica si el código OTP coincide con el generado y enviado al usuario
+        if (otp !== user.security.resetPasswordOtp) {
             return res.status(401).json({ error: 'Código OTP incorrecto' });
         }
 
-        // Aquí puedes verificar si el OTP ha expirado según tus requisitos
-
         // Elimina el código OTP una vez que se ha verificado correctamente
-        professor.security.resetPasswordOtp = undefined;
-        await professor.save();
+        user.security.resetPasswordOtp = undefined;
+        await user.save();
 
         // Responde con un mensaje de éxito
         return res.status(200).json({ message: 'Código OTP y confirmación verificados con éxito' });
@@ -509,10 +558,6 @@ const verifyOtp = async (req, res) => {
 }
 
 
-
-
-
-
 /*  
 Permite reiniciar la contraseña de un usuario
 toma 2 parametros, req y res (request y response respectivamente). res sirve tanto como parametro de entrada como valor de retorno
@@ -521,7 +566,7 @@ toma 2 parametros, req y res (request y response respectivamente). res sirve tan
 const resetPassword = async (req, res) => {
     try {
         const { newPassword, confirmPassword } = req.body;
-        const { id } = req.params; // Obtén el ID del profesor de los parámetros de la URL
+        const { id } = req.params; 
 
         // Verifica que se proporcionen tanto la nueva contraseña como la confirmación
         if (!newPassword || !confirmPassword) {
@@ -533,27 +578,44 @@ const resetPassword = async (req, res) => {
             return res.status(400).json({ error: 'Las contraseñas no coinciden.' }); // Código 400: Solicitud incorrecta
         }
 
-        // Busca al profesor por su ID
+        let user;
+        let userType;
+
+        // Busca primero como profesor
         const professor = await Professor.findById(id);
-        if (!professor) {
-            return res.status(404).json({ error: 'No se encontró el usuario.' }); // Código 404: No encontrado
+        if (professor) {
+            user = professor;
+            userType = 'professor';
+        } else {
+            // Si no se encuentra como profesor, busca como estudiante
+            const student = await Student.findById(id);
+            if (student) {
+                user = student;
+                userType = 'student';
+            }
+        }
+
+        // Si no se encuentra ni como profesor ni como estudiante, devolver error
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
         // Hashea la nueva contraseña
         const hashedPassword = await hashPassword(newPassword);
 
-        // Actualiza la contraseña del profesor
-        professor.password = hashedPassword;
-        await professor.save();
+        // Actualiza la contraseña del usuario (profesor o estudiante)
+        user.password = hashedPassword;
+        await user.save();
 
         // Responde con un mensaje de éxito
         return res.status(200).json({ message: 'Su contraseña ha sido actualizada correctamente' }); // Código 200: OK
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Internal server error' }); // Código 500: Error interno del servidor
+        return res.status(500).json({ error: 'Error interno del servidor' }); // Código 500: Error interno del servidor
     }
 }
+
 
 
 /*

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { boolean } = require('zod');
 const Schema = mongoose.Schema;
 
 const StudentScheme = new Schema({
@@ -12,10 +13,14 @@ const StudentScheme = new Schema({
         ref: 'Campus'
     },
     cellPhone: String,
-    carnet: {
-        type: String,
-        //unique: true
+    photo: String,
+    carnet: String, 
+    security:{
+        resetPasswordOtp: String,
+        emailVerificationToken: String,
     },
+    //rol: String,
+    isActive: Boolean,
     createdBy: String,
     lastModifiedBy: String        
 }, { collection: 'student', timestamps: true });

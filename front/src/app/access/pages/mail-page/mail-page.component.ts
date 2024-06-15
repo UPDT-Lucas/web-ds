@@ -45,8 +45,10 @@ export class MailPageComponent {
 
     console.log(this.email)
     if (this.email !== '') {
+      console.log("holaa");
       this.CS.forgotPassword(this.email).subscribe(
         (res) => {
+          console.log("holaaa");
           localStorage.setItem('-id', res._id);
           console.log('id: ', res._id);
           console.log(res);
