@@ -18,7 +18,7 @@ const StudentScheme = new Schema({
     }],
     cellPhone: String,
     photo: String,
-    carnet: String, 
+    password: String, //this is carnet
     security:{
         resetPasswordOtp: String,
         emailVerificationToken: String,

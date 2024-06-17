@@ -1,7 +1,9 @@
 const express = require('express');
 const {registerStudent, getAllStudent, getStudent, deleteStudent, 
     getStudentsByCampus, editAccountStudent, getStudentByName, addNotification,
-    updateNotification, forgotPasswordS, verifyOtp, resetPassword} = require('../Controllers/StudentController');
+    updateNotification} = require('../Controllers/StudentController');
+
+const router = express.Router();
 
 router.post('/register-student',  registerStudent);
 router.get('/all-student', getAllStudent);

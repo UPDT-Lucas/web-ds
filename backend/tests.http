@@ -15,6 +15,15 @@ Content-Type: application/json
   "isActive": true
 }
 
+###
+POST http://localhost:3000/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "arianaam335@gmail.com",
+  "password": "12345678"
+}
+
 
 ###
 POST http://localhost:3000/forgot-password HTTP/1.1
