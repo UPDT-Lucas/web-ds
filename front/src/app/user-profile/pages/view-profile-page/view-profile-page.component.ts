@@ -4,6 +4,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { CommunicationService } from '../../../services/communication.service';
 import { Router } from '@angular/router';
 import { Professor } from '../../../interfaces/professor.interface';
+import { Student } from '../../../interfaces/student.interface';
 
 @Component({
   selector: 'app-view-profile-page',
@@ -24,8 +25,10 @@ export class ViewProfilePageComponent {
   phone: string = '';
   campus: string = '';
   photo: string = '/assets/images/profileHolder.png';
-  actualProfessor!: Professor;
+  actualUser!: any;
   consecutive: string = ''
+  role: string = '';
+  carnet: string = '';
   //isCordinator: string = '';
 
 
@@ -37,26 +40,40 @@ export class ViewProfilePageComponent {
   }
 
   ngOnInit() {
-    this.id = localStorage.getItem('-id') || '';
+    this.id = this.CS.getActualUser().id
+    this.role = this.CS.getActualUser().role 
+    if(this.role == 'professor'){
+      this.getProfessorInfo()
+    }else{
+      this.getStudentInfo()
+    }
+
+  }
+
+  editProfile(){
+    this.router.navigate(['/editUser', this.id])
+  }
+
+  getProfessorInfo(){
     this.CS.getProfessor(this.id).subscribe(
       res => {
-        this.actualProfessor = res
-        this.email = this.actualProfessor.account.email
-        this.name = this.actualProfessor.account.name.firstName + " " + this.actualProfessor.account.name.secondName + " " + this.actualProfessor.account.name.firstSurname + " " + this.actualProfessor.account.name.secondSurname
-        this.officePhone = this.actualProfessor.account.officePhone
-        this.phone = this.actualProfessor.account.cellPhone
-        this.photo = this.actualProfessor.account.photo
-        this.consecutive = this.actualProfessor.account.code
+        this.actualUser = res
+        this.email = this.actualUser.account.email
+        this.name = this.actualUser.account.name.firstName + " " + this.actualUser.account.name.secondName + " " + this.actualUser.account.name.firstSurname + " " + this.actualUser.account.name.secondSurname
+        this.officePhone = this.actualUser.account.officePhone
+        this.phone = this.actualUser.account.cellPhone
+        this.photo = this.actualUser.account.photo
+        this.consecutive = this.actualUser.account.code
 
-        if (this.actualProfessor.account.campus === "663057633ee524ad51bd5b05") {
+        if (this.actualUser.account.campus === "663057633ee524ad51bd5b05") {
           this.campus = "Cartago";
-        } else if (this.actualProfessor.account.campus === "6630576f3ee524ad51bd5b09") {
+        } else if (this.actualUser.account.campus === "6630576f3ee524ad51bd5b09") {
           this.campus = "Alajuela";
-        } else if (this.actualProfessor.account.campus === "663057763ee524ad51bd5b0c") {
+        } else if (this.actualUser.account.campus === "663057763ee524ad51bd5b0c") {
           this.campus = "San Carlos";
-        } else if (this.actualProfessor.account.campus === "663057863ee524ad51bd5b0f") {
+        } else if (this.actualUser.account.campus === "663057863ee524ad51bd5b0f") {
           this.campus = "San José";
-        } else if (this.actualProfessor.account.campus === "6630578f3ee524ad51bd5b12") {
+        } else if (this.actualUser.account.campus === "6630578f3ee524ad51bd5b12") {
           this.campus = "Limón";
         }
 
@@ -64,9 +81,30 @@ export class ViewProfilePageComponent {
     )
   }
 
-  editProfile(){
-    this.router.navigate(['/editTeacher', this.id])
-  }
+  getStudentInfo(){
+    this.CS.getStudent(this.id).subscribe(
+      res => {
+        console.log(res)
+        this.actualUser = res
+        this.email = this.actualUser.account.email
+        this.name = this.actualUser.account.name.firstName + " " + this.actualUser.account.name.secondName + " " + this.actualUser.account.name.firstSurname + " " + this.actualUser.account.name.secondSurname
+        this.phone = this.actualUser.account.cellPhone
+        this.carnet = this.actualUser.account.carnet
+        this.photo = this.actualUser.account.photo
 
+        if (this.actualUser.account.campus === "663057633ee524ad51bd5b05") {
+          this.campus = "Cartago";
+        } else if (this.actualUser.account.campus === "6630576f3ee524ad51bd5b09") {
+          this.campus = "Alajuela";
+        } else if (this.actualUser.account.campus === "663057763ee524ad51bd5b0c") {
+          this.campus = "San Carlos";
+        } else if (this.actualUser.account.campus === "663057863ee524ad51bd5b0f") {
+          this.campus = "San José";
+        } else if (this.actualUser.account.campus === "6630578f3ee524ad51bd5b12") {
+          this.campus = "Limón";
+        }
+      }
+    )
+  }
 
 }

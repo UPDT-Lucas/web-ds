@@ -43,19 +43,19 @@ export class ViewActivityPageComponent {
 
   userIsCordinator: boolean = false;
   activityId: string = '';
-  actualUser: {id: string, isTeacher: boolean} = {id: "", isTeacher: true}
-  userIsTeacher: boolean = false;
+  actualId: string = "";
   currentComment: string = '';
   currentReply: string = '';
+  role: string = ''
 
   commentsToShow: Comment[] = [];
 
 
   ngOnInit() {
-    this.actualUser = this.CS.getActualUser();
-    this.userIsTeacher = this.actualUser.isTeacher
-    if(this.userIsTeacher){
-      this.CS.getProfessor(this.actualUser.id).subscribe(
+    this.actualId = this.CS.getActualUser().id
+    this.role = this.CS.getActualUser().role  
+    if(this.role == 'professor'){
+      this.CS.getProfessor(this.actualId).subscribe(
         prof => {
           if(prof.account.isCordinator){
             this.userIsCordinator = true
@@ -134,7 +134,7 @@ export class ViewActivityPageComponent {
     let actualComment: Comment = {
           text: this.currentComment.toString(),
           date: new Date(),
-          author: this.actualUser.id,
+          author: this.actualId,
           replies: []
       }
       this.activity.comments.push(actualComment);
@@ -142,7 +142,7 @@ export class ViewActivityPageComponent {
         console.log(res);
       })
 
-      this.CS.getProfessor(this.actualUser.id).subscribe(res => {
+      this.CS.getProfessor(this.actualId).subscribe(res => {
         actualComment.author = res.account.name.firstName + ' ' + res.account.name.firstSurname;
         this.commentsToShow.push(actualComment);
         this.cdr.detectChanges();
@@ -153,13 +153,13 @@ export class ViewActivityPageComponent {
     let actualReply: CommentReply = {
       text: this.currentReply.toString(),
       date: new Date(),
-      author: this.actualUser.id
+      author: this.actualId
     }
     this.activity.comments[commentIndex].replies.push(actualReply);
     this.CS.insertComment(this.activityId, this.activity.comments).subscribe(res => {
       console.log(res);
     })
-    this.CS.getProfessor(this.actualUser.id).subscribe(res => {
+    this.CS.getProfessor(this.actualId).subscribe(res => {
       actualReply.author = res.account.name.firstName + ' ' + res.account.name.firstSurname;
       this.commentsToShow[commentIndex].replies.push(actualReply);
     })

@@ -323,7 +323,7 @@ const login = async (req, res) => {
         // Busca en la base de datos un usuario que coincida con el email proporcionado
         const professor = await Professor.findOne({ email });
         var actualPassword;
-        var isTeacher = true;
+        var role = "professor";
         var id;
 
         if (!professor) {
@@ -338,18 +338,19 @@ const login = async (req, res) => {
                 if(!studentAdapter.student){
                     return res.status(200).json({error: 'Usuario no encontrado'})
                 }else{
+                    console.log('Student:', studentAdapter.student);
                     actualPassword = studentAdapter.password;
                     id = studentAdapter.id;
-                    isTeacher = false;
+                    role = "student";
 
                     //console.log(id);
-                    //console.log(studentAdapter);
+                    //console.log(studentAdapter);  
                     console.log('Student Password (Database):', studentAdapter.password);
                     console.log('Password input (Request):', password);
                 }
             }else{
                 id = assistant.id;
-                isTeacher = false;
+                role = "assistant";
                 actualPassword = assistant.password;
             }
         } else {
@@ -369,7 +370,7 @@ const login = async (req, res) => {
         return res.status(200).json({
             message: 'Login successful',
             _id: id,
-            isTeacher: isTeacher
+            role
         });
 
     } catch (error) {

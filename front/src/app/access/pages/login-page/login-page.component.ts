@@ -63,17 +63,12 @@ export class LoginPageComponent {
       this.CS.login(this.email, this.password).subscribe(
         (res) => {
           if(res.message === 'Login successful') {
-            this.CS.setActualUser(res._id, res.isTeacher);
+            this.CS.setActualUser(res._id, res.role);
             this.router.navigate(['/landing']);
           } else {
             this.errorMessage = res.error;
             this.showErrorMessage = true;
           }
-        },
-        (error) => {
-          this.errorMessage = 'Error de conexión al servidor.';
-          this.showErrorMessage = true;
-          console.error('Error: ', error);
         }
       )
     }catch (error){

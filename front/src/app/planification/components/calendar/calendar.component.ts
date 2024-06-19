@@ -20,15 +20,17 @@ export class CalendarComponent {
   
   activities: any[] = [{ title: 'Meeting', start: new Date(2024,2,26,10,30), end: new Date(2024,2,28,10,30), id: '1' }];
   calendarActivities: any = [];
-  actualUser: {id: string, isTeacher: boolean} = {id: "", isTeacher: false}
+  actualId: string = "";
+  role: string = '';
 
   constructor(private router: Router, private CS: CommunicationService){}
 
   ngOnInit() {
     // console.log(this.activities)
-    this.actualUser = this.CS.getActualUser()
-    if(this.actualUser.isTeacher){
-      this.CS.getProfessor(this.actualUser.id).subscribe(
+    this.actualId = this.CS.getActualUser().id
+    this.role = this.CS.getActualUser().role  
+    if(this.role == 'professor'){
+      this.CS.getProfessor(this.actualId).subscribe(
         prof => {
           console.log(prof)
           if(prof.account.isCordinator){

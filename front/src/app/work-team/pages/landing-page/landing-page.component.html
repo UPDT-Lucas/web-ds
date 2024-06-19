@@ -1,5 +1,5 @@
 <div class="flex-container">
-    <shared-header [isTeacher]="this.isTeacher"></shared-header>
+    <shared-header [role]="this.role"></shared-header>
 
     <div class="container">
         <div class="right-side">
@@ -12,10 +12,12 @@
                 <h2 class="welcome"><span class="name">{{ firstName }} {{ firstSurname }} {{ secondSurname }}</span>, bienvenido(a) al Equipo Guía 2024
                 </h2>
                 <div class="options">
-                    <shared-button
-                        text="Ver equipo"
-                        link="teamView">                        
-                    </shared-button>
+                    @if (role !== "student") {
+                        <shared-button
+                            text="Ver equipo"
+                            link="teamView">                        
+                        </shared-button>
+                    }
 
                     <shared-button
                         text="Ver calendario"

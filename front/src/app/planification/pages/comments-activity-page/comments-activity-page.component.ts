@@ -46,13 +46,15 @@ export class CommentsActivityPageComponent {
   activityId: string = '';
   commentsToShow: any[] = [];
   date = new Date()
-  actualUser: {id: string, isTeacher: boolean} = {id: "", isTeacher: true}
+  actualId: string = "";
+  role: string = '';  
   activeFlag =  false;
   actualCommentIndex = 0;
 
   ngOnInit() {
-    this.actualUser = this.CS.getActualUser();
-    this.CS.getProfessor(this.actualUser.id).subscribe(
+    this.actualId = this.CS.getActualUser().id
+    this.role = this.CS.getActualUser().role     
+    this.CS.getProfessor(this.actualId).subscribe(
       prof => {
         if(prof.account.isCordinator){
           this.userIsCordinator = true
@@ -130,7 +132,7 @@ export class CommentsActivityPageComponent {
       let actualComment: Comment = {
             text: this.commentTextInput.toString(),
             date: new Date(),
-            author: this.actualUser.id,
+            author: this.actualId,
             replies: []
         }
         this.activity.comments.push(actualComment);
@@ -138,7 +140,7 @@ export class CommentsActivityPageComponent {
           console.log(res);
         })
   
-        this.CS.getProfessor(this.actualUser.id).subscribe(res => {
+        this.CS.getProfessor(this.actualId).subscribe(res => {
           actualComment.author = res.account.name.firstName + ' ' + res.account.name.firstSurname;
           this.commentsToShow.push(actualComment);
           this.cdr.detectChanges();
@@ -147,13 +149,13 @@ export class CommentsActivityPageComponent {
       let actualReply: CommentReply = {
         text: this.commentTextInput.toString(),
         date: new Date(),
-        author: this.actualUser.id
+        author: this.actualId
       }
       this.activity.comments[this.actualCommentIndex].replies.push(actualReply);
       this.CS.insertComment(this.activityId, this.activity.comments).subscribe(res => {
         console.log(res);
       })
-      this.CS.getProfessor(this.actualUser.id).subscribe(res => {
+      this.CS.getProfessor(this.actualId).subscribe(res => {
         actualReply.author = res.account.name.firstName + ' ' + res.account.name.firstSurname;
         this.commentsToShow[this.actualCommentIndex].replies.push(actualReply);
       })

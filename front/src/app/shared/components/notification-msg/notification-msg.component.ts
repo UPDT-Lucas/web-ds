@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Notification } from '../../../interfaces/professor.interface';
+import { Notification } from '../../../interfaces/student.interface';
 import { CommunicationService } from '../../../services/communication.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class NotificationMsgComponent {
   constructor(private communicationService: CommunicationService){}
 
   actualId: string = ''
+  disabled: boolean = false
 
   @Input()
   user: string = '';
@@ -30,19 +31,18 @@ export class NotificationMsgComponent {
   @Input()
   index: number = 0;
 
-  @Output()
-  stateChange = new EventEmitter<boolean>();
-
-  onStateChange(){
-    this.stateChange.emit(!this.checked)
-  }
-
   ngOnInit(){
     const user = this.communicationService.getActualUser()
     this.actualId = user.id
   }
 
   changeState(){
-    this.communicationService.updateNotification(this.actualId, this.notification._id, !this.checked).subscribe()
+    this.checked = !this.checked
+    this.communicationService.updateNotification(this.actualId, this.notification._id, this.checked, this.disabled).subscribe()
+  }
+
+  deleteNotification(){
+    this.disabled = !this.disabled
+    this.communicationService.updateNotification(this.actualId, this.notification._id, this.checked, this.disabled).subscribe()
   }
 }

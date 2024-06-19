@@ -39,23 +39,22 @@ export class TeamViewComponent {
   limit: number = 0;
   filterOnInput: string = ""
   filter: boolean = false;
-  actualId: string = "";
   actualProfessor!: Professor;
-  userIsTeacher: boolean = false;
+  actualId: string = "";
+  role: string = '';
   assistant!: AssistantResponse;
 
   constructor(private CS: CommunicationService, private router: Router) { }
 
   ngOnInit() {
-    const user = this.CS.getActualUser()
-    this.actualId = user.id
-    this.userIsTeacher = user.isTeacher
-    if(user.isTeacher){
-      this.getProfessor()
-    }else{
-      this.getAssistant()
-      this.headers.push(['Acciones', 'icon'])
-    }
+    this.actualId = this.CS.getActualUser().id
+    this.role = this.CS.getActualUser().role  
+    // if(user.isTeacher){
+    //   this.getProfessor()
+    // }else{
+    //   this.getAssistant()
+    //   this.headers.push(['Acciones', 'icon'])
+    // }
     this.limit = 5
     this.changePage(5, 0)
     this.setActions()
@@ -185,7 +184,7 @@ export class TeamViewComponent {
   deleteProfessor(id: string) {
     this.CS.getProfessor(id).subscribe(
       professor => {
-        if(!this.userIsTeacher){
+        if(this.role !== "professor"){
           if(this.assistant.assistant.campus == professor.account.campus){
             this.CS.deleteSudent(id).subscribe(() => {
               console.log('Profesor eliminado exitosamente');

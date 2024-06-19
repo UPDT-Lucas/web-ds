@@ -1,5 +1,5 @@
 <div class="flex-container">
-    <shared-header [isTeacher]="userIsTeacher"></shared-header>
+    <shared-header [role]="this.role"></shared-header>
 
     <div class="container">
         <div class="info-container">
@@ -12,21 +12,38 @@
                     <div class="input">
                         <h5>
                             Primer Nombre
-                        </h5>
-                        <shared-input 
+                        </h5>   
+                        @if (role === "student") {
+                            <shared-input 
+                            placeholder="Primer Nombre"
+                            [(entry)]="firstNameOnInput"
+                            [value]="actualFirstName"
+                            [isDisabled]="true">
+                            </shared-input>
+                        }@else {
+                            <shared-input 
                             placeholder="Primer Nombre"
                             [(entry)]="firstNameOnInput"
                             [value]="actualFirstName">
-                        </shared-input>
+                            </shared-input>
+                        }
                     </div>
                     <div class="input">
                         <h5>
                             Segundo Nombre
                         </h5>
-                        <shared-input placeholder="Segundo Nombre"
+                        @if (role === "student") {
+                            <shared-input placeholder="Segundo Nombre"
                             [(entry)]="secondNameOnInput"
-                            [value]="actualSecondName">
-                        </shared-input>
+                            [value]="actualSecondName"
+                            [isDisabled]="true">
+                            </shared-input>
+                        }@else {
+                            <shared-input placeholder="Segundo Nombre"
+                                [(entry)]="secondNameOnInput"
+                                [value]="actualSecondName">
+                            </shared-input>
+                        }
                     </div>
                 </div>
                 <div class="row">
@@ -34,20 +51,35 @@
                         <h5>
                             Primer Apellido
                         </h5>
-                        <shared-input placeholder="Primer Apellido"
+                        @if (role === "student") {
+                            <shared-input placeholder="Primer Apellido"
+                            [(entry)]="firstSurnameOnInput"
+                            [value]="actualFirstSurname"
+                            [isDisabled]="true">
+                            </shared-input>
+                        }@else {
+                            <shared-input placeholder="Primer Apellido"
                             [(entry)]="firstSurnameOnInput"
                             [value]="actualFirstSurname">
-                        </shared-input>
+                            </shared-input>
+                        }
                     </div>
                     <div class="input">
                         <h5>
                             Segundo Apellido
                         </h5>
-                        <shared-input placeholder="Segundo Apellido"
+                        @if (role === "student") {
+                            <shared-input placeholder="Segundo Apellido"
                             [(entry)]="secondSurnameOnInput"
                             [value]="actualSecondSurname"
-                            >
-                        </shared-input>
+                            [isDisabled]="true">
+                            </shared-input>  
+                        }@else {
+                            <shared-input placeholder="Segundo Apellido"
+                            [(entry)]="secondSurnameOnInput"
+                            [value]="actualSecondSurname">
+                            </shared-input> 
+                        }
                     </div>
                 </div>
             </div>
@@ -58,19 +90,95 @@
                         <h5>
                             Correo
                         </h5>
-                        <shared-input placeholder="Correo"
+                        @if (role === "student") {
+                            <shared-input placeholder="Correo"
+                            [(entry)]="emailOnInput"
+                            [value]="actualEmail"
+                            [isDisabled]="true">
+                            </shared-input>
+                        }@else {
+                            <shared-input placeholder="Correo"
                             [(entry)]="emailOnInput"
                             [value]="actualEmail">
-                        </shared-input>
+                            </shared-input>
+                        }
                     </div>
                     <div class="input">
                         <h5>
-                            Teléfono Oficina
+                            Campus 
                         </h5>
-                        <shared-input placeholder="Teléfono Oficina"
-                        [(entry)]="officePhoneOnInput"
-                        [value]="actualOfficePhone">
-                        </shared-input>
+                        @if (role === "student") {
+                            <select id="campus"
+                            (change)="onCampusChange($event)"
+                            class="custom-select"
+                            disabled>
+                            @if (actualCampus == "663057863ee524ad51bd5b0f") {
+                                <option value="663057863ee524ad51bd5b0f" selected>San José</option>
+                            }@else {
+                                <option value="663057863ee524ad51bd5b0f">San José</option>
+                            }
+    
+                            @if (actualCampus == "663057633ee524ad51bd5b05") {
+                                <option value="663057633ee524ad51bd5b05" selected>Cartago</option>
+                            }@else {
+                                <option value="663057633ee524ad51bd5b05">Cartago</option>
+                            }
+    
+                            @if (actualCampus == "6630576f3ee524ad51bd5b09"){
+                                <option value="6630576f3ee524ad51bd5b09" selected>Alajuela</option>
+                            }@else {
+                                <option value="6630576f3ee524ad51bd5b09">Alajuela</option>
+                            }
+    
+                            @if (actualCampus == "6630578f3ee524ad51bd5b12") {
+                                <option value="6630578f3ee524ad51bd5b12" selected>Limón</option>
+                            }@else {
+                                <option value="6630578f3ee524ad51bd5b12">Limón</option>
+                            }
+    
+                            @if (actualCampus == "663057763ee524ad51bd5b0c") {
+                                <option value="663057763ee524ad51bd5b0c" selected>San Carlos</option>
+                            }@else {
+                                <option value="663057763ee524ad51bd5b0c">San Carlos</option>
+                            }
+                            </select>
+                        }@else {
+                            <select id="campus"
+                            (change)="onCampusChange($event)"
+                            class="custom-select">
+
+                            @if (actualCampus == "663057863ee524ad51bd5b0f") {
+                                <option value="663057863ee524ad51bd5b0f" selected>San José</option>
+                            }@else {
+                                <option value="663057863ee524ad51bd5b0f">San José</option>
+                            }
+    
+                            @if (actualCampus == "663057633ee524ad51bd5b05") {
+                                <option value="663057633ee524ad51bd5b05" selected>Cartago</option>
+                            }@else {
+                                <option value="663057633ee524ad51bd5b05">Cartago</option>
+                            }
+    
+                            @if (actualCampus == "6630576f3ee524ad51bd5b09"){
+                                <option value="6630576f3ee524ad51bd5b09" selected>Alajuela</option>
+                            }@else {
+                                <option value="6630576f3ee524ad51bd5b09">Alajuela</option>
+                            }
+    
+                            @if (actualCampus == "6630578f3ee524ad51bd5b12") {
+                                <option value="6630578f3ee524ad51bd5b12" selected>Limón</option>
+                            }@else {
+                                <option value="6630578f3ee524ad51bd5b12">Limón</option>
+                            }
+    
+                            @if (actualCampus == "663057763ee524ad51bd5b0c") {
+                                <option value="663057763ee524ad51bd5b0c" selected>San Carlos</option>
+                            }@else {
+                                <option value="663057763ee524ad51bd5b0c">San Carlos</option>
+                            }
+                            </select>
+                        }
+                            
                     </div>
                 </div>
                 <div class="row">
@@ -83,45 +191,17 @@
                         [value]="actualCellPhone">
                         </shared-input>
                     </div>
-                    <div class="input">
-                        <h5>
-                            Campus 
-                        </h5>
-                        <select id="campus"
-                        (change)="onCampusChange($event)"
-                        class="custom-select">
-
-                        @if (actualCampus == "663057863ee524ad51bd5b0f") {
-                            <option value="663057863ee524ad51bd5b0f" selected>San José</option>
-                        }@else {
-                            <option value="663057863ee524ad51bd5b0f">San José</option>
-                        }
-
-                        @if (actualCampus == "663057633ee524ad51bd5b05") {
-                            <option value="663057633ee524ad51bd5b05" selected>Cartago</option>
-                        }@else {
-                            <option value="663057633ee524ad51bd5b05">Cartago</option>
-                        }
-
-                        @if (actualCampus == "6630576f3ee524ad51bd5b09"){
-                            <option value="6630576f3ee524ad51bd5b09" selected>Alajuela</option>
-                        }@else {
-                            <option value="6630576f3ee524ad51bd5b09">Alajuela</option>
-                        }
-
-                        @if (actualCampus == "6630578f3ee524ad51bd5b12") {
-                            <option value="6630578f3ee524ad51bd5b12" selected>Limón</option>
-                        }@else {
-                            <option value="6630578f3ee524ad51bd5b12">Limón</option>
-                        }
-
-                        @if (actualCampus == "663057763ee524ad51bd5b0c") {
-                            <option value="663057763ee524ad51bd5b0c" selected>San Carlos</option>
-                        }@else {
-                            <option value="663057763ee524ad51bd5b0c">San Carlos</option>
-                        }
-                        </select>
-                    </div>
+                    @if(role == "professor"){
+                        <div class="input">
+                            <h5>
+                                Teléfono Oficina
+                            </h5>
+                            <shared-input placeholder="Teléfono Oficina"
+                            [(entry)]="officePhoneOnInput"
+                            [value]="actualOfficePhone">
+                            </shared-input>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="extra-info">
@@ -138,7 +218,7 @@
                             </shared-file-input>
                         </div>
                     </div>
-                    @if((!userIsTeacher) && (userCampus == "663057633ee524ad51bd5b05")){
+                    @if((role !== "professor") && (userCampus == "663057633ee524ad51bd5b05")){
                         <div class="input">
                             <h5>
                                 Coordinador

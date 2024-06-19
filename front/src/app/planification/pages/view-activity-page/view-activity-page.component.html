@@ -1,5 +1,5 @@
 <div class="flex-container">
-  <shared-header [isTeacher]="actualUser.isTeacher"></shared-header>
+  <shared-header [role]="this.role"></shared-header>
   <div class="container">
     <div class="info-container">
       <div class="text-container">
@@ -79,7 +79,7 @@
       <shared-button text="Editar" (click)="redirectToActivity()">
       </shared-button>
       }
-      @if (userIsTeacher) {
+      @if (role === "professor") {
         <shared-button text="Comentarios" (click)="redirectToComments()"></shared-button>
       }
     </div>

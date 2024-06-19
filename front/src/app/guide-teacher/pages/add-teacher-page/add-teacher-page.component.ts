@@ -40,12 +40,12 @@ export class AddTeacherPageComponent {
   officePhoneOnInput: string = '';
 
   isCordinator: boolean = false;
-  id: string = ""
-  userIsTeacher: boolean = false
+  id: string = "";
+  role: string = '';
 
   ngOnInit(){
     this.id = this.CS.getActualUser().id
-    this.userIsTeacher = this.CS.getActualUser().isTeacher
+    this.role = this.CS.getActualUser().role  
   }
 
   getFile(file: any) {

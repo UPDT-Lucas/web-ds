@@ -25,7 +25,7 @@ import { map } from 'rxjs';
 export class EditTeacherPageComponent {
 
   id: string = "";
-  userIsTeacher: boolean = true;
+  role: string = '';
   userCampus: string = ""
   
   firstNameOnInput: string = '';
@@ -67,8 +67,8 @@ export class EditTeacherPageComponent {
 
   ngOnInit(){
     this.id = this.CS.getActualUser().id
-    this.userIsTeacher = this.CS.getActualUser().isTeacher
-    if(!this.userIsTeacher){
+    this.role = this.CS.getActualUser().role 
+    if(this.role === "assistant"){
       this.CS.getAssistant(this.id).subscribe(
         assistant => {
           this.userCampus = assistant.assistant.campus
@@ -84,6 +84,7 @@ export class EditTeacherPageComponent {
   }
 
   getFields(){
+    if(this.role == 'professor'){
     this.CS.getProfessor(this.id).subscribe(
       prof => {
         this.actualFirstName = prof.account.name.firstName
@@ -101,6 +102,20 @@ export class EditTeacherPageComponent {
         // console.log(this.actualIsCoordinator)
       }
     )
+  }else{
+    this.CS.getStudent(this.id).subscribe(
+      res => {
+        this.actualFirstName = res.account.name.firstName
+        this.actualSecondName = res.account.name.secondName
+        this.actualFirstSurname = res.account.name.firstSurname
+        this.actualSecondSurname = res.account.name.secondSurname
+        this.actualEmail = res.account.email
+        this.actualCellPhone = res.account.cellPhone
+        this.actualPhoto = res.account.photo
+        this.actualCampus = res.account.campus
+      }
+    )
+  }
   }
 
   getFile(file: any) {
@@ -108,26 +123,26 @@ export class EditTeacherPageComponent {
   }
 
   getData(){
-    console.log(this.file)
-
-    // this.updateImage(this.file).subscribe(
-    //   link => {
-    //     console.log(link)
-    //   }
-    // )
-
     if(this.file){
       const formData = new FormData();
       formData.append('file', this.file);
       this.s3ApiService.uploadFile(formData).subscribe(
         (res) => {
           this.updateImage(this.file.name).subscribe((link) => {
-          this.editTeacherAfterUpdate()
+          if(this.role == 'professor'){
+            this.editTeacherAfterUpdate()
+          }else{
+            this.editStudentAfterUpdate()
+          }
           })
         }
       )
     }else{
-      this.editTeacherAfterUpdate()
+      if(this.role == 'professor'){
+        this.editTeacherAfterUpdate()
+      }else{
+        this.editStudentAfterUpdate()
+      }
     }
   }
 
@@ -161,12 +176,27 @@ export class EditTeacherPageComponent {
   editTeacher(){
     this.getData()
   }
+
+  editStudentAfterUpdate(){
+    const studentData = {
+      firstName: this.firstNameOnInput ? this.firstNameOnInput : this.actualFirstName ,
+      secondName: this.secondNameOnInput ? this.secondNameOnInput : this.actualSecondName,
+      firstSurname: this.firstSurnameOnInput ? this.firstSurnameOnInput : this.actualFirstSurname,
+      secondSurname: this.secondSurnameOnInput ? this.secondSurnameOnInput : this.actualSecondSurname,
+      email: this.emailOnInput ? this.emailOnInput : this.actualEmail,
+      campus: this.campusOnInput ? this.campusOnInput : this.actualCampus,
+      cellPhone: this.cellPhoneOnInput ? this.cellPhoneOnInput : this.actualCellPhone,
+      photo: this.filename !== "assets/images/teacher.png" ? this.filename : this.actualPhoto,
+    };
+    this.CS.editAccountStudent(this.id, studentData).subscribe(
+      response => {
+        console.log('La información del estudiante se ha actualizado con éxito:', response);
+      }
+    );
+  }
   
 
   editTeacherAfterUpdate() {
-    // console.log(this.isCordinator)
-    // console.log("a")
-    // console.log(this.filename)
     const professorData = {
       firstName: this.firstNameOnInput ? this.firstNameOnInput : this.actualFirstName ,
       secondName: this.secondNameOnInput ? this.secondNameOnInput : this.actualSecondName,
@@ -186,10 +216,6 @@ export class EditTeacherPageComponent {
       response => {
         console.log('La información del profesor se ha actualizado con éxito:', response);
         this.router.navigate(["/teamView"])
-        
-      },
-      error => {
-        console.error('Error al actualizar la información del profesor:', error);
       }
     );
   }

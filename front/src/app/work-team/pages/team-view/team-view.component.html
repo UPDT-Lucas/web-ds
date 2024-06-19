@@ -1,5 +1,5 @@
 <div class="flex-container">
-    <shared-header [isTeacher]="userIsTeacher"></shared-header>
+    <shared-header [role]="this.role"></shared-header>
     <div class="container">
         <div class="content-fixer">
             <div class="top-table">
@@ -27,7 +27,7 @@
                     text="Ver estudiantes" 
                     link="/viewStudents">
                 </shared-button>
-                @if(!userIsTeacher){
+                @if(this.role !== 'professor'){
                     <shared-button 
                     text="Agregar profesor" 
                     link="/addTeacher">

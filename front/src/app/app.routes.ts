@@ -57,7 +57,7 @@ export const routes: Routes = [
     component: AddTeacherPageComponent
   },
   {
-    path: 'editTeacher/:id',
+    path: 'editUser/:id',
     component: EditTeacherPageComponent
   },
   {

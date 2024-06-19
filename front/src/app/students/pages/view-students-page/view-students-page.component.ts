@@ -66,7 +66,7 @@ export class ViewStudentsPageComponent {
   filterOnInput: string = ""
   filter: boolean = false;
   campusFilter: boolean = false;
-  userIsTeacher: boolean = false;
+  role: string = ''
   actualProfessor!: Professor;
   assistant!: AssistantResponse;
   actualId: string = ""
@@ -74,13 +74,13 @@ export class ViewStudentsPageComponent {
 
   ngOnInit() {
     const user = this.CS.getActualUser()
-    this.actualId = user.id
-    this.userIsTeacher = user.isTeacher
-    if (user.isTeacher) {
+    this.actualId = this.CS.getActualUser().id
+    this.role = this.CS.getActualUser().role
+    if (this.role == 'professor') {
       this.getProfessor()
       this.actions = [['edit']]
       this.headers.push(['Acciones', 'icon'])
-    } else {
+    } else if(this.role == 'assistant') {
       this.getAssistant()
       this.actions = [['delete'], ['edit', '']]
       this.headers.push(['Acciones', 'icon'])
@@ -403,7 +403,7 @@ export class ViewStudentsPageComponent {
         //this.actions,
       ];
 
-      if (this.userIsTeacher) {
+      if (this.role == 'professor') {
         const studentsActions = JSON.parse(JSON.stringify(this.actions));
         // console.log(this.actualProfessor)
         if (this.actualProfessor.account.campus == studentList.students[index].campus) {
@@ -475,7 +475,7 @@ export class ViewStudentsPageComponent {
   deleteStudent(id: string) {
     this.CS.getStudent(id).subscribe(
       student => {
-        if (!this.userIsTeacher) {
+        if (this.role !== "professor") {
           if (this.assistant.assistant.campus == student.account.campus) {
             this.CS.deleteSudent(id).subscribe(() => {
               console.log('Estudiante eliminado exitosamente');

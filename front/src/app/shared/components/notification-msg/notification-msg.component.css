@@ -30,3 +30,7 @@
 .top {
     display: flex;
 }
+
+.material-icons {
+    cursor: pointer;
+}

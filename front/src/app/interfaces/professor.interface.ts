@@ -13,7 +13,6 @@ export interface Account {
     photo:       string;
     code:        string;
     isCordinator: boolean;
-    notifications: Notification[]
 }
 
 export interface Name {
@@ -21,11 +20,4 @@ export interface Name {
     secondName:    string;
     firstSurname:  string;
     secondSurname: string;
-}
-
-export interface Notification {
-    text: string;
-    date: Date;
-    seen: boolean;
-    _id: string;
 }

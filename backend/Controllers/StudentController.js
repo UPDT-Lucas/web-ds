@@ -1,5 +1,4 @@
 const Student = require('../Models/Student');
-const Professor = require('../Models/Professor');
 const {validateStudent} = require('../Utils/studentValidator');
 const mongoose = require('mongoose');
 const { hashPassword , generateOTP, comparePassword} = require('../Utils/authUtils');
@@ -139,7 +138,7 @@ const getStudent = async (req, res) => {
         }
 
         // Extraer propiedades del objeto estudiante
-        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, isActive, photo} = student;
+        const { firstName, secondName, firstSurname, secondSurname, email, campus, cellPhone, isActive, photo, notifications, carnet} = student;
 
         // Construir el objeto de cuenta
         const account = {
@@ -149,11 +148,13 @@ const getStudent = async (req, res) => {
             campus,
             cellPhone,
             photo,
-            //carnet,
+            notifications,
+            id,
+            carnet,
             //rol,
             isActive
         };
-
+        
         return res.status(200).json({ account });
     } catch (err) {
         console.log(err);
@@ -238,7 +239,6 @@ const editAccountStudent = async (req, res) => {
             campus: req.body.campus,
             cellPhone: req.body.cellPhone,
             photo: req.body.photo,
-            isActive: req.body.isActive,
             //rol: req.body.rol,
             //carnet: req.body.carnet,
         }
@@ -293,31 +293,29 @@ const addNotification = async (req, res) => {
 
 const updateNotification = async (req, res) => {
     try {
-        const { studentId, notificationId } = req.params;
-        const { seen } = req.body;
+        const { id } = req.params;
+        const { seen, disabled, notificationId } = req.body;
+
 
         // Encuentra al estudiante por ID
-        const student = await Professor.findById(studentId);
-
+        const student = await Student.findById(id);
         if (!student) {
             return res.status(404).json({ error: 'Student not found' });
         }
 
-        // Encuentra la notificación por ID
         const notification = student.notifications.find(notification => notification._id == notificationId);
-
         if (!notification) {
             return res.status(404).json({ error: 'Notification not found' });
         }
 
         // Actualiza el estado de "visto/no visto" de la notificación
         notification.seen = seen;
-
+        notification.disabled = disabled;
 
         // Guarda los cambios en la base de datos
-        await student.save();
+        const studentRes = await student.save();
 
-        return res.status(200).json({ message: 'Notification updated successfully', student: student });
+        return res.status(200).json({ message: 'Notification updated successfully' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Internal server error' });

@@ -19,12 +19,9 @@ export class StudentObserver {
         text: message,
         date: new Date(),
         seen: false,
+        disabled: false,
         activityId: activityId 
       };
-      this.communicationService.addNotification(this.student.account.id, notification).subscribe(
-        (response: any) => {
-          console.log('Notificación enviada exitosamente:', response);
-        }
-      );
+      this.communicationService.addNotification(this.student.account.id, notification).subscribe();
     }
   }

@@ -23,13 +23,12 @@ export class HeaderComponent {
   date: Date = new Date()
 
   @Input()
-  isTeacher: boolean = true
+  role: string = ""
 
   isFilter: boolean = false
 
   isViewed: boolean = false
-
-  state: boolean = false
+  actualId: string = ""
 
   allNotifications: Notification[] = []
   notifications: Notification[] = []
@@ -41,24 +40,21 @@ export class HeaderComponent {
   ) {}
 
   ngOnInit(){
-    const user = this.communicationService.getActualUser()
-    const actualId = user.id
-    // this.communicationService.getStudent(actualId).subscribe(
-    //   student => {
-    //     console.log(student)
-    //   }
-    // )
-    this.communicationService.getStudent(actualId).subscribe(
-      student => {
-        if(student){
-          this.notificationService.handleActivityStateChange(student)
-          this.allNotifications = student.account.notifications
-          this.seenNotifications = this.allNotifications.filter((notif) => notif.seen)
-          this.notSeenNotifications = this.allNotifications.filter((notif) => !notif.seen)
-          this.notifications = this.allNotifications
+    this.actualId = this.communicationService.getActualUser().id
+    this.role = this.communicationService.getActualUser().role  
+    if(this.role === 'student'){
+      this.communicationService.getStudent(this.actualId).subscribe(
+        student => {
+          if(student){
+            this.notificationService.handleActivityStateChange(student)
+            this.allNotifications = student.account.notifications.filter((notif) => !notif.disabled)
+            this.seenNotifications = this.allNotifications.filter((notif) => notif.seen && !notif.disabled) 
+            this.notSeenNotifications = this.allNotifications.filter((notif) => !notif.seen && !notif.disabled)
+            this.notifications = this.allNotifications
+          }
         }
-      }
-    )
+      )
+    }
   }
 
   toggleView(){

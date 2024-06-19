@@ -19,22 +19,28 @@
           <h2>Campus al que pertenece</h2>
           <p>{{campus}}</p>
         </div>
-        <div class="info">
-          <h2>Teléfono Oficina</h2>
-          <p>{{officePhone}}</p>
-        </div>
+        @if (this.role !== "student") {
+          <div class="info">
+            <h2>Teléfono Oficina</h2>
+            <p>{{officePhone}}</p>
+          </div>
+        }
         <div class="info">
           <h2>Teléfono Celular</h2>
           <p>{{phone}}</p>
         </div>
-        <!-- <div class="info">
-          <h2>Es coordinador</h2>
-          <p>{{isCordinator}}</p>
-        </div> -->
+        @if (this.role !== "student") {
         <div class="info">
           <h2>Código de profesor</h2>
           <p>{{consecutive}}</p>
         </div>
+      }
+      @if(this.role === "student") {
+        <div class="info">
+          <h2>Carnet</h2>
+          <p>{{carnet}}</p>
+        </div>
+      }
 
       </div>
     </div>

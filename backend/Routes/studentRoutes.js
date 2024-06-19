@@ -14,10 +14,10 @@ router.get('/getStudentByCampus/:ids', getStudentsByCampus);
 router.delete('/delete-student/:id', deleteStudent);
 router.put('/editAccountStudent/:id', editAccountStudent);
 router.put('/addNotification/:id', addNotification);
-router.put('/updateNotification/:id/:notificationId', updateNotification);
+router.put('/updateNotification/:id', updateNotification);
 
 //router.post('/forgot-password-student', forgotPasswordS);
-//router.post('/verify-otp-student/:id', verifyOtp);
+//router.post('/verify-otp-studenat/:id', verifyOtp);
 //router.post('/reset-password-student/:id', resetPassword);
 
 module.exports = router;

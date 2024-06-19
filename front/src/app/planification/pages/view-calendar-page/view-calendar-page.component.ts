@@ -16,15 +16,14 @@ import { Activity } from '../../../interfaces/activity.interface';
 })
 export class ViewCalendarPageComponent {
   constructor(private CS: CommunicationService) {}
-
-  actualUser: {id: string, isTeacher: boolean} = {id: "", isTeacher: true}
-
+  actualId: string = "";
+  role: string = "";
   // { title: 'Meeting', start: new Date(2024,2,26,10,30), end: new Date(2024,2,28,10,30), id: '1' },
   // { title: 'Meeting', start: new Date(2024,2,27,12,0), end: new Date(2024,2,27,14,0), id: '2' }
 
   ngOnInit() {
-    this.actualUser = this.CS.getActualUser()
-
+    this.actualId = this.CS.getActualUser().id
+    this.role = this.CS.getActualUser().role 
   }
 
 }

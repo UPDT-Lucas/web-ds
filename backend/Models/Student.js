@@ -19,10 +19,12 @@ const StudentScheme = new Schema({
         activityId: {
             type: Schema.Types.ObjectId,
             ref: 'Activity'
-        }
+        },
+        disabled: Boolean,
     }],
     cellPhone: String,
     photo: String,
+    carnet: String,
     password: String, //this is carnet
     security:{
         resetPasswordOtp: String,

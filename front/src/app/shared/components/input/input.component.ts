@@ -27,6 +27,9 @@ export class InputComponent {
     this.entryChange.emit(value)
   }
 
+  @Input()
+  isDisabled: boolean = false;
+
   @Input() isPassword: boolean = false;
 
 

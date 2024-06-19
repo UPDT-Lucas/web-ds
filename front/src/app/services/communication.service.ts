@@ -22,16 +22,15 @@ export class CommunicationService {
   // apiForTesting hosting with own machine http://localhost:3000
   private apiUrl = 'http://localhost:3000';
 
-  setActualUser(id: string, isTeacher: string){
+  setActualUser(id: string, role: string){
     localStorage.setItem('-id', id);
-    localStorage.setItem('isTeacher', isTeacher)
+    localStorage.setItem('role', role)
   }
 
   getActualUser(){
     const id = localStorage.getItem('-id') || ""
-    const isTeacherString = localStorage.getItem('isTeacher') || ""
-    const isTeacher = isTeacherString == "false" ? false : true
-    return {id, isTeacher}
+    const role = localStorage.getItem('role') || ""
+    return {id, role}
   }
 
   //----------------------------------------- PROFESSOR -----------------------------------------//
@@ -203,16 +202,20 @@ export class CommunicationService {
   }
 
   // ----------------------------------------- Notifications -----------------------------------------//
-  addNotification(studentId: string, notification: { text: string, date: Date, activityId: String }): Observable<any> {
-    console.log(notification)
+  addNotification(studentId: string, notification: { text: string, date: Date, seen: boolean, disabled: boolean }): Observable<any> {
     const url = `${this.apiUrl}/addNotification/${studentId}`;
     return this.http.put(url, { notification });
   }
 
-  updateNotification(professorId: string, notificationId: string, seen: boolean): Observable<any> {
-    const url = `${this.apiUrl}/updateNotification/${professorId}/${notificationId}`;
-    return this.http.put(url, { seen });
+  updateNotification(studentId: string, notificationId: string, seen: boolean, disabled: boolean): Observable<any> {
+    const url = `${this.apiUrl}/updateNotification/${studentId}`;
+    return this.http.put(url, { seen, disabled, notificationId });
   }
+
+  // editActivity(id: string, activityData: Activity): Observable<Activity> {
+  //   const url = `${this.apiUrl}/editActivity/${id}`;
+  //   return this.http.put<Activity>(url, activityData);
+  // }
 
 }
 
