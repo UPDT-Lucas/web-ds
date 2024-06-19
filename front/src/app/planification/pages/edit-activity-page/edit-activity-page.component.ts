@@ -129,26 +129,13 @@ export class EditActivityPageComponent {
     }
   }
 
-  getEvidenceFile(file: any) {
-    console.log("HOLA")
-    this.file = file;
-    const formData = new FormData();
-    formData.append('file', this.file);
-    // this.s3ApiService.uploadFile(formData).subscribe(
-    //   (res) => {
-    //     console.log(res)
-    //     this.inputActivityEvidence = res
-    //     console.log(this.inputActivityEvidence)
-    //   }
-    // );
-  }
-
   getFile(file: any) {
     this.file = file;
   }
 
 
   getData() {
+    console.log("GET DATA")
     if (this.file) {
       const formData = new FormData();
       formData.append('file', this.file);
@@ -225,12 +212,13 @@ export class EditActivityPageComponent {
   loadProfessorsByEmails(){
     // console.log(this.professorEmailsSet)
     this.professorEmailsSet.forEach(email => {
-      // console.log("AAAAA ", email)
+      console.log("AAAAA ", email)
       if(email){
         this.CS.getProfessorByEmail(email).subscribe(
           (res: any) => {
             if(res){
-              this.responsibles.push(res._id)
+              console.log(res)
+              this.responsibles.push(res.account._id)
             } else {
               // console.log("No se encontró el profesor")
             }

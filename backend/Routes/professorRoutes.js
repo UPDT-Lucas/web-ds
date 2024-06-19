@@ -13,7 +13,7 @@ router.put('/editAccount/:id', editAccount);
 router.post('/login', login);
 router.delete('/delete-professor/:id', deleteProfessor);
 router.get('/getProfessorByCampus/:id', getProfessorByCampus);
-router.get('/getProfessorByEmail/:email', getProfessorsByEmail);
+router.get('/getProfessorByEmail/:inputEmail', getProfessorsByEmail);
 router.post('/forgot-password', forgotPassword);
 router.post('/verify-otp/:id', verifyOtp);
 router.post('/reset-password/:id', resetPassword);

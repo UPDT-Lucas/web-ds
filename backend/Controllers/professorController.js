@@ -263,7 +263,9 @@ const getProfessorsByName = async (req, res) => {
 const getProfessorsByEmail = async (req, res) => {
     try {
         const { inputEmail } = req.params;
-        const professor = await Professor.findOne({ inputEmail });
+        console.log(inputEmail)
+        const professor = await Professor.findOne({ email: inputEmail });
+        console.log(professor);
 
         if (!professor) {
             return res.status(400).json({ error: 'Professor does not exist' });

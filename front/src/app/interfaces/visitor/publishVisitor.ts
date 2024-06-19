@@ -10,8 +10,9 @@ export class PublishVisitor implements Visitor {
     }
 
     visit(activity: any) {
-        if ((new Date(activity.announcementDate) <= this.currentDate) && (new Date(activity.executionDate) >= this.currentDate)
-            && (activity.currentState !== 'Notificada')) {
+        if ((new Date(activity.announcementDate) <= this.currentDate) && (new Date(activity.executionDate) >= this.currentDate && 
+        activity.currentState !== 'Notificada') && 
+        (activity.currentState !== 'Cancelada') && (activity.currentState !== 'Realizada')) {
             activity.currentState = 'Notificada';
 
             this.communicationService.editActivity(activity._id! ,activity).subscribe(

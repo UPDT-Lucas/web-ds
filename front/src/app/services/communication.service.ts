@@ -28,7 +28,7 @@ export class CommunicationService {
   }
 
   getActualUser(){
-    const id = localStorage.getItem('-id') || ""
+    const id = localStorage.getItem('-id') ||  ""
     const role = localStorage.getItem('role') || ""
     return {id, role}
   }
@@ -84,6 +84,7 @@ export class CommunicationService {
   }
   
   getProfessorByEmail(email: string): Observable<Professor> {
+    console.log(email)
     const url = `${this.apiUrl}/getProfessorByEmail/${email}`;
     return this.http.get<Professor>(url);
   }
@@ -202,7 +203,7 @@ export class CommunicationService {
   }
 
   // ----------------------------------------- Notifications -----------------------------------------//
-  addNotification(studentId: string, notification: { text: string, date: Date, seen: boolean, disabled: boolean }): Observable<any> {
+  addNotification(studentId: string, notification: { text: string, date: Date, activityId: String }): Observable<any> {
     const url = `${this.apiUrl}/addNotification/${studentId}`;
     return this.http.put(url, { notification });
   }
@@ -211,11 +212,6 @@ export class CommunicationService {
     const url = `${this.apiUrl}/updateNotification/${studentId}`;
     return this.http.put(url, { seen, disabled, notificationId });
   }
-
-  // editActivity(id: string, activityData: Activity): Observable<Activity> {
-  //   const url = `${this.apiUrl}/editActivity/${id}`;
-  //   return this.http.put<Activity>(url, activityData);
-  // }
 
 }
 
