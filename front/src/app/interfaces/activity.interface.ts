@@ -12,6 +12,7 @@ export interface Activity {
   virtualActivityLink: string;
   activityPoster: string;
   currentState: string;
+  activityEvidence: string[];
 }
 
 export interface Comment {

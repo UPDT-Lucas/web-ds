@@ -43,6 +43,7 @@ export class EditActivityPageComponent {
   virtualActivityLink: string = '';
   activityPoster: string = '';
   currentState: string = 'Planeada';
+  activityEvidence: string[] = [];
 
 
   //Input string variables to treat the data
@@ -52,6 +53,7 @@ export class EditActivityPageComponent {
   inputResponsibles: string = '';
   inputActivityPoster: string = ''
   inputVirtualActivityLink: string = ''
+  inputActivityEvidence: string = ''
   
 
   //Responsibles emails to get Ids
@@ -93,6 +95,7 @@ export class EditActivityPageComponent {
               this.virtualActivityLink = this.Activity.virtualActivityLink;
               this.activityPoster = this.Activity.activityPoster;
               this.currentState = this.Activity.currentState;
+              this.activityEvidence = this.Activity.activityEvidence;
             }
           }
         )
@@ -117,6 +120,27 @@ export class EditActivityPageComponent {
     if(selectedActivityType){
       this.typeOfActivity = selectedActivityType;
     }
+  }
+
+  onAcivityStateChange(event: any){
+    const selectedActivityState = event?.target?.value;
+    if(selectedActivityState){
+      this.currentState = selectedActivityState;
+    }
+  }
+
+  getEvidenceFile(file: any) {
+    console.log("HOLA")
+    this.file = file;
+    const formData = new FormData();
+    formData.append('file', this.file);
+    // this.s3ApiService.uploadFile(formData).subscribe(
+    //   (res) => {
+    //     console.log(res)
+    //     this.inputActivityEvidence = res
+    //     console.log(this.inputActivityEvidence)
+    //   }
+    // );
   }
 
   getFile(file: any) {
@@ -262,7 +286,8 @@ export class EditActivityPageComponent {
         isRemote: this.isRemote,
         virtualActivityLink: this.inputActivityPoster,
         activityPoster: this.filename,
-        currentState: this.currentState
+        currentState: this.currentState,
+        activityEvidence: this.activityEvidence
       }
       console.log(activityData)
       this.CS.editActivity(this.activityId, activityData).subscribe(

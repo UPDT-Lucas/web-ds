@@ -28,23 +28,23 @@ export class LandingPageComponent  implements OnInit {
     this.id = this.CS.getActualUser().id
     this.isTeacher = this.CS.getActualUser().isTeacher             
     // console.log(this.isTeacher)
-    if(this.isTeacher){
-      this.CS.getProfessor(this.id).subscribe(
-        prof => {
-          this.firstName = prof.account.name.firstName
-          this.firstSurname = prof.account.name.firstSurname
-          this.secondSurname = prof.account.name.secondSurname
-        }
-      )
-    }else{
-      this.CS.getAssistant(this.id).subscribe(
-        res => {
-          this.firstName = res.assistant.firstName
-          this.firstSurname = res.assistant.firstSurname
-          this.secondSurname = res.assistant.secondSurname
-        }
-      )
-    }
+    // if(this.isTeacher){
+    //   this.CS.getProfessor(this.id).subscribe(
+    //     prof => {
+    //       this.firstName = prof.account.name.firstName
+    //       this.firstSurname = prof.account.name.firstSurname
+    //       this.secondSurname = prof.account.name.secondSurname
+    //     }
+    //   )
+    // }else{
+    //   this.CS.getAssistant(this.id).subscribe(
+    //     res => {
+    //       this.firstName = res.assistant.firstName
+    //       this.firstSurname = res.assistant.firstSurname
+    //       this.secondSurname = res.assistant.secondSurname
+    //     }
+    //   )
+    // }
 
   this.CS.getStudent(this.id).subscribe(
     student => {

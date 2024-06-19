@@ -43,7 +43,7 @@
                   </div>
                   @if(notifications){
                     <hr>
-                    @for (notif of notifications; track $index) {
+                    @for (notif of notifications.reverse(); track $index) {
                         @if(!seenNotifications.includes(notif)){
                             <shared-notification-msg
                             user="Nombre Persona 1"

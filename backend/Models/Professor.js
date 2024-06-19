@@ -24,7 +24,11 @@ const ProfessorScheme = new Schema({
     notifications: [{           
         text: String,
         date: Date,
-        seen: Boolean
+        seen: Boolean,
+        activityId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Activity'
+        }
     }], // <- Quitar, dejar solo en estudiantes (para pruebas)
     cellPhone: String,
     officePhone: String,

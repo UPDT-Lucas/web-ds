@@ -29,6 +29,7 @@ const ActivityScheme = new Schema({
     virtualActivityLink: String,  
     activityPoster: String,   //Afiche jpg o pdf
     currentState: String,   //Planeada, notificada, realizada, cancelada
+    activityEvidence: [String],  //Evidencia de la actividad
 },
 {collection: 'activities', timestamps: true});
 

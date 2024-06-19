@@ -16,6 +16,7 @@ import { EditActivityPageComponent } from './planification/pages/edit-activity-p
 import { MailPageComponent } from './access/pages/mail-page/mail-page.component';
 import { OptPageComponent } from './access/pages/otp-page/otp-page.component';
 import { CommentsActivityPageComponent } from './planification/pages/comments-activity-page/comments-activity-page.component';
+import { EvidencePageComponent } from './planification/pages/evidence-page/evidence-page.component';
 
 export const routes: Routes = [
   {
@@ -85,7 +86,11 @@ export const routes: Routes = [
   },
   {
     path: 'editActivity/:id',
-    component: EditActivityPageComponent
+    component: EditActivityPageComponent,
+  },
+  {
+    path: 'evidence/:id',
+    component: EvidencePageComponent
   },
   {
     path: 'activityComments/:id',

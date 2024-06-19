@@ -14,11 +14,12 @@ export class StudentObserver {
     //   this.notificationCenter.addObserver(this.student)
     }
   
-    update(message: string) { 
+    update(message: string, activityId: string) { 
       const notification = {
         text: message,
         date: new Date(),
-        seen: false
+        seen: false,
+        activityId: activityId 
       };
       this.communicationService.addNotification(this.student.account.id, notification).subscribe(
         (response: any) => {

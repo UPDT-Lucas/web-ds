@@ -26,14 +26,25 @@
     }
 }
 
+.evidence {
+    display: flex;
+    flex-direction: column;
+    ul {
+        list-style-type: none;
+    }
+}
+
 .file-input-container {
     width: 100%;
 }
 
 .options {
     padding: 0 1rem;
-    width: fit-content;
+    width: 100%;
     display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
 }
 
 .custom-select {

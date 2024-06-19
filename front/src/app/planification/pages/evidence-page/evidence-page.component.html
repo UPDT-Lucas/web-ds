@@ -1,0 +1,32 @@
+<div class="flex-container">
+  <shared-header></shared-header>
+  <div class="container">
+    <div class="row">
+      <div class="input">
+        <div class="image-poster-container">
+          <h5>Subir Evidencia</h5>
+          <shared-file-input
+            (fileSelected)="getEvidenceFile($event)"
+            [acceptedExtensions]="['.jpg', '.png', '.jpeg', '.pdf']"
+            [isPDF]="true"
+            [placeholder]="inputActivityEvidence"
+          >
+          </shared-file-input>
+        </div>
+      </div>
+      <div class="evidence">
+        <h5>Evidencias</h5>
+        <ul>
+          <li *ngFor="let evidence of this.activityEvidence">
+            <a href="{{ evidence }}" target="_blank">{{ evidence }}</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+    <shared-button
+      [text]="'Guardar'"
+      (click)="saveEvidence()"
+    ></shared-button>
+  </div>
+</div>

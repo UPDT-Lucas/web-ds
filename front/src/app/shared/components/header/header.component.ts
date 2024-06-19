@@ -5,7 +5,7 @@ import { NotificationMsgComponent } from '../notification-msg/notification-msg.c
 import { CommunicationService } from '../../../services/communication.service';
 import { NotificationCenter } from '../../../interfaces/observer/notificationCenter';
 import { NotificationsService } from '../../../services/notifications.service';
-import { Notification } from '../../../interfaces/professor.interface';
+import { Notification } from '../../../interfaces/student.interface';
 
 @Component({
   selector: 'shared-header',
@@ -48,11 +48,11 @@ export class HeaderComponent {
     //     console.log(student)
     //   }
     // )
-    this.communicationService.getProfessor(actualId).subscribe(
-      professor => {
-        if(professor){
-          this.notificationService.handleActivityStateChange(professor)
-          this.allNotifications = professor.account.notifications
+    this.communicationService.getStudent(actualId).subscribe(
+      student => {
+        if(student){
+          this.notificationService.handleActivityStateChange(student)
+          this.allNotifications = student.account.notifications
           this.seenNotifications = this.allNotifications.filter((notif) => notif.seen)
           this.notSeenNotifications = this.allNotifications.filter((notif) => !notif.seen)
           this.notifications = this.allNotifications

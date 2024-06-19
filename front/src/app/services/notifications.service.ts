@@ -17,21 +17,21 @@ export class NotificationsService {
 
   // Método para manejar cambios en el estado de las actividades y notificar a los observadores
   handleActivityStateChange(student: any): void {
-    const currentDate = new Date();
+    const currentDate = new Date(2024, 5, 5);// 5 jun 2024
     const notificationCenter = new NotificationCenter();
     notificationCenter.addObserver(new StudentObserver(student, this.communicationService))
     this.communicationService.getAllActivities().subscribe(
       (response: any) => {
-        response.activities.forEach((activity: Activity) => {
-          const publishVisitor = new PublishVisitor(currentDate);
-          const reminderVisitor = new ReminderVisitor(currentDate);
+        response.activities.forEach((activity: any) => {
+          const publishVisitor = new PublishVisitor(currentDate, this.communicationService);
+          const reminderVisitor = new ReminderVisitor(currentDate, this.communicationService);
           const publishResult = publishVisitor.visit(activity);
           const reminderResult = reminderVisitor.visit(activity);
           if (publishResult) {
-            notificationCenter.notify(publishResult.message);
+            notificationCenter.notify(publishResult.message, activity._id!);
           }
           if (reminderResult) {
-            notificationCenter.notify(reminderResult.message);
+            notificationCenter.notify(reminderResult.message, activity._id!);
           }
         });
       }

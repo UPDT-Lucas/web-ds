@@ -23,7 +23,8 @@ const registerActivity = async (req, res) => {
         isRemote: req.body.isRemote,
         virtualActivityLink: req.body.virtualActivityLink,
         activityPoster: req.body.activityPoster,
-        currentState: req.body.currentState
+        currentState: req.body.currentState,
+        activityEvidence: req.body.activityEvidence
     });
 
     await newActivity.save();
@@ -82,6 +83,7 @@ const editActivity = async (req, res) => {
         virtualActivityLink: req.body.virtualActivityLink,
         activityPoster: req.body.activityPoster,
         currentState: req.body.currentState,
+        activityEvidence: req.body.activityEvidence
     }
 
     const updatedActivity = await Activity.findOneAndUpdate({_id: id}, updates, {new: true})

@@ -174,7 +174,8 @@ export class AddActivityPageComponent {
       isRemote: this.isRemote,
       virtualActivityLink: this.virtualActivityLink,
       activityPoster: this.filename,
-      currentState: this.currentState
+      currentState: this.currentState,
+      activityEvidence: []
     }
     this.CS.registerActivity(activityData).subscribe(
       (res: any) => {

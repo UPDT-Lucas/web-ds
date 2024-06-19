@@ -203,7 +203,8 @@ export class CommunicationService {
   }
 
   // ----------------------------------------- Notifications -----------------------------------------//
-  addNotification(studentId: string, notification: { text: string, date: Date }): Observable<any> {
+  addNotification(studentId: string, notification: { text: string, date: Date, activityId: String }): Observable<any> {
+    console.log(notification)
     const url = `${this.apiUrl}/addNotification/${studentId}`;
     return this.http.put(url, { notification });
   }

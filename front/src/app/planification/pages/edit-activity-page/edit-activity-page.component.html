@@ -1,89 +1,140 @@
 <div class="flex-container">
-    <shared-header></shared-header>
-    <div class="container">
-      <div class="info-container">
-        <h2 class="header">Editar Actividad</h2>
-        <div class="row">
-          <div class="input">
-            <h5>Tipo</h5>
-            <select
-              id="typeOfActivity"
-              (change)="onAcivityTypeChange($event)"
-              class="custom-select"
-            >
-              <option value="Orientadora">Orientadora</option>
-              <option value="Motivacional">Motivacional</option>
-              <option
-                value="De apoyo a la vida
+  <shared-header></shared-header>
+  <div class="container">
+    <div class="info-container">
+      <h2 class="header">Editar Actividad</h2>
+      <div class="row">
+        <div class="input">
+          <h5>Tipo</h5>
+          <select
+            id="typeOfActivity"
+            (change)="onAcivityTypeChange($event)"
+            class="custom-select"
+          >
+            <option value="Orientadora">Orientadora</option>
+            <option value="Motivacional">Motivacional</option>
+            <option
+              value="De apoyo a la vida
                           estudiantil "
-              >
-                De apoyo a la vida estudiantil
-              </option>
-              <option value="De orden técnico">De orden técnico</option>
-              <option value="De recreación">De recreación</option>
-            </select>
-          </div>
-          <div class="input">
-            <h5>Nombre</h5>
-            <shared-input placeholder="Nombre Actividad" [(entry)]="inputActivityName" [value]="activityName">
-            </shared-input>
-          </div>
+            >
+              De apoyo a la vida estudiantil
+            </option>
+            <option value="De orden técnico">De orden técnico</option>
+            <option value="De recreación">De recreación</option>
+          </select>
         </div>
-        <div class="row">
-          <div class="input">
-            <h5>Fecha de ejecución</h5>
-            <shared-date-picker [(entry)]="executionDate" [value]="activityId" [typeOfDate]="'executionDate'"></shared-date-picker>
-          </div>
-          <div class="input">
-            <h5>Fecha de anuncio a la comunidad</h5>
-            <shared-date-picker [(entry)]="announcementDate" [value]="activityId" [typeOfDate]="'announcementDate'"></shared-date-picker>
-          </div>
-        </div>
-        <div class="row">
-          <div class="input">
-            <h5>Frecuencia de recordatorios en días</h5>
-            <shared-input placeholder="3" [(entry)]="inputReminderDates" [value]="reminderDates.toString()"> </shared-input>
-          </div>
-          <div class="input">
-            <h5>Semana de realización</h5>
-            <shared-input placeholder="0" [(entry)]="inputExecutionWeek" [value]="executionWeek.toString()"> </shared-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="input">
-            <h5>Responsables (Inserte correos separados por comas)</h5>
-            <shared-input placeholder="prof1@example.com, prof2@example.com..." [(entry)]="inputResponsibles" [value]="professorEmailsToShow"> </shared-input>
-          </div>
-          <div class="input">
-            <div class="image-poster-container">
-              <h5>Subir poster</h5>
-              <shared-file-input
-                (fileSelected)="getFile($event)"
-                [acceptedExtensions]="['.jpg', '.png', '.jpeg', '.pdf']"
-                [isPDF]="true"
-                [placeholder]="activityPoster"
-              >
-              </shared-file-input>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="input">
-            <h5>Remota</h5>
-            <shared-checkbox-input [(isChecked)]="isRemote">
-            </shared-checkbox-input>
-          </div>
-          @if(isRemote){
-          <div class="input">
-            <h5>Enlace</h5>
-            <shared-input placeholder="linkreunion.com" [(entry)]="inputVirtualActivityLink" [value]="virtualActivityLink"> </shared-input>
-          </div>
-          }
+        <div class="input">
+          <h5>Nombre</h5>
+          <shared-input
+            placeholder="Nombre Actividad"
+            [(entry)]="inputActivityName"
+            [value]="activityName"
+          >
+          </shared-input>
         </div>
       </div>
+      <div class="row">
+        <div class="input">
+          <h5>Fecha de ejecución</h5>
+          <shared-date-picker
+            [(entry)]="executionDate"
+            [value]="activityId"
+            [typeOfDate]="'executionDate'"
+          ></shared-date-picker>
+        </div>
+        <div class="input">
+          <h5>Fecha de anuncio a la comunidad</h5>
+          <shared-date-picker
+            [(entry)]="announcementDate"
+            [value]="activityId"
+            [typeOfDate]="'announcementDate'"
+          ></shared-date-picker>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input">
+          <h5>Frecuencia de recordatorios en días</h5>
+          <shared-input
+            placeholder="3"
+            [(entry)]="inputReminderDates"
+            [value]="reminderDates.toString()"
+          >
+          </shared-input>
+        </div>
+        <div class="input">
+          <h5>Semana de realización</h5>
+          <shared-input
+            placeholder="0"
+            [(entry)]="inputExecutionWeek"
+            [value]="executionWeek.toString()"
+          >
+          </shared-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input">
+          <h5>Responsables (Inserte correos separados por comas)</h5>
+          <shared-input
+            placeholder="prof1@example.com, prof2@example.com..."
+            [(entry)]="inputResponsibles"
+            [value]="professorEmailsToShow"
+          >
+          </shared-input>
+        </div>
+        <div class="input">
+          <div class="image-poster-container">
+            <h5>Subir poster</h5>
+            <shared-file-input
+              (fileSelected)="getFile($event)"
+              [acceptedExtensions]="['.jpg', '.png', '.jpeg', '.pdf']"
+              [isPDF]="true"
+              [placeholder]="activityPoster"
+            >
+            </shared-file-input>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input">
+          <h5>Remota</h5>
+          <shared-checkbox-input [(isChecked)]="isRemote">
+          </shared-checkbox-input>
+        </div>
+        @if(isRemote){
+        <div class="input">
+          <h5>Enlace</h5>
+          <shared-input
+            placeholder="linkreunion.com"
+            [(entry)]="inputVirtualActivityLink"
+            [value]="virtualActivityLink"
+          >
+          </shared-input>
+        </div>
+        }
+      </div>
+      <div class="row">
+        <div class="input">
+          <h5>Estado</h5>
+          <select
+            id="typeOfActivity"
+            (change)="onAcivityStateChange($event)"
+            class="custom-select"
+          >
+            <option value="Planeada">Planeada</option>
+            <option value="Notificada">Notificada</option>
+            <option
+              value="Realizada">Realizada</option>
+            <option value="Cancelada">Cancelada</option>
+          </select>
+        </div>
       <div class="options">
-        <shared-button text="Confirmar actividad" (click)="getData()"> </shared-button>
+        <shared-button text="Confirmar actividad" (click)="getData()">
+        </shared-button>
+        <shared-button
+        [text]="'Ver evidencias'"
+        [link]="'/evidence/' + activityId"
+      ></shared-button>
       </div>
     </div>
   </div>
-  
+</div>

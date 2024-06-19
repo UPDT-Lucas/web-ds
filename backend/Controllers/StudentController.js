@@ -143,6 +143,7 @@ const getStudent = async (req, res) => {
 
         // Construir el objeto de cuenta
         const account = {
+            id,
             name: { firstName, secondName, firstSurname, secondSurname },
             email,
             campus,
@@ -260,9 +261,10 @@ const addNotification = async (req, res) => {
     try {
         const { id } = req.params;
         const newNotification = req.body.notification;
+        console.log(newNotification)
 
         // Encuentra el estudiante por ID
-        const student = await Professor.findById(id);
+        const student = await Student.findById(id);
 
         if (!student) {
             return res.status(400).json({ error: 'Student does not exist' });

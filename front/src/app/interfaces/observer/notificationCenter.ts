@@ -16,7 +16,7 @@ export class NotificationCenter {
         this.observers = this.observers.filter(obs => obs !== observer);
     }
 
-    notify(message: string) {
-        this.observers.forEach((observer: StudentObserver) => observer.update(message));
+    notify(message: string, activityId: string) {
+        this.observers.forEach((observer: StudentObserver) => observer.update(message, activityId));
     }
 }

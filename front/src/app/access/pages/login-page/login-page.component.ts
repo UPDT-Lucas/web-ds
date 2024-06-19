@@ -59,6 +59,7 @@ export class LoginPageComponent {
     }
     
     try{
+      console.log('Email: ', this.email, 'Password: ', this.password)
       this.CS.login(this.email, this.password).subscribe(
         (res) => {
           if(res.message === 'Login successful') {

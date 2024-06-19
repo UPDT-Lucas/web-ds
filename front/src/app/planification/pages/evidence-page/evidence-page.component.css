@@ -1,0 +1,31 @@
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+    gap: 0.4rem;
+    width: 100%;
+    > img {
+        width: 100px;
+        border-radius: 10px;
+    }
+}
+
+.evidence {
+    display: flex;
+    flex-direction: column;
+    ul {
+        list-style-type: none;
+    }
+}
+
+.file-input-container {
+    width: 100%;
+}

@@ -15,6 +15,11 @@ const StudentScheme = new Schema({
     notifications: [{           
         text: String,
         date: Date,
+        seen: Boolean,
+        activityId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Activity'
+        }
     }],
     cellPhone: String,
     photo: String,

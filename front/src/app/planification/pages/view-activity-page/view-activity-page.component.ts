@@ -37,7 +37,8 @@ export class ViewActivityPageComponent {
     isRemote: false,
     virtualActivityLink: '',
     activityPoster: '',
-    currentState: ''
+    currentState: '',
+    activityEvidence: []
   };
 
   userIsCordinator: boolean = false;
@@ -120,7 +121,8 @@ export class ViewActivityPageComponent {
       const virtualActivityLink = ActivityRequest.activity.virtualActivityLink;
       const activityPoster = ActivityRequest.activity.activityPoster;
       const currentState = ActivityRequest.activity.currentState;
-      this.activity = { typeOfActivity, activityName, responsibles, executionDate, executionWeek, announcementDate, reminderDates, comments, isRemote, virtualActivityLink, activityPoster, currentState };
+      const activityEvidence = ActivityRequest.activity.activityEvidence;
+      this.activity = { typeOfActivity, activityName, responsibles, executionDate, executionWeek, announcementDate, reminderDates, comments, isRemote, virtualActivityLink, activityPoster, currentState, activityEvidence };
   }
 
   deepCopy<T>(obj: T): T {
