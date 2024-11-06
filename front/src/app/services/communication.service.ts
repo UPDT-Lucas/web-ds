@@ -20,7 +20,7 @@ export class CommunicationService {
   constructor(private http: HttpClient) {} 
   // apiUrl for production https://back-ds.onrender.com 
   // apiForTesting hosting with own machine http://localhost:3000
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'https://back-ds.onrender.com';
 
   setActualUser(id: string, role: string){
     localStorage.setItem('-id', id);
