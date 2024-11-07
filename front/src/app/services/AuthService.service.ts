@@ -10,7 +10,7 @@ import { S } from '@fullcalendar/core/internal-common';
 
 export class AuthService {
 
-  private apiUrl = 'http://localhost:3000'; // Reemplaza con la URL de tu API
+  private apiUrl = 'https://back-ds.onrender.com'; // Reemplaza con la URL de tu API
 
   constructor(private http: HttpClient) { }
 
